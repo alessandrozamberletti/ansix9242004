@@ -4,6 +4,10 @@ import java.io.ByteArrayOutputStream;
 
 public final class ByteArrayUtils {
 
+    private ByteArrayUtils() {
+
+    }
+
     public static byte[] concat(byte[] first, byte[] second) {
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
             byteArrayOutputStream.write(first);
