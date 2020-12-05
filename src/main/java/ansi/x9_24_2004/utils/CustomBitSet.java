@@ -52,15 +52,6 @@ public class CustomBitSet extends BitSet {
 		return size;
 	}
 
-	public static byte[] toByteArray(CustomBitSet b) {
-		int size = (int) Math.ceil(b.bitSize() / 8.0d);
-		byte[] value = new byte[size];
-		for (int i = 0; i < size; i++) {
-			value[i] = toByte(b.get(i * 8, Math.min(b.bitSize(), (i + 1) * 8)));
-		}
-		return value;
-	}
-
 	public static byte toByte(CustomBitSet b) {
 		byte value = 0;
 		for (int i = 0; i < b.bitSize(); i++) {
@@ -75,8 +66,18 @@ public class CustomBitSet extends BitSet {
 	}
 
 	@Override
+	public byte[] toByteArray() {
+		int size = (int) Math.ceil(this.bitSize() / 8.0d);
+		byte[] value = new byte[size];
+		for (int i = 0; i < size; i++) {
+			value[i] = toByte(this.get(i * 8, Math.min(this.bitSize(), (i + 1) * 8)));
+		}
+		return value;
+	}
+
+	@Override
 	public String toString() {
-		return DatatypeConverter.printHexBinary(toByteArray(this));
+		return DatatypeConverter.printHexBinary(this.toByteArray());
 	}
 
 }

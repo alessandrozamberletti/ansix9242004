@@ -11,7 +11,7 @@ public class Des implements ansi.x9_24_2004.encryption.Encryption {
     @Override
     public SecretKey getEncryptionKey(final CustomBitSet key) {
         try {
-            final DESKeySpec desKeySpec = new DESKeySpec(CustomBitSet.toByteArray(key));
+            final DESKeySpec desKeySpec = new DESKeySpec(key.toByteArray());
             return SecretKeyFactory.getInstance("DES").generateSecret(desKeySpec);
         } catch (Exception e) {
             throw new IllegalStateException(e);

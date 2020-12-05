@@ -58,10 +58,10 @@ public class Dukpt {
         CustomBitSet data = ksn.get(0, ksn.bitSize());
         data.clear(59, 80);
 
-        ipek[0] = tripleDes.encrypt(keyRegister, CustomBitSet.toByteArray(data.get(0, 64)), false);
+        ipek[0] = tripleDes.encrypt(keyRegister, data.get(0, 64).toByteArray(), false);
 
         keyRegister.xor(ansi.x9_24_2004.dukpt.Mask.KEY_REGISTER_BITMASK.value());
-        ipek[1] = tripleDes.encrypt(keyRegister, CustomBitSet.toByteArray(data.get(0, 64)), false);
+        ipek[1] = tripleDes.encrypt(keyRegister, data.get(0, 64).toByteArray(), false);
 
         return ByteArrayUtils.toBitSet(ByteArrayUtils.concat(ipek[0], ipek[1]));
     }
@@ -88,7 +88,7 @@ public class Dukpt {
         CustomBitSet reg2 = reg1.get(0, 64); // reg2 is being used like a temp here
         reg2.xor(keyReg.get(64, 128));   // and here, too, kind of
         // step 2: Crypto Register-2 DEA-encrypted using, as the key, the left half of the Key Register goes to Crypto Register-2
-        reg2 = ByteArrayUtils.toBitSet(des.encrypt(keyReg.get(0, 64), CustomBitSet.toByteArray(reg2), false));
+        reg2 = ByteArrayUtils.toBitSet(des.encrypt(keyReg.get(0, 64), reg2.toByteArray(), false));
         // step 3: Crypto Register-2 XORed with the right half of the Key Register goes to Crypto Register-2
         reg2.xor(keyReg.get(64, 128));
         // done messing with reg2
@@ -98,13 +98,13 @@ public class Dukpt {
         // step 5: Crypto Register-1 XORed with the right half of the Key Register goes to Crypto Register-1
         reg1.xor(keyReg.get(64, 128));
         // step 6: Crypto Register-1 DEA-encrypted using, as the key, the left half of the Key Register goes to Crypto Register-1
-        reg1 = ByteArrayUtils.toBitSet(des.encrypt(keyReg.get(0, 64), CustomBitSet.toByteArray(reg1), false));
+        reg1 = ByteArrayUtils.toBitSet(des.encrypt(keyReg.get(0, 64), reg1.toByteArray(), false));
         // step 7: Crypto Register-1 XORed with the right half of the Key Register goes to Crypto Register-1
         reg1.xor(keyReg.get(64, 128));
         // done
 
-        byte[] reg1b = CustomBitSet.toByteArray(reg1);
-        byte[] reg2b = CustomBitSet.toByteArray(reg2);
+        byte[] reg1b = reg1.toByteArray();
+        byte[] reg2b = reg2.toByteArray();
 
         return ByteArrayUtils.toBitSet(ByteArrayUtils.concat(reg1b, reg2b));
     }

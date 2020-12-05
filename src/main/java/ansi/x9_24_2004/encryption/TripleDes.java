@@ -34,9 +34,9 @@ public class TripleDes implements ansi.x9_24_2004.encryption.Encryption {
             k2 = key.get(64, 128);
             k3 = key.get(128, 192);
         }
-        byte[] kb1 = CustomBitSet.toByteArray(k1);
-        byte[] kb2 = CustomBitSet.toByteArray(k2);
-        byte[] kb3 = CustomBitSet.toByteArray(k3);
+        byte[] kb1 = k1.toByteArray();
+        byte[] kb2 = k2.toByteArray();
+        byte[] kb3 = k3.toByteArray();
         byte[] key16 = ByteArrayUtils.concat(kb1, kb2);
         byte[] key24 = ByteArrayUtils.concat(key16, kb3);
 
