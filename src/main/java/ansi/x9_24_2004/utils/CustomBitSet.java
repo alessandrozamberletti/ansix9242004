@@ -19,18 +19,51 @@ import java.util.BitSet;
  * @author Software Verde: Josh Green
  */
 public class CustomBitSet extends BitSet {
-	public static final int DEFAULT_SIZE = 8;
-	private static final long serialVersionUID = 1L;
-	private int size;
 
-	public CustomBitSet() {
-		super(DEFAULT_SIZE);
-		size = DEFAULT_SIZE;
-	}
+	private int size;
 
 	public CustomBitSet(int nbits) {
 		super(nbits);
 		size = nbits;
+	}
+
+	@Override
+	public CustomBitSet get(int low, int high) {
+		return fromBitSet(super.get(low, high));
+	}
+
+	@Override
+	public int size() {
+		return this.size;
+	}
+
+	@Override
+	public byte[] toByteArray() {
+		int size = (int) Math.ceil(this.size() / 8.0d);
+		byte[] value = new byte[size];
+		for (int i = 0; i < size; i++) {
+			value[i] = toByte(this.get(i * 8, Math.min(this.size, (i + 1) * 8)));
+		}
+		return value;
+	}
+
+	@Override
+	public String toString() {
+		return DatatypeConverter.printHexBinary(this.toByteArray());
+	}
+
+	public static CustomBitSet toBitSet(final String value) {
+		return ByteArrayUtils.toBitSet(DatatypeConverter.parseHexBinary(value));
+	}
+
+	private static byte toByte(CustomBitSet b) {
+		byte value = 0;
+		for (int i = 0; i < b.size(); i++) {
+			if (b.get(i)) {
+				value = (byte) (value | (1L << 7 - i));
+			}
+		}
+		return value;
 	}
 
 	private static CustomBitSet fromBitSet(final BitSet bitSet) {
@@ -41,43 +74,6 @@ public class CustomBitSet extends BitSet {
 			}
 		}
 		return customBitSet;
-	}
-
-	@Override
-	public CustomBitSet get(int low, int high) {
-		return fromBitSet(super.get(low, high));
-	}
-
-	public int bitSize() {
-		return size;
-	}
-
-	public static byte toByte(CustomBitSet b) {
-		byte value = 0;
-		for (int i = 0; i < b.bitSize(); i++) {
-			if (b.get(i))
-				value = (byte) (value | (1L << 7 - i));
-		}
-		return value;
-	}
-
-	public static CustomBitSet toBitSet(final String value) {
-		return ByteArrayUtils.toBitSet(DatatypeConverter.parseHexBinary(value));
-	}
-
-	@Override
-	public byte[] toByteArray() {
-		int size = (int) Math.ceil(this.bitSize() / 8.0d);
-		byte[] value = new byte[size];
-		for (int i = 0; i < size; i++) {
-			value[i] = toByte(this.get(i * 8, Math.min(this.bitSize(), (i + 1) * 8)));
-		}
-		return value;
-	}
-
-	@Override
-	public String toString() {
-		return DatatypeConverter.printHexBinary(this.toByteArray());
 	}
 
 }

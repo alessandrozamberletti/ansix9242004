@@ -6,7 +6,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
-public class Des implements ansi.x9_24_2004.encryption.Encryption {
+public class Des implements Encryption {
 
     @Override
     public SecretKey getEncryptionKey(final CustomBitSet key) {

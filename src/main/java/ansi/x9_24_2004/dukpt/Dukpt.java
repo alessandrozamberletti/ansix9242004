@@ -54,8 +54,8 @@ public class Dukpt {
 
     CustomBitSet getIpek(final CustomBitSet key, final CustomBitSet ksn) {
         byte[][] ipek = new byte[2][];
-        CustomBitSet keyRegister = key.get(0, key.bitSize());
-        CustomBitSet data = ksn.get(0, ksn.bitSize());
+        CustomBitSet keyRegister = key.get(0, key.size());
+        CustomBitSet data = ksn.get(0, ksn.size());
         data.clear(59, 80);
 
         ipek[0] = tripleDes.encrypt(keyRegister, data.get(0, 64).toByteArray(), false);
@@ -67,11 +67,11 @@ public class Dukpt {
     }
 
     CustomBitSet getCurrentKey(final CustomBitSet ipek, final CustomBitSet ksn) {
-        CustomBitSet key = ipek.get(0, ipek.bitSize());
-        CustomBitSet counter = ksn.get(0, ksn.bitSize());
-        counter.clear(59, ksn.bitSize());
+        CustomBitSet key = ipek.get(0, ipek.size());
+        CustomBitSet counter = ksn.get(0, ksn.size());
+        counter.clear(59, ksn.size());
 
-        for (int i = 59; i < ksn.bitSize(); i++) {
+        for (int i = 59; i < ksn.size(); i++) {
             if (ksn.get(i)) {
                 counter.set(i);
                 key = nonReversibleKeyGenerationProcess(key, counter.get(16, 80), ansi.x9_24_2004.dukpt.Mask.KEY_REGISTER_BITMASK.value());
@@ -82,8 +82,8 @@ public class Dukpt {
     }
 
     CustomBitSet nonReversibleKeyGenerationProcess(final CustomBitSet pKey, final CustomBitSet data, final CustomBitSet keyRegisterBitmask) {
-        CustomBitSet keyReg = pKey.get(0, pKey.bitSize());
-        CustomBitSet reg1 = data.get(0, data.bitSize());
+        CustomBitSet keyReg = pKey.get(0, pKey.size());
+        CustomBitSet reg1 = data.get(0, data.size());
         // step 1: Crypto Register-1 XORed with the right half of the Key Register goes to Crypto Register-2.
         CustomBitSet reg2 = reg1.get(0, 64); // reg2 is being used like a temp here
         reg2.xor(keyReg.get(64, 128));   // and here, too, kind of

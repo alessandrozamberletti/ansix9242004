@@ -8,26 +8,26 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
 import java.security.InvalidParameterException;
 
-public class TripleDes implements ansi.x9_24_2004.encryption.Encryption {
+public class TripleDes implements Encryption {
 
     @Override
     public SecretKey getEncryptionKey(CustomBitSet key) {
         CustomBitSet k1;
         CustomBitSet k2;
         CustomBitSet k3;
-        if (key.bitSize() == 64) {
+        if (key.size() == 64) {
             // single length
             k1 = key.get(0, 64);
             k2 = k1;
             k3 = k1;
-        } else if (key.bitSize() == 128) {
+        } else if (key.size() == 128) {
             // double length
             k1 = key.get(0, 64);
             k2 = key.get(64, 128);
             k3 = k1;
         } else {
             // triple length
-            if (key.bitSize() != 192) {
+            if (key.size() != 192) {
                 throw new InvalidParameterException("Key is not 8/16/24 bytes long.");
             }
             k1 = key.get(0, 64);
