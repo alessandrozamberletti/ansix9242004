@@ -44,12 +44,12 @@ public class Dukpt {
     }
 
     public CustomBitSet computeKey(final CustomBitSet bdk, final CustomBitSet ksn, final ansi.x9_24_2004.dukpt.Mask mask) {
-        CustomBitSet ipek = getIpek(bdk, ksn);
-        CustomBitSet key = getCurrentKey(ipek, ksn);
+        final CustomBitSet ipek = getIpek(bdk, ksn);
+        final CustomBitSet transactionKey = getTransactionKey(ipek, ksn);
 
-        key.xor(mask.value());
+        transactionKey.xor(mask.value());
 
-        return key;
+        return transactionKey;
     }
 
     CustomBitSet getIpek(final CustomBitSet key, final CustomBitSet ksn) {
@@ -66,19 +66,23 @@ public class Dukpt {
         return ByteArrayUtils.toBitSet(ByteArrayUtils.concat(ipek[0], ipek[1]));
     }
 
-    CustomBitSet getCurrentKey(final CustomBitSet ipek, final CustomBitSet ksn) {
-        CustomBitSet key = ipek.get(0, ipek.size());
-        CustomBitSet counter = ksn.get(0, ksn.size());
-        counter.clear(59, ksn.size());
+    CustomBitSet getTransactionKey(final CustomBitSet ipek, final CustomBitSet ksn) {
+        final CustomBitSet counter = ksn.get(0, ksn.size());
+        CustomBitSet transactionKey = (CustomBitSet) ipek.clone();
 
+        counter.clear(59, ksn.size());
         for (int i = 59; i < ksn.size(); i++) {
             if (ksn.get(i)) {
                 counter.set(i);
-                key = nonReversibleKeyGenerationProcess(key, counter.get(16, 80), ansi.x9_24_2004.dukpt.Mask.KEY_REGISTER_BITMASK.value());
+                transactionKey = nonReversibleKeyGenerationProcess(
+                        transactionKey,
+                        counter.get(16, 80),
+                        Mask.KEY_REGISTER_BITMASK.value()
+                );
             }
         }
 
-        return key;
+        return transactionKey;
     }
 
     CustomBitSet nonReversibleKeyGenerationProcess(final CustomBitSet pKey, final CustomBitSet data, final CustomBitSet keyRegisterBitmask) {

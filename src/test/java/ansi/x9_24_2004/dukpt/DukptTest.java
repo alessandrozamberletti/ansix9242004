@@ -50,7 +50,7 @@ public class DukptTest {
             final CustomBitSet ipek = CustomBitSet.toBitSet("1B90D9C9AEE356ADF9938F6084D16C44");
 
             // When
-            final CustomBitSet transactionKey = dukpt.getCurrentKey(ipek, KSN);
+            final CustomBitSet transactionKey = dukpt.getTransactionKey(ipek, KSN);
 
             // Then
             Assertions.assertEquals("0258F3E777F55F61241AE65234583B30", transactionKey.toString());
