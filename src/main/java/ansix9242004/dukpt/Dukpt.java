@@ -35,7 +35,7 @@ import java.util.Arrays;
  * @author Software Verde: Andrew Groot
  * @author Software Verde: Josh Green
  */
-public final class Dukpt {
+public class Dukpt {
 
 	private final Des des;
 	private final TripleDes tripleDes;

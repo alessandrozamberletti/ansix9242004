@@ -12,18 +12,18 @@ import java.security.spec.InvalidKeySpecException;
 public class Des implements Encryption {
 
     @Override
-    public SecretKey getSecretKey(final BitSet key) throws NoSuchAlgorithmException, InvalidKeyException, InvalidKeySpecException {
+    public SecretKey getEncryptionKey(final BitSet key) throws NoSuchAlgorithmException, InvalidKeyException, InvalidKeySpecException {
         final DESKeySpec desKeySpec = new DESKeySpec(BitSet.toByteArray(key));
         return SecretKeyFactory.getInstance("DES").generateSecret(desKeySpec);
     }
 
     @Override
-    public String paddingOption() {
+    public String padding() {
         return "DES/CBC/PKCS5Padding";
     }
 
     @Override
-    public String noPaddingOption() {
+    public String noPadding() {
         return "DES/CBC/NoPadding";
     }
 

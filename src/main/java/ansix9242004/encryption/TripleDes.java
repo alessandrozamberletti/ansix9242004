@@ -14,7 +14,7 @@ import java.security.spec.InvalidKeySpecException;
 public class TripleDes implements Encryption {
 
     @Override
-    public SecretKey getSecretKey(BitSet key) throws NoSuchAlgorithmException, InvalidKeyException, InvalidKeySpecException {
+    public SecretKey getEncryptionKey(BitSet key) throws NoSuchAlgorithmException, InvalidKeyException, InvalidKeySpecException {
         BitSet k1, k2, k3;
         if (key.bitSize() == 64) {
             // single length
@@ -45,12 +45,12 @@ public class TripleDes implements Encryption {
     }
 
     @Override
-    public String paddingOption() {
+    public String padding() {
         return "DESede/CBC/PKCS5Padding";
     }
 
     @Override
-    public String noPaddingOption() {
+    public String noPadding() {
         return "DESede/CBC/NoPadding";
     }
 

@@ -16,7 +16,7 @@ import java.security.spec.InvalidKeySpecException;
 public interface Encryption {
 
     default byte[] encrypt(BitSet key, byte[] data, boolean padding) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, InvalidKeySpecException {
-        final SecretKey secretKey = getSecretKey(key);
+        final SecretKey secretKey = getEncryptionKey(key);
         final IvParameterSpec iv = new IvParameterSpec(new byte[8]);
         final Cipher cipher = getCipher(padding);
 
@@ -26,7 +26,7 @@ public interface Encryption {
     }
 
     default byte[] decrypt(BitSet key, byte[] data, boolean padding) throws NoSuchAlgorithmException, InvalidKeyException, InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException, BadPaddingException, IllegalBlockSizeException {
-        final SecretKey secretKey = getSecretKey(key);
+        final SecretKey secretKey = getEncryptionKey(key);
         final IvParameterSpec iv = new IvParameterSpec(new byte[8]);
         final Cipher cipher = getCipher(padding);
 
@@ -35,14 +35,14 @@ public interface Encryption {
         return cipher.doFinal(data);
     }
 
-    SecretKey getSecretKey(BitSet key) throws NoSuchAlgorithmException, InvalidKeyException, InvalidKeySpecException;
+    SecretKey getEncryptionKey(BitSet key) throws NoSuchAlgorithmException, InvalidKeyException, InvalidKeySpecException;
 
-    String paddingOption();
+    String padding();
 
-    String noPaddingOption();
+    String noPadding();
 
     default Cipher getCipher(boolean padding) throws NoSuchPaddingException, NoSuchAlgorithmException {
-        return padding ? Cipher.getInstance(paddingOption()) : Cipher.getInstance(noPaddingOption());
+        return Cipher.getInstance(padding ? padding() : noPadding());
     }
 
 }
