@@ -14,16 +14,4 @@ public class ByteArrayUtils {
         }
     }
 
-    public static CustomBitSet toBitSet(byte[] b) {
-        CustomBitSet bs = new CustomBitSet(8 * b.length);
-        for (int i = 0; i < b.length; i++) {
-            for (int j = 0; j < 8; j++) {
-                if ((b[i] & (1L << j)) > 0) {
-                    bs.set(8 * i + (7 - j));
-                }
-            }
-        }
-        return bs;
-    }
-
 }
