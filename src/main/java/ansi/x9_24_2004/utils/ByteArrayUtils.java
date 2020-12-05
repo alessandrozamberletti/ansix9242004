@@ -2,7 +2,11 @@ package ansi.x9_24_2004.utils;
 
 import java.io.ByteArrayOutputStream;
 
-public class ByteArrayUtils {
+public final class ByteArrayUtils {
+
+    private ByteArrayUtils() {
+
+    }
 
     public static byte[] concat(byte[] first, byte[] second) {
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {

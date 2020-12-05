@@ -18,6 +18,7 @@ import java.util.BitSet;
  * @author Software Verde: Andrew Groot
  * @author Software Verde: Josh Green
  */
+@SuppressWarnings({"java:S2160"}) // Implement equals, not needed.
 public class CustomBitSet extends BitSet {
 
     private int size;
