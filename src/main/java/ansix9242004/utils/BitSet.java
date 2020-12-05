@@ -1,5 +1,7 @@
 package ansix9242004.utils;
 
+import javax.xml.bind.DatatypeConverter;
+
 /**
  * <p>This extension to java.util.BitSet provides a "bitSize()" function
  * to better define the requested or desired size of the object, in order to
@@ -62,11 +64,11 @@ public class BitSet extends java.util.BitSet {
 	}
 
 	public static BitSet toBitSet(final String value) {
-		return ByteArrayUtils.toBitSet(StringUtils.toByteArray(value));
+		return ByteArrayUtils.toBitSet(DatatypeConverter.parseHexBinary(value));
 	}
 
 	public static String toString(final BitSet value) {
-		return ByteArrayUtils.toHex(toByteArray(value));
+		return DatatypeConverter.printHexBinary(toByteArray(value));
 	}
 
 }
