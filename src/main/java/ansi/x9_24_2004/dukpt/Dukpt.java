@@ -109,20 +109,4 @@ public class Dukpt {
         return ByteArrayUtils.toBitSet(ByteArrayUtils.concat(reg1b, reg2b));
     }
 
-	/*
-	byte[] toDataKey(final byte[] derivedKey) throws Exception {
-		if (derivedKey == null || derivedKey.length != 16) {
-			throw new IllegalArgumentException("Invalid key provided: " + (derivedKey == null ? "null" : "length " + derivedKey.length));
-		}
-
-		byte[] left = Arrays.copyOfRange(derivedKey, 0, 8);
-		byte[] right = Arrays.copyOfRange(derivedKey, 8, 16);
-
-		byte[] leftEncrypted = tripleDes.encrypt(derivedKey, left, false);
-		byte[] rightEncrypted = tripleDes.encrypt(derivedKey, right, false);
-
-		return ByteArrayUtils.concat(leftEncrypted, rightEncrypted);
-	}
-	 */
-
 }
