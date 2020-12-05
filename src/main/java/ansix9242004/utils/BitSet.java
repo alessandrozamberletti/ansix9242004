@@ -69,14 +69,4 @@ public class BitSet extends java.util.BitSet {
 		return ByteArrayUtils.toHex(toByteArray(value));
 	}
 
-	public static BitSet toBitSet(byte b) {
-		BitSet bs = new BitSet(8);
-		for (int i = 0; i < 8; i++) {
-			if ((b & (1L << i)) > 0) {
-				bs.set(7 - i);
-			}
-		}
-		return bs;
-	}
-
 }
