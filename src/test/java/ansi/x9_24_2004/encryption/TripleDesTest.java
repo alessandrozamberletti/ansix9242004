@@ -1,6 +1,6 @@
-package ansix9242004.encryption;
+package ansi.x9_24_2004.encryption;
 
-import ansix9242004.utils.BitSet;
+import ansi.x9_24_2004.utils.BitSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -15,13 +15,13 @@ import javax.xml.bind.DatatypeConverter;
 import java.util.stream.Stream;
 
 @SuppressWarnings({"java:S1192", "java:S1112"})
-public class DesTest {
+public class TripleDesTest {
 
-    private Des des;
+    private ansi.x9_24_2004.encryption.TripleDes tripleDes;
 
     @BeforeEach
     void init() {
-        this.des = new Des();
+        this.tripleDes = new ansi.x9_24_2004.encryption.TripleDes();
     }
 
     @Nested
@@ -33,7 +33,7 @@ public class DesTest {
         void shouldEncryptData(final String key, final String data, final boolean padding, final String expectedEncryptedData) {
             // Given
             // When
-            final byte[] actualEncryptedData = des.encrypt(BitSet.toBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
+            final byte[] actualEncryptedData = tripleDes.encrypt(BitSet.toBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
 
             // Then
             Assertions.assertEquals(expectedEncryptedData, DatatypeConverter.printHexBinary(actualEncryptedData));
@@ -41,9 +41,18 @@ public class DesTest {
 
         Stream<Arguments> getKeyDataPaddingAndExpectedEncryptedData() {
             return Stream.of(
+                    // 8 bytes key
                     Arguments.of("0258F3E7770A5F61", "0000000000000000", false, "3F1E698119F57324"),
                     Arguments.of("0258F3E7770A5F61", "0000000000000000", true, "3F1E698119F57324322C70A55FADB9EE"),
-                    Arguments.of("0258F3E7770A5F61", "", true, "9F24202C537707FD")
+                    Arguments.of("0258F3E7770A5F61", "", true, "9F24202C537707FD"),
+                    // 16 bytes key
+                    Arguments.of("0258F3E7770A5F610258F3E7770A5F61", "0000000000000000", false, "3F1E698119F57324"),
+                    Arguments.of("0258F3E7770A5F610258F3E7770A5F61", "0000000000000000", true, "3F1E698119F57324322C70A55FADB9EE"),
+                    Arguments.of("0258F3E7770A5F610258F3E7770A5F61", "", true, "9F24202C537707FD"),
+                    // 24 bytes key
+                    Arguments.of("0258F3E7770A5F610258F3E7770A5F610258F3E7770A5F61", "0000000000000000", false, "3F1E698119F57324"),
+                    Arguments.of("0258F3E7770A5F610258F3E7770A5F610258F3E7770A5F61", "0000000000000000", true, "3F1E698119F57324322C70A55FADB9EE"),
+                    Arguments.of("0258F3E7770A5F610258F3E7770A5F610258F3E7770A5F61", "", true, "9F24202C537707FD")
             );
         }
 
@@ -58,8 +67,7 @@ public class DesTest {
         void shouldDecryptData(final String key, final String data, final boolean padding, final String expectedEncryptedData) {
             // Given
             // When
-            final byte[] actualEncryptedData =
-                    des.decrypt(BitSet.toBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
+            final byte[] actualEncryptedData = tripleDes.decrypt(BitSet.toBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
 
             // Then
             Assertions.assertEquals(expectedEncryptedData, DatatypeConverter.printHexBinary(actualEncryptedData));
@@ -83,7 +91,7 @@ public class DesTest {
             // Given
             // When
             // Then
-            Assertions.assertEquals("DES/CBC/PKCS5Padding", des.padding());
+            Assertions.assertEquals("DESede/CBC/PKCS5Padding", tripleDes.padding());
         }
 
         @Test
@@ -91,7 +99,7 @@ public class DesTest {
             // Given
             // When
             // Then
-            Assertions.assertEquals("DES/CBC/NoPadding", des.noPadding());
+            Assertions.assertEquals("DESede/CBC/NoPadding", tripleDes.noPadding());
         }
 
     }
@@ -105,12 +113,12 @@ public class DesTest {
             final BitSet key = BitSet.toBitSet("0258F3E7770A5F61");
 
             // When
-            final SecretKey secretKey = des.getEncryptionKey(key);
+            final SecretKey secretKey = tripleDes.getEncryptionKey(key);
 
             // Then
-            Assertions.assertEquals("DES", secretKey.getAlgorithm());
+            Assertions.assertEquals("DESede", secretKey.getAlgorithm());
             Assertions.assertEquals("RAW", secretKey.getFormat());
-            Assertions.assertEquals("0258F2E6760B5E61", DatatypeConverter.printHexBinary(secretKey.getEncoded()));
+            Assertions.assertEquals("0258F2E6760B5E610258F2E6760B5E610258F2E6760B5E61", DatatypeConverter.printHexBinary(secretKey.getEncoded()));
         }
 
     }

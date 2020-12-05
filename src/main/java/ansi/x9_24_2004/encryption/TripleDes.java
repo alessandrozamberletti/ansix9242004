@@ -1,18 +1,20 @@
-package ansix9242004.encryption;
+package ansi.x9_24_2004.encryption;
 
-import ansix9242004.utils.BitSet;
-import ansix9242004.utils.ByteArrayUtils;
+import ansi.x9_24_2004.utils.BitSet;
+import ansi.x9_24_2004.utils.ByteArrayUtils;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
 import java.security.InvalidParameterException;
 
-public class TripleDes implements Encryption {
+public class TripleDes implements ansi.x9_24_2004.encryption.Encryption {
 
     @Override
     public SecretKey getEncryptionKey(BitSet key) {
-        BitSet k1, k2, k3;
+        BitSet k1;
+        BitSet k2;
+        BitSet k3;
         if (key.bitSize() == 64) {
             // single length
             k1 = key.get(0, 64);

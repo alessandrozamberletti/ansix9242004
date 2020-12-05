@@ -1,12 +1,12 @@
-package ansix9242004.encryption;
+package ansi.x9_24_2004.encryption;
 
-import ansix9242004.utils.BitSet;
+import ansi.x9_24_2004.utils.BitSet;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
-public class Des implements Encryption {
+public class Des implements ansi.x9_24_2004.encryption.Encryption {
 
     @Override
     public SecretKey getEncryptionKey(final BitSet key) {

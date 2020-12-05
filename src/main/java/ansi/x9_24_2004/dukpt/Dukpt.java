@@ -1,12 +1,9 @@
-package ansix9242004.dukpt;
+package ansi.x9_24_2004.dukpt;
 
-import ansix9242004.encryption.Des;
-import ansix9242004.encryption.TripleDes;
-import ansix9242004.utils.BitSet;
-import ansix9242004.utils.ByteArrayUtils;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import ansi.x9_24_2004.encryption.Des;
+import ansi.x9_24_2004.encryption.TripleDes;
+import ansi.x9_24_2004.utils.BitSet;
+import ansi.x9_24_2004.utils.ByteArrayUtils;
 
 /**
  * <p>The Dukpt class acts a name-space for the Derived
@@ -46,7 +43,7 @@ public class Dukpt {
         this.tripleDes = tripleDes;
     }
 
-    BitSet computeKey(final BitSet bdk, final BitSet ksn, final Mask mask) {
+    BitSet computeKey(final BitSet bdk, final BitSet ksn, final ansi.x9_24_2004.dukpt.Mask mask) {
         BitSet ipek = getIpek(bdk, ksn);
         BitSet key = getCurrentKey(ipek, ksn);
 
@@ -63,7 +60,7 @@ public class Dukpt {
 
         ipek[0] = tripleDes.encrypt(keyRegister, BitSet.toByteArray(data.get(0, 64)), false);
 
-        keyRegister.xor(Mask.KEY_REGISTER_BITMASK.value());
+        keyRegister.xor(ansi.x9_24_2004.dukpt.Mask.KEY_REGISTER_BITMASK.value());
         ipek[1] = tripleDes.encrypt(keyRegister, BitSet.toByteArray(data.get(0, 64)), false);
 
         return ByteArrayUtils.toBitSet(ByteArrayUtils.concat(ipek[0], ipek[1]));
@@ -77,7 +74,7 @@ public class Dukpt {
         for (int i = 59; i < ksn.bitSize(); i++) {
             if (ksn.get(i)) {
                 counter.set(i);
-                key = nonReversibleKeyGenerationProcess(key, counter.get(16, 80), Mask.KEY_REGISTER_BITMASK.value());
+                key = nonReversibleKeyGenerationProcess(key, counter.get(16, 80), ansi.x9_24_2004.dukpt.Mask.KEY_REGISTER_BITMASK.value());
             }
         }
 

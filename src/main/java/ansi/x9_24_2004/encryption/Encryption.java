@@ -1,6 +1,6 @@
-package ansix9242004.encryption;
+package ansi.x9_24_2004.encryption;
 
-import ansix9242004.utils.BitSet;
+import ansi.x9_24_2004.utils.BitSet;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;

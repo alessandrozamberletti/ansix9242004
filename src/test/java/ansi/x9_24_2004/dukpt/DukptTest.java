@@ -1,8 +1,8 @@
-package ansix9242004.dukpt;
+package ansi.x9_24_2004.dukpt;
 
-import ansix9242004.encryption.Des;
-import ansix9242004.encryption.TripleDes;
-import ansix9242004.utils.BitSet;
+import ansi.x9_24_2004.encryption.Des;
+import ansi.x9_24_2004.encryption.TripleDes;
+import ansi.x9_24_2004.utils.BitSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -19,11 +19,11 @@ public class DukptTest {
     private static final BitSet BDK = BitSet.toBitSet("BDBD1234BDBD567890ABBDBDCDEFBDBD");
     private static final BitSet KSN = BitSet.toBitSet("FFFF9876543210E01E9D");
 
-    private Dukpt dukpt;
+    private ansi.x9_24_2004.dukpt.Dukpt dukpt;
 
     @BeforeEach
     void init() {
-        this.dukpt = new Dukpt(new Des(), new TripleDes());
+        this.dukpt = new ansi.x9_24_2004.dukpt.Dukpt(new Des(), new TripleDes());
     }
 
     @Nested
@@ -64,7 +64,7 @@ public class DukptTest {
 
         @ParameterizedTest(name = "Should create key {1} for mask {0}.")
         @MethodSource("getMaskAndExpectedKey")
-        void shouldComputeExpectedKeyVariant(final Mask mask, final String expectedKey) {
+        void shouldComputeExpectedKeyVariant(final ansi.x9_24_2004.dukpt.Mask mask, final String expectedKey) {
             // Given
             // When
             final BitSet actualKey = dukpt.computeKey(BDK, KSN, mask);
@@ -75,9 +75,9 @@ public class DukptTest {
 
         Stream<Arguments> getMaskAndExpectedKey() {
             return Stream.of(
-                    Arguments.of(Mask.REQUEST_DATA_MASK, "0258F3E7770A5F61241AE65234A73B30"),
-                    Arguments.of(Mask.REQUEST_MAC_MASK, "0258F3E777F5A061241AE6523458C430"),
-                    Arguments.of(Mask.PIN_MASK, "0258F3E777F55F9E241AE65234583BCF")
+                    Arguments.of(ansi.x9_24_2004.dukpt.Mask.REQUEST_DATA_MASK, "0258F3E7770A5F61241AE65234A73B30"),
+                    Arguments.of(ansi.x9_24_2004.dukpt.Mask.REQUEST_MAC_MASK, "0258F3E777F5A061241AE6523458C430"),
+                    Arguments.of(ansi.x9_24_2004.dukpt.Mask.PIN_MASK, "0258F3E777F55F9E241AE65234583BCF")
             );
         }
     }

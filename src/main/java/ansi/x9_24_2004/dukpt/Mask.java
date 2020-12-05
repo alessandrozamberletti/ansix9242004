@@ -1,6 +1,6 @@
-package ansix9242004.dukpt;
+package ansi.x9_24_2004.dukpt;
 
-import ansix9242004.utils.BitSet;
+import ansi.x9_24_2004.utils.BitSet;
 
 public enum Mask {
 

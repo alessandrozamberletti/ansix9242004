@@ -1,4 +1,4 @@
-package ansix9242004.utils;
+package ansi.x9_24_2004.utils;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -64,7 +64,7 @@ public class BitSet extends java.util.BitSet {
 	}
 
 	public static BitSet toBitSet(final String value) {
-		return ByteArrayUtils.toBitSet(DatatypeConverter.parseHexBinary(value));
+		return ansi.x9_24_2004.utils.ByteArrayUtils.toBitSet(DatatypeConverter.parseHexBinary(value));
 	}
 
 	public static String toString(final BitSet value) {
