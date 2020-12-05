@@ -38,12 +38,12 @@ public class Dukpt {
     private final Des des;
     private final TripleDes tripleDes;
 
-    Dukpt(final Des des, final TripleDes tripleDes) {
+    public Dukpt(final Des des, final TripleDes tripleDes) {
         this.des = des;
         this.tripleDes = tripleDes;
     }
 
-    CustomBitSet computeKey(final CustomBitSet bdk, final CustomBitSet ksn, final ansi.x9_24_2004.dukpt.Mask mask) {
+    public CustomBitSet computeKey(final CustomBitSet bdk, final CustomBitSet ksn, final ansi.x9_24_2004.dukpt.Mask mask) {
         CustomBitSet ipek = getIpek(bdk, ksn);
         CustomBitSet key = getCurrentKey(ipek, ksn);
 
