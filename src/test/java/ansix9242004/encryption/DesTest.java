@@ -30,10 +30,7 @@ public class DesTest {
 
         @ParameterizedTest
         @MethodSource("getKeyDataPaddingAndExpectedEncryptedData")
-        void shouldEncryptData(final String key,
-                               final String data,
-                               final boolean padding,
-                               final String expectedEncryptedData) throws Exception {
+        void shouldEncryptData(final String key, final String data, final boolean padding, final String expectedEncryptedData) {
             // Given
             // When
             final byte[] actualEncryptedData = des.encrypt(BitSet.toBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
@@ -58,10 +55,7 @@ public class DesTest {
 
         @ParameterizedTest
         @MethodSource("getKeyDataPaddingAndExpectedEncryptedData")
-        void shouldDecryptData(final String key,
-                               final String data,
-                               final boolean padding,
-                               final String expectedEncryptedData) throws Exception {
+        void shouldDecryptData(final String key, final String data, final boolean padding, final String expectedEncryptedData) {
             // Given
             // When
             final byte[] actualEncryptedData =
@@ -106,7 +100,7 @@ public class DesTest {
     class WhenGetEncryptionKeyMethodIsCalled {
 
         @Test
-        void shouldCreateEncryptionKey() throws Exception {
+        void shouldCreateEncryptionKey() {
             // Given
             final BitSet key = BitSet.toBitSet("0258F3E7770A5F61");
 

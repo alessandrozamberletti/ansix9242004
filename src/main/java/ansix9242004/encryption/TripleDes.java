@@ -6,15 +6,12 @@ import ansix9242004.utils.ByteArrayUtils;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
-import java.security.InvalidKeyException;
 import java.security.InvalidParameterException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 
 public class TripleDes implements Encryption {
 
     @Override
-    public SecretKey getEncryptionKey(BitSet key) throws NoSuchAlgorithmException, InvalidKeyException, InvalidKeySpecException {
+    public SecretKey getEncryptionKey(BitSet key) {
         BitSet k1, k2, k3;
         if (key.bitSize() == 64) {
             // single length
@@ -41,7 +38,12 @@ public class TripleDes implements Encryption {
         byte[] key16 = ByteArrayUtils.concat(kb1, kb2);
         byte[] key24 = ByteArrayUtils.concat(key16, kb3);
 
-        return SecretKeyFactory.getInstance("DESede").generateSecret(new DESedeKeySpec(key24));
+        try {
+            final DESedeKeySpec deSedeKeySpec = new DESedeKeySpec(key24);
+            return SecretKeyFactory.getInstance("DESede").generateSecret(deSedeKeySpec);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     @Override

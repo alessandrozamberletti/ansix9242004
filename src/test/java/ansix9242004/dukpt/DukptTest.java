@@ -30,7 +30,7 @@ public class DukptTest {
     class WhenGetIpekMethodIsCalled {
 
         @Test
-        void shouldCreateExpectedIpek() throws Exception {
+        void shouldCreateExpectedIpek() {
             // Given
             // When
             final BitSet ipek = dukpt.getIpek(BDK, KSN);
@@ -45,7 +45,7 @@ public class DukptTest {
     class WhenGetTransactionKeyMethodIsCalled {
 
         @Test
-        void shouldCreateExpectedDukpt() throws Exception {
+        void shouldCreateExpectedDukpt() {
             // Given
             final BitSet ipek = BitSet.toBitSet("1B90D9C9AEE356ADF9938F6084D16C44");
 
@@ -64,7 +64,7 @@ public class DukptTest {
 
         @ParameterizedTest(name = "Should create key {1} for mask {0}.")
         @MethodSource("getMaskAndExpectedKey")
-        void shouldComputeExpectedKeyVariant(final Mask mask, final String expectedKey) throws Exception {
+        void shouldComputeExpectedKeyVariant(final Mask mask, final String expectedKey) {
             // Given
             // When
             final BitSet actualKey = dukpt.computeKey(BDK, KSN, mask);

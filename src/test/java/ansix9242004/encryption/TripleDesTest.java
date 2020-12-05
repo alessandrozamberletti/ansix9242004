@@ -30,10 +30,7 @@ public class TripleDesTest {
 
         @ParameterizedTest
         @MethodSource("getKeyDataPaddingAndExpectedEncryptedData")
-        void shouldEncryptData(final String key,
-                                        final String data,
-                                        final boolean padding,
-                                        final String expectedEncryptedData) throws Exception {
+        void shouldEncryptData(final String key, final String data, final boolean padding, final String expectedEncryptedData) {
             // Given
             // When
             final byte[] actualEncryptedData = tripleDes.encrypt(BitSet.toBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
@@ -67,10 +64,7 @@ public class TripleDesTest {
 
         @ParameterizedTest
         @MethodSource("getKeyDataPaddingAndExpectedEncryptedData")
-        void shouldDecryptData(final String key,
-                               final String data,
-                               final boolean padding,
-                               final String expectedEncryptedData) throws Exception {
+        void shouldDecryptData(final String key, final String data, final boolean padding, final String expectedEncryptedData) {
             // Given
             // When
             final byte[] actualEncryptedData = tripleDes.decrypt(BitSet.toBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
@@ -114,7 +108,7 @@ public class TripleDesTest {
     class WhenGetEncryptionKeyMethodIsCalled {
 
         @Test
-        void shouldCreateEncryptionKey() throws Exception {
+        void shouldCreateEncryptionKey() {
             // Given
             final BitSet key = BitSet.toBitSet("0258F3E7770A5F61");
 

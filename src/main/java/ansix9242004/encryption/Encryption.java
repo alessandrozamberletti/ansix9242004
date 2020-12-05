@@ -2,47 +2,52 @@ package ansix9242004.encryption;
 
 import ansix9242004.utils.BitSet;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 
 public interface Encryption {
 
-    default byte[] encrypt(BitSet key, byte[] data, boolean padding) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, InvalidKeySpecException {
-        final SecretKey secretKey = getEncryptionKey(key);
-        final IvParameterSpec iv = new IvParameterSpec(new byte[8]);
-        final Cipher cipher = getCipher(padding);
+    default byte[] encrypt(BitSet key, byte[] data, boolean padding) {
+        try {
+            final SecretKey secretKey = getEncryptionKey(key);
+            final IvParameterSpec iv = new IvParameterSpec(new byte[8]);
+            final Cipher cipher = getCipher(padding);
 
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey, iv);
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey, iv);
 
-        return cipher.doFinal(data);
+            return cipher.doFinal(data);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
     }
 
-    default byte[] decrypt(BitSet key, byte[] data, boolean padding) throws NoSuchAlgorithmException, InvalidKeyException, InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException, BadPaddingException, IllegalBlockSizeException {
-        final SecretKey secretKey = getEncryptionKey(key);
-        final IvParameterSpec iv = new IvParameterSpec(new byte[8]);
-        final Cipher cipher = getCipher(padding);
+    default byte[] decrypt(BitSet key, byte[] data, boolean padding) {
+        try {
+            final SecretKey secretKey = getEncryptionKey(key);
+            final IvParameterSpec iv = new IvParameterSpec(new byte[8]);
+            final Cipher cipher = getCipher(padding);
 
-        cipher.init(Cipher.DECRYPT_MODE, secretKey, iv);
+            cipher.init(Cipher.DECRYPT_MODE, secretKey, iv);
 
-        return cipher.doFinal(data);
+            return cipher.doFinal(data);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
     }
 
-    SecretKey getEncryptionKey(BitSet key) throws NoSuchAlgorithmException, InvalidKeyException, InvalidKeySpecException;
+    SecretKey getEncryptionKey(BitSet key);
 
     String padding();
 
     String noPadding();
 
-    default Cipher getCipher(boolean padding) throws NoSuchPaddingException, NoSuchAlgorithmException {
-        return Cipher.getInstance(padding ? padding() : noPadding());
+    default Cipher getCipher(boolean padding) {
+        try {
+            return Cipher.getInstance(padding ? padding() : noPadding());
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
     }
 
 }

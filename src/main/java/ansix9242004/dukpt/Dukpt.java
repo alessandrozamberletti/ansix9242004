@@ -5,7 +5,8 @@ import ansix9242004.encryption.TripleDes;
 import ansix9242004.utils.BitSet;
 import ansix9242004.utils.ByteArrayUtils;
 
-import java.util.Arrays;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * <p>The Dukpt class acts a name-space for the Derived
@@ -45,7 +46,7 @@ public class Dukpt {
 		this.tripleDes = tripleDes;
 	}
 
-	BitSet computeKey(final BitSet bdk, final BitSet ksn, final Mask mask) throws Exception {
+	BitSet computeKey(final BitSet bdk, final BitSet ksn, final Mask mask) {
 		BitSet ipek = getIpek(bdk, ksn);
 		BitSet key = getCurrentKey(ipek, ksn);
 
@@ -54,7 +55,7 @@ public class Dukpt {
 		return key;
 	}
 
-	BitSet getIpek(final BitSet key, final BitSet ksn) throws Exception {
+	BitSet getIpek(final BitSet key, final BitSet ksn) {
 		byte[][] ipek = new byte[2][];
 		BitSet keyRegister = key.get(0, key.bitSize());
 		BitSet data = ksn.get(0, ksn.bitSize());
@@ -65,12 +66,17 @@ public class Dukpt {
 		keyRegister.xor(Mask.KEY_REGISTER_BITMASK.value());
 		ipek[1] = tripleDes.encrypt(keyRegister, BitSet.toByteArray(data.get(0, 64)), false);
 
-		byte[] bipek = ByteArrayUtils.concat(ipek[0], ipek[1]);
+		try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+			byteArrayOutputStream.write(ipek[0]);
+			byteArrayOutputStream.write(ipek[1]);
 
-		return ByteArrayUtils.toBitSet(bipek);
+			return ByteArrayUtils.toBitSet(byteArrayOutputStream.toByteArray());
+		} catch (IOException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
-	BitSet getCurrentKey(final BitSet ipek, final BitSet ksn) throws Exception {
+	BitSet getCurrentKey(final BitSet ipek, final BitSet ksn) {
 		BitSet key = ipek.get(0, ipek.bitSize());
 		BitSet counter = ksn.get(0, ksn.bitSize());
 		counter.clear(59, ksn.bitSize());
@@ -85,7 +91,7 @@ public class Dukpt {
 		return key;
 	}
 
-	BitSet nonReversibleKeyGenerationProcess(final BitSet pKey, final BitSet data, final BitSet keyRegisterBitmask) throws Exception {
+	BitSet nonReversibleKeyGenerationProcess(final BitSet pKey, final BitSet data, final BitSet keyRegisterBitmask) {
 		BitSet keyReg = pKey.get(0, pKey.bitSize());
 		BitSet reg1 = data.get(0, data.bitSize());
 		// step 1: Crypto Register-1 XORed with the right half of the Key Register goes to Crypto Register-2.
