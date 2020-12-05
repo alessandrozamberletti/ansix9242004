@@ -1,6 +1,7 @@
 package ansi.x9_24_2004.utils;
 
 import javax.xml.bind.DatatypeConverter;
+import java.util.BitSet;
 
 /**
  * <p>This extension to java.util.BitSet provides a "bitSize()" function
@@ -17,7 +18,7 @@ import javax.xml.bind.DatatypeConverter;
  * @author Software Verde: Andrew Groot
  * @author Software Verde: Josh Green
  */
-public class CustomBitSet extends java.util.BitSet {
+public class CustomBitSet extends BitSet {
 	public static final int DEFAULT_SIZE = 8;
 	private static final long serialVersionUID = 1L;
 	private int size;
@@ -32,13 +33,19 @@ public class CustomBitSet extends java.util.BitSet {
 		size = nbits;
 	}
 
+	private static CustomBitSet fromBitSet(final BitSet bitSet) {
+		final CustomBitSet customBitSet = new CustomBitSet(bitSet.size());
+		for(int i=0; i<bitSet.length(); i++) {
+			if (bitSet.get(i)) {
+				customBitSet.set(i);
+			}
+		}
+		return customBitSet;
+	}
+
 	@Override
 	public CustomBitSet get(int low, int high) {
-		CustomBitSet n = new CustomBitSet(high-low);
-		for (int i=0; i < (high-low); i++) {
-			n.set(i, this.get(low+i));
-		}
-		return n;
+		return fromBitSet(super.get(low, high));
 	}
 
 	public int bitSize() {
@@ -64,7 +71,7 @@ public class CustomBitSet extends java.util.BitSet {
 	}
 
 	public static CustomBitSet toBitSet(final String value) {
-		return ansi.x9_24_2004.utils.ByteArrayUtils.toBitSet(DatatypeConverter.parseHexBinary(value));
+		return ByteArrayUtils.toBitSet(DatatypeConverter.parseHexBinary(value));
 	}
 
 	public static String toString(final CustomBitSet value) {
