@@ -1,6 +1,6 @@
 package ansi.x9_24_2004.encryption;
 
-import ansi.x9_24_2004.utils.BitSet;
+import ansi.x9_24_2004.utils.CustomBitSet;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -8,7 +8,7 @@ import javax.crypto.spec.IvParameterSpec;
 
 public interface Encryption {
 
-    default byte[] encrypt(BitSet key, byte[] data, boolean padding) {
+    default byte[] encrypt(CustomBitSet key, byte[] data, boolean padding) {
         try {
             final SecretKey secretKey = getEncryptionKey(key);
             final IvParameterSpec iv = new IvParameterSpec(new byte[8]);
@@ -22,7 +22,7 @@ public interface Encryption {
         }
     }
 
-    default byte[] decrypt(BitSet key, byte[] data, boolean padding) {
+    default byte[] decrypt(CustomBitSet key, byte[] data, boolean padding) {
         try {
             final SecretKey secretKey = getEncryptionKey(key);
             final IvParameterSpec iv = new IvParameterSpec(new byte[8]);
@@ -36,7 +36,7 @@ public interface Encryption {
         }
     }
 
-    SecretKey getEncryptionKey(BitSet key);
+    SecretKey getEncryptionKey(CustomBitSet key);
 
     String padding();
 

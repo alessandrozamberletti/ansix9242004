@@ -2,7 +2,7 @@ package ansi.x9_24_2004.dukpt;
 
 import ansi.x9_24_2004.encryption.Des;
 import ansi.x9_24_2004.encryption.TripleDes;
-import ansi.x9_24_2004.utils.BitSet;
+import ansi.x9_24_2004.utils.CustomBitSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -16,8 +16,8 @@ import java.util.stream.Stream;
 
 public class DukptTest {
 
-    private static final BitSet BDK = BitSet.toBitSet("BDBD1234BDBD567890ABBDBDCDEFBDBD");
-    private static final BitSet KSN = BitSet.toBitSet("FFFF9876543210E01E9D");
+    private static final CustomBitSet BDK = CustomBitSet.toBitSet("BDBD1234BDBD567890ABBDBDCDEFBDBD");
+    private static final CustomBitSet KSN = CustomBitSet.toBitSet("FFFF9876543210E01E9D");
 
     private ansi.x9_24_2004.dukpt.Dukpt dukpt;
 
@@ -33,10 +33,10 @@ public class DukptTest {
         void shouldCreateExpectedIpek() {
             // Given
             // When
-            final BitSet ipek = dukpt.getIpek(BDK, KSN);
+            final CustomBitSet ipek = dukpt.getIpek(BDK, KSN);
 
             // Then
-            Assertions.assertEquals("1B90D9C9AEE356ADF9938F6084D16C44", BitSet.toString(ipek));
+            Assertions.assertEquals("1B90D9C9AEE356ADF9938F6084D16C44", CustomBitSet.toString(ipek));
         }
 
     }
@@ -47,13 +47,13 @@ public class DukptTest {
         @Test
         void shouldCreateExpectedDukpt() {
             // Given
-            final BitSet ipek = BitSet.toBitSet("1B90D9C9AEE356ADF9938F6084D16C44");
+            final CustomBitSet ipek = CustomBitSet.toBitSet("1B90D9C9AEE356ADF9938F6084D16C44");
 
             // When
-            final BitSet transactionKey = dukpt.getCurrentKey(ipek, KSN);
+            final CustomBitSet transactionKey = dukpt.getCurrentKey(ipek, KSN);
 
             // Then
-            Assertions.assertEquals("0258F3E777F55F61241AE65234583B30", BitSet.toString(transactionKey));
+            Assertions.assertEquals("0258F3E777F55F61241AE65234583B30", CustomBitSet.toString(transactionKey));
         }
 
     }
@@ -67,10 +67,10 @@ public class DukptTest {
         void shouldComputeExpectedKeyVariant(final ansi.x9_24_2004.dukpt.Mask mask, final String expectedKey) {
             // Given
             // When
-            final BitSet actualKey = dukpt.computeKey(BDK, KSN, mask);
+            final CustomBitSet actualKey = dukpt.computeKey(BDK, KSN, mask);
 
             // Then
-            Assertions.assertEquals(expectedKey, BitSet.toString(actualKey));
+            Assertions.assertEquals(expectedKey, CustomBitSet.toString(actualKey));
         }
 
         Stream<Arguments> getMaskAndExpectedKey() {

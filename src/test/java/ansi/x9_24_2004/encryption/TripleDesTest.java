@@ -1,6 +1,6 @@
 package ansi.x9_24_2004.encryption;
 
-import ansi.x9_24_2004.utils.BitSet;
+import ansi.x9_24_2004.utils.CustomBitSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -33,7 +33,7 @@ public class TripleDesTest {
         void shouldEncryptData(final String key, final String data, final boolean padding, final String expectedEncryptedData) {
             // Given
             // When
-            final byte[] actualEncryptedData = tripleDes.encrypt(BitSet.toBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
+            final byte[] actualEncryptedData = tripleDes.encrypt(CustomBitSet.toBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
 
             // Then
             Assertions.assertEquals(expectedEncryptedData, DatatypeConverter.printHexBinary(actualEncryptedData));
@@ -67,7 +67,7 @@ public class TripleDesTest {
         void shouldDecryptData(final String key, final String data, final boolean padding, final String expectedEncryptedData) {
             // Given
             // When
-            final byte[] actualEncryptedData = tripleDes.decrypt(BitSet.toBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
+            final byte[] actualEncryptedData = tripleDes.decrypt(CustomBitSet.toBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
 
             // Then
             Assertions.assertEquals(expectedEncryptedData, DatatypeConverter.printHexBinary(actualEncryptedData));
@@ -110,7 +110,7 @@ public class TripleDesTest {
         @Test
         void shouldCreateEncryptionKey() {
             // Given
-            final BitSet key = BitSet.toBitSet("0258F3E7770A5F61");
+            final CustomBitSet key = CustomBitSet.toBitSet("0258F3E7770A5F61");
 
             // When
             final SecretKey secretKey = tripleDes.getEncryptionKey(key);

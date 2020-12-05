@@ -2,7 +2,7 @@ package ansi.x9_24_2004.dukpt;
 
 import ansi.x9_24_2004.encryption.Des;
 import ansi.x9_24_2004.encryption.TripleDes;
-import ansi.x9_24_2004.utils.BitSet;
+import ansi.x9_24_2004.utils.CustomBitSet;
 import ansi.x9_24_2004.utils.ByteArrayUtils;
 
 /**
@@ -43,32 +43,32 @@ public class Dukpt {
         this.tripleDes = tripleDes;
     }
 
-    BitSet computeKey(final BitSet bdk, final BitSet ksn, final ansi.x9_24_2004.dukpt.Mask mask) {
-        BitSet ipek = getIpek(bdk, ksn);
-        BitSet key = getCurrentKey(ipek, ksn);
+    CustomBitSet computeKey(final CustomBitSet bdk, final CustomBitSet ksn, final ansi.x9_24_2004.dukpt.Mask mask) {
+        CustomBitSet ipek = getIpek(bdk, ksn);
+        CustomBitSet key = getCurrentKey(ipek, ksn);
 
         key.xor(mask.value());
 
         return key;
     }
 
-    BitSet getIpek(final BitSet key, final BitSet ksn) {
+    CustomBitSet getIpek(final CustomBitSet key, final CustomBitSet ksn) {
         byte[][] ipek = new byte[2][];
-        BitSet keyRegister = key.get(0, key.bitSize());
-        BitSet data = ksn.get(0, ksn.bitSize());
+        CustomBitSet keyRegister = key.get(0, key.bitSize());
+        CustomBitSet data = ksn.get(0, ksn.bitSize());
         data.clear(59, 80);
 
-        ipek[0] = tripleDes.encrypt(keyRegister, BitSet.toByteArray(data.get(0, 64)), false);
+        ipek[0] = tripleDes.encrypt(keyRegister, CustomBitSet.toByteArray(data.get(0, 64)), false);
 
         keyRegister.xor(ansi.x9_24_2004.dukpt.Mask.KEY_REGISTER_BITMASK.value());
-        ipek[1] = tripleDes.encrypt(keyRegister, BitSet.toByteArray(data.get(0, 64)), false);
+        ipek[1] = tripleDes.encrypt(keyRegister, CustomBitSet.toByteArray(data.get(0, 64)), false);
 
         return ByteArrayUtils.toBitSet(ByteArrayUtils.concat(ipek[0], ipek[1]));
     }
 
-    BitSet getCurrentKey(final BitSet ipek, final BitSet ksn) {
-        BitSet key = ipek.get(0, ipek.bitSize());
-        BitSet counter = ksn.get(0, ksn.bitSize());
+    CustomBitSet getCurrentKey(final CustomBitSet ipek, final CustomBitSet ksn) {
+        CustomBitSet key = ipek.get(0, ipek.bitSize());
+        CustomBitSet counter = ksn.get(0, ksn.bitSize());
         counter.clear(59, ksn.bitSize());
 
         for (int i = 59; i < ksn.bitSize(); i++) {
@@ -81,14 +81,14 @@ public class Dukpt {
         return key;
     }
 
-    BitSet nonReversibleKeyGenerationProcess(final BitSet pKey, final BitSet data, final BitSet keyRegisterBitmask) {
-        BitSet keyReg = pKey.get(0, pKey.bitSize());
-        BitSet reg1 = data.get(0, data.bitSize());
+    CustomBitSet nonReversibleKeyGenerationProcess(final CustomBitSet pKey, final CustomBitSet data, final CustomBitSet keyRegisterBitmask) {
+        CustomBitSet keyReg = pKey.get(0, pKey.bitSize());
+        CustomBitSet reg1 = data.get(0, data.bitSize());
         // step 1: Crypto Register-1 XORed with the right half of the Key Register goes to Crypto Register-2.
-        BitSet reg2 = reg1.get(0, 64); // reg2 is being used like a temp here
+        CustomBitSet reg2 = reg1.get(0, 64); // reg2 is being used like a temp here
         reg2.xor(keyReg.get(64, 128));   // and here, too, kind of
         // step 2: Crypto Register-2 DEA-encrypted using, as the key, the left half of the Key Register goes to Crypto Register-2
-        reg2 = ByteArrayUtils.toBitSet(des.encrypt(keyReg.get(0, 64), BitSet.toByteArray(reg2), false));
+        reg2 = ByteArrayUtils.toBitSet(des.encrypt(keyReg.get(0, 64), CustomBitSet.toByteArray(reg2), false));
         // step 3: Crypto Register-2 XORed with the right half of the Key Register goes to Crypto Register-2
         reg2.xor(keyReg.get(64, 128));
         // done messing with reg2
@@ -98,13 +98,13 @@ public class Dukpt {
         // step 5: Crypto Register-1 XORed with the right half of the Key Register goes to Crypto Register-1
         reg1.xor(keyReg.get(64, 128));
         // step 6: Crypto Register-1 DEA-encrypted using, as the key, the left half of the Key Register goes to Crypto Register-1
-        reg1 = ByteArrayUtils.toBitSet(des.encrypt(keyReg.get(0, 64), BitSet.toByteArray(reg1), false));
+        reg1 = ByteArrayUtils.toBitSet(des.encrypt(keyReg.get(0, 64), CustomBitSet.toByteArray(reg1), false));
         // step 7: Crypto Register-1 XORed with the right half of the Key Register goes to Crypto Register-1
         reg1.xor(keyReg.get(64, 128));
         // done
 
-        byte[] reg1b = BitSet.toByteArray(reg1);
-        byte[] reg2b = BitSet.toByteArray(reg2);
+        byte[] reg1b = CustomBitSet.toByteArray(reg1);
+        byte[] reg2b = CustomBitSet.toByteArray(reg2);
 
         return ByteArrayUtils.toBitSet(ByteArrayUtils.concat(reg1b, reg2b));
     }

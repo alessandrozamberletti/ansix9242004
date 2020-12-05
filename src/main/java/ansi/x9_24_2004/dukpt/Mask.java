@@ -1,6 +1,6 @@
 package ansi.x9_24_2004.dukpt;
 
-import ansi.x9_24_2004.utils.BitSet;
+import ansi.x9_24_2004.utils.CustomBitSet;
 
 public enum Mask {
 
@@ -15,8 +15,8 @@ public enum Mask {
         this.value = value;
     }
 
-    public BitSet value() {
-        return BitSet.toBitSet(value);
+    public CustomBitSet value() {
+        return CustomBitSet.toBitSet(value);
     }
 
     @Override

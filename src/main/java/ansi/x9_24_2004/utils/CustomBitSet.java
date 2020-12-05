@@ -17,24 +17,24 @@ import javax.xml.bind.DatatypeConverter;
  * @author Software Verde: Andrew Groot
  * @author Software Verde: Josh Green
  */
-public class BitSet extends java.util.BitSet {
+public class CustomBitSet extends java.util.BitSet {
 	public static final int DEFAULT_SIZE = 8;
 	private static final long serialVersionUID = 1L;
 	private int size;
 
-	public BitSet() {
+	public CustomBitSet() {
 		super(DEFAULT_SIZE);
 		size = DEFAULT_SIZE;
 	}
 
-	public BitSet(int nbits) {
+	public CustomBitSet(int nbits) {
 		super(nbits);
 		size = nbits;
 	}
 
 	@Override
-	public BitSet get(int low, int high) {
-		BitSet n = new BitSet(high-low);
+	public CustomBitSet get(int low, int high) {
+		CustomBitSet n = new CustomBitSet(high-low);
 		for (int i=0; i < (high-low); i++) {
 			n.set(i, this.get(low+i));
 		}
@@ -45,7 +45,7 @@ public class BitSet extends java.util.BitSet {
 		return size;
 	}
 
-	public static byte[] toByteArray(BitSet b) {
+	public static byte[] toByteArray(CustomBitSet b) {
 		int size = (int) Math.ceil(b.bitSize() / 8.0d);
 		byte[] value = new byte[size];
 		for (int i = 0; i < size; i++) {
@@ -54,7 +54,7 @@ public class BitSet extends java.util.BitSet {
 		return value;
 	}
 
-	public static byte toByte(BitSet b) {
+	public static byte toByte(CustomBitSet b) {
 		byte value = 0;
 		for (int i = 0; i < b.bitSize(); i++) {
 			if (b.get(i))
@@ -63,11 +63,11 @@ public class BitSet extends java.util.BitSet {
 		return value;
 	}
 
-	public static BitSet toBitSet(final String value) {
+	public static CustomBitSet toBitSet(final String value) {
 		return ansi.x9_24_2004.utils.ByteArrayUtils.toBitSet(DatatypeConverter.parseHexBinary(value));
 	}
 
-	public static String toString(final BitSet value) {
+	public static String toString(final CustomBitSet value) {
 		return DatatypeConverter.printHexBinary(toByteArray(value));
 	}
 

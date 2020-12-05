@@ -14,8 +14,8 @@ public class ByteArrayUtils {
         }
     }
 
-    public static ansi.x9_24_2004.utils.BitSet toBitSet(byte[] b) {
-        ansi.x9_24_2004.utils.BitSet bs = new ansi.x9_24_2004.utils.BitSet(8 * b.length);
+    public static CustomBitSet toBitSet(byte[] b) {
+        CustomBitSet bs = new CustomBitSet(8 * b.length);
         for (int i = 0; i < b.length; i++) {
             for (int j = 0; j < 8; j++) {
                 if ((b[i] & (1L << j)) > 0) {

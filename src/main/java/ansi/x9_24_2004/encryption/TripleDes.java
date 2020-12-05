@@ -1,6 +1,6 @@
 package ansi.x9_24_2004.encryption;
 
-import ansi.x9_24_2004.utils.BitSet;
+import ansi.x9_24_2004.utils.CustomBitSet;
 import ansi.x9_24_2004.utils.ByteArrayUtils;
 
 import javax.crypto.SecretKey;
@@ -11,10 +11,10 @@ import java.security.InvalidParameterException;
 public class TripleDes implements ansi.x9_24_2004.encryption.Encryption {
 
     @Override
-    public SecretKey getEncryptionKey(BitSet key) {
-        BitSet k1;
-        BitSet k2;
-        BitSet k3;
+    public SecretKey getEncryptionKey(CustomBitSet key) {
+        CustomBitSet k1;
+        CustomBitSet k2;
+        CustomBitSet k3;
         if (key.bitSize() == 64) {
             // single length
             k1 = key.get(0, 64);
@@ -34,9 +34,9 @@ public class TripleDes implements ansi.x9_24_2004.encryption.Encryption {
             k2 = key.get(64, 128);
             k3 = key.get(128, 192);
         }
-        byte[] kb1 = BitSet.toByteArray(k1);
-        byte[] kb2 = BitSet.toByteArray(k2);
-        byte[] kb3 = BitSet.toByteArray(k3);
+        byte[] kb1 = CustomBitSet.toByteArray(k1);
+        byte[] kb2 = CustomBitSet.toByteArray(k2);
+        byte[] kb3 = CustomBitSet.toByteArray(k3);
         byte[] key16 = ByteArrayUtils.concat(kb1, kb2);
         byte[] key24 = ByteArrayUtils.concat(key16, kb3);
 
