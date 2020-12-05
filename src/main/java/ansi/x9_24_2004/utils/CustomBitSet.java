@@ -74,8 +74,9 @@ public class CustomBitSet extends BitSet {
 		return ByteArrayUtils.toBitSet(DatatypeConverter.parseHexBinary(value));
 	}
 
-	public static String toString(final CustomBitSet value) {
-		return DatatypeConverter.printHexBinary(toByteArray(value));
+	@Override
+	public String toString() {
+		return DatatypeConverter.printHexBinary(toByteArray(this));
 	}
 
 }

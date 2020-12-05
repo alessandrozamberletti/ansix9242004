@@ -36,7 +36,7 @@ public class DukptTest {
             final CustomBitSet ipek = dukpt.getIpek(BDK, KSN);
 
             // Then
-            Assertions.assertEquals("1B90D9C9AEE356ADF9938F6084D16C44", CustomBitSet.toString(ipek));
+            Assertions.assertEquals("1B90D9C9AEE356ADF9938F6084D16C44", ipek.toString());
         }
 
     }
@@ -53,7 +53,7 @@ public class DukptTest {
             final CustomBitSet transactionKey = dukpt.getCurrentKey(ipek, KSN);
 
             // Then
-            Assertions.assertEquals("0258F3E777F55F61241AE65234583B30", CustomBitSet.toString(transactionKey));
+            Assertions.assertEquals("0258F3E777F55F61241AE65234583B30", transactionKey.toString());
         }
 
     }
@@ -70,7 +70,7 @@ public class DukptTest {
             final CustomBitSet actualKey = dukpt.computeKey(BDK, KSN, mask);
 
             // Then
-            Assertions.assertEquals(expectedKey, CustomBitSet.toString(actualKey));
+            Assertions.assertEquals(expectedKey, actualKey.toString());
         }
 
         Stream<Arguments> getMaskAndExpectedKey() {
