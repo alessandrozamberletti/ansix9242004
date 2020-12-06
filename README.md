@@ -8,8 +8,10 @@ the scope of this project.
 ## Algorithm explanations and pseudo-code
 
 - Java Triple DES DUKPT Library by Software Verde (**Andrew Groot and Josh Green**).
+
   https://github.com/SoftwareVerde/java-dukpt
 - Message Authentication Code (MAC) algorithm (Mohammad).
+
   https://medium.com/@mohammad2603/message-authentication-code-mac-algorithm-ea9edaf66b3c
 - Retail MAC Calculation in Java (Bharathi Subramanian).
   https://bharathisubramanian.wordpress.com/2013/03/23/retail-mac-calculation-in-java/
