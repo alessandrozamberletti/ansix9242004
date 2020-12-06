@@ -13,7 +13,7 @@ the scope of this project.
   https://medium.com/@mohammad2603/message-authentication-code-mac-algorithm-ea9edaf66b3c 
 - Retail MAC Calculation in Java (Bharathi Subramanian).  
   https://bharathisubramanian.wordpress.com/2013/03/23/retail-mac-calculation-in-java/ 
-- DUKPT Within a Point of Sale Environment: How Does It Work? ().  
+- DUKPT Within a Point of Sale Environment: How Does It Work? (Futurex).  
   https://www.futurex.com/blog/dukpt-in-point-of-sale-how-does-it-work 
 - DUKPT Explained with examples (Arthur Van Der Merwe).  
   https://arthurvandermerwe.com/2015/05/30/dukpt-explained-with-examples/ 
