@@ -10,7 +10,7 @@ import ansi.x9_24_2004.utils.ByteArrayUtils;
  *
  * All core key derivation functions from:
  * - Java Triple DES DUKPT Library by Software Verde (authors: Andrew Groot and Josh Green).
- *   https://github.com/SoftwareVerde/java-dukpt
+ *   https://github.com/SoftwareVerde/java-dukpt (MIT license)
  *
  * Algorithm overview and pseudo-code:
  * - DUKPT Within a Point of Sale Environment: How Does It Work? ().
