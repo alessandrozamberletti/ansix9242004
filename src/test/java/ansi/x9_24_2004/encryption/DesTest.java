@@ -30,10 +30,13 @@ public class DesTest {
 
         @ParameterizedTest
         @MethodSource("getKeyDataPaddingAndExpectedEncryptedData")
-        void shouldEncryptData(final String key, final String data, final boolean padding, final String expectedEncryptedData) {
+        void shouldEncryptData(final CustomBitSet key,
+                               final String data,
+                               final boolean padding,
+                               final String expectedEncryptedData) {
             // Given
             // When
-            final byte[] actualEncryptedData = des.encrypt(new CustomBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
+            final byte[] actualEncryptedData = des.encrypt(key, DatatypeConverter.parseHexBinary(data), padding);
 
             // Then
             Assertions.assertEquals(expectedEncryptedData, DatatypeConverter.printHexBinary(actualEncryptedData));
@@ -41,9 +44,9 @@ public class DesTest {
 
         Stream<Arguments> getKeyDataPaddingAndExpectedEncryptedData() {
             return Stream.of(
-                    Arguments.of("0258F3E7770A5F61", "0000000000000000", false, "3F1E698119F57324"),
-                    Arguments.of("0258F3E7770A5F61", "0000000000000000", true, "3F1E698119F57324322C70A55FADB9EE"),
-                    Arguments.of("0258F3E7770A5F61", "", true, "9F24202C537707FD")
+                    Arguments.of(new CustomBitSet("0258F3E7770A5F61"), "0000000000000000", false, "3F1E698119F57324"),
+                    Arguments.of(new CustomBitSet("0258F3E7770A5F61"), "0000000000000000", true, "3F1E698119F57324322C70A55FADB9EE"),
+                    Arguments.of(new CustomBitSet("0258F3E7770A5F61"), "", true, "9F24202C537707FD")
             );
         }
 
@@ -55,11 +58,14 @@ public class DesTest {
 
         @ParameterizedTest
         @MethodSource("getKeyDataPaddingAndExpectedEncryptedData")
-        void shouldDecryptData(final String key, final String data, final boolean padding, final String expectedEncryptedData) {
+        void shouldDecryptData(final CustomBitSet key,
+                               final String data,
+                               final boolean padding,
+                               final String expectedEncryptedData) {
             // Given
             // When
             final byte[] actualEncryptedData =
-                    des.decrypt(new CustomBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
+                    des.decrypt(key, DatatypeConverter.parseHexBinary(data), padding);
 
             // Then
             Assertions.assertEquals(expectedEncryptedData, DatatypeConverter.printHexBinary(actualEncryptedData));
@@ -67,9 +73,9 @@ public class DesTest {
 
         Stream<Arguments> getKeyDataPaddingAndExpectedEncryptedData() {
             return Stream.of(
-                    Arguments.of("0258F3E7770A5F61", "3F1E698119F57324", false, "0000000000000000"),
-                    Arguments.of("0258F3E7770A5F61", "3F1E698119F57324322C70A55FADB9EE", false, "00000000000000000808080808080808"),
-                    Arguments.of("0258F3E7770A5F61", "9F24202C537707FD", false, "0808080808080808")
+                    Arguments.of(new CustomBitSet("0258F3E7770A5F61"), "3F1E698119F57324", false, "0000000000000000"),
+                    Arguments.of(new CustomBitSet("0258F3E7770A5F61"), "3F1E698119F57324322C70A55FADB9EE", false, "00000000000000000808080808080808"),
+                    Arguments.of(new CustomBitSet("0258F3E7770A5F61"), "9F24202C537707FD", false, "0808080808080808")
             );
         }
 
