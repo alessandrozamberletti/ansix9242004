@@ -116,7 +116,10 @@ public class DesTest {
             // Then
             Assertions.assertEquals("DES", secretKey.getAlgorithm());
             Assertions.assertEquals("RAW", secretKey.getFormat());
-            Assertions.assertEquals("0258F2E6760B5E61", DatatypeConverter.printHexBinary(secretKey.getEncoded()));
+            Assertions.assertEquals(
+                    "0258F2E6760B5E61",
+                    DatatypeConverter.printHexBinary(secretKey.getEncoded())
+            );
         }
 
     }
