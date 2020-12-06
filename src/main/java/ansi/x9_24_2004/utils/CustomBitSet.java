@@ -4,19 +4,8 @@ import javax.xml.bind.DatatypeConverter;
 import java.util.BitSet;
 
 /**
- * <p>This extension to java.util.BitSet provides a "bitSize()" function
- * to better define the requested or desired size of the object, in order to
- * accommodate a more fixed-length paradigm.  Put more simply, if you declare the BitSet
- * to be 5 bits long, this "bitSize()" method will return 5, while the built-in method would
- * return the number of bits allocated for the BitSet which, depending on the implementation,
- * could very well be much larger.
- *
- * <p>The constructors and get(int, int) method are also overridden to ensure the
- * encapsulated environment to the user (i.e. the user will always receive and be using
- * this BitSet, not a java.util.BitSet, unless they explicitly ask for the latter).
- *
- * @author Software Verde: Andrew Groot
- * @author Software Verde: Josh Green
+ * Extension of java.util.BitSet created by Andrew Groot and Josh Green (Software Verde).
+ * See: https://github.com/SoftwareVerde/java-dukpt.
  */
 @SuppressWarnings({"java:S2160"}) // Implement equals, not needed.
 public class CustomBitSet extends BitSet {

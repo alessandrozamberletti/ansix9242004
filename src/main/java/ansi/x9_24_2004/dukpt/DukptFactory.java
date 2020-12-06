@@ -33,7 +33,7 @@ public class DukptFactory {
         this.tripleDes = tripleDes;
     }
 
-    public CustomBitSet computeKey(final CustomBitSet bdk, final CustomBitSet ksn, final ansi.x9_24_2004.dukpt.Mask mask) {
+    public CustomBitSet computeKey(final CustomBitSet bdk, final CustomBitSet ksn, final Mask mask) {
         final CustomBitSet ipek = getIpek(bdk, ksn);
         final CustomBitSet transactionKey = getTransactionKey(ipek, ksn);
 
