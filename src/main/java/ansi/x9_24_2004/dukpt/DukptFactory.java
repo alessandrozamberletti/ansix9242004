@@ -6,39 +6,29 @@ import ansi.x9_24_2004.utils.CustomBitSet;
 import ansi.x9_24_2004.utils.ByteArrayUtils;
 
 /**
- * <p>The Dukpt class acts a name-space for the Derived
- * Unique Key-Per-Transaction (Dukpt) standard using the
- * Data Encryption Standard, DES, (often referred to in practice as
- * "DEA", for Data Encryption Algorithm).
+ * ANSI X9.24 version 2009 DUKPT key derivation.
  *
- * <p>The functions provided attempt to aid a user in performing
- * encryption, decryption, and possibly more complex operations
- * using these.
+ * All core key derivation functions from:
+ * - Java Triple DES DUKPT Library by Software Verde (authors: Andrew Groot and Josh Green).
+ *   https://github.com/SoftwareVerde/java-dukpt
  *
- * <p>There is also a set of conversion methods to hopefully make
- * the class even easier to interface with.  Many of these involve
- * the BitSet wrapper of java.util.BitSet which was designed to have
- * a proper "bitSize()" function as Java's BitSet does not have a method
- * that returns the constructed length of the BitSet, only its actual
- * size in memory and its "logical" size (1 + the index of the left-most 1).
- *
- * <p>To further augment to the security of Dukpt, two "oblivate()" methods are
- * included, one for the extended BitSet and one for byte arrays.  These
- * overwrite their respective arguments with random data as supplied by
- * java.secruty.SecureRandom to ensure that their randomness is
- * cryptographically strong.  The default number of overwrites is specified by
- * the static constant NUM_OVERWRITES but the user can supply a different number
- * should they desire the option.
- *
- * @author Software Verde: Andrew Groot
- * @author Software Verde: Josh Green
+ * Algorithm overview and pseudo-code:
+ * - DUKPT Within a Point of Sale Environment: How Does It Work? ().
+ *   https://www.futurex.com/blog/dukpt-in-point-of-sale-how-does-it-work
+ * - DUKPT Explained with examples (Arthur Van Der Merwe).
+ *   https://arthurvandermerwe.com/2015/05/30/dukpt-explained-with-examples/
+ * - How to decrypt card data.
+ *   https://idtechproducts.com/technical-post/how-to-decrypt-credit-card-data-part-ii/
+ * - "Key" to Secure Data - P2PE - Derived Unique Key Per Transaction (Andrew McKenna).
+ *   https://www.foregenix.com/blog/p2pe-derived-unique-key-per-transaction-dukpt
+ * - IFSF Recommended Security Standards v2.00.
  */
-public class Dukpt {
+public class DukptFactory {
 
     private final Des des;
     private final TripleDes tripleDes;
 
-    public Dukpt(final Des des, final TripleDes tripleDes) {
+    public DukptFactory(final Des des, final TripleDes tripleDes) {
         this.des = des;
         this.tripleDes = tripleDes;
     }

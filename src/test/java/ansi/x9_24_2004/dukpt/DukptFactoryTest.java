@@ -14,16 +14,16 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-public class DukptTest {
+public class DukptFactoryTest {
 
     private static final CustomBitSet BDK = new CustomBitSet("BDBD1234BDBD567890ABBDBDCDEFBDBD");
     private static final CustomBitSet KSN = new CustomBitSet("FFFF9876543210E01E9D");
 
-    private ansi.x9_24_2004.dukpt.Dukpt dukpt;
+    private DukptFactory dukptFactory;
 
     @BeforeEach
     void init() {
-        this.dukpt = new ansi.x9_24_2004.dukpt.Dukpt(new Des(), new TripleDes());
+        this.dukptFactory = new DukptFactory(new Des(), new TripleDes());
     }
 
     @Nested
@@ -33,7 +33,7 @@ public class DukptTest {
         void shouldCreateExpectedIpek() {
             // Given
             // When
-            final CustomBitSet ipek = dukpt.getIpek(BDK, KSN);
+            final CustomBitSet ipek = dukptFactory.getIpek(BDK, KSN);
 
             // Then
             Assertions.assertEquals("1B90D9C9AEE356ADF9938F6084D16C44", ipek.toString());
@@ -50,7 +50,7 @@ public class DukptTest {
             final CustomBitSet ipek = new CustomBitSet("1B90D9C9AEE356ADF9938F6084D16C44");
 
             // When
-            final CustomBitSet transactionKey = dukpt.getTransactionKey(ipek, KSN);
+            final CustomBitSet transactionKey = dukptFactory.getTransactionKey(ipek, KSN);
 
             // Then
             Assertions.assertEquals("0258F3E777F55F61241AE65234583B30", transactionKey.toString());
@@ -67,7 +67,7 @@ public class DukptTest {
         void shouldComputeExpectedKeyVariant(final ansi.x9_24_2004.dukpt.Mask mask, final String expectedKey) {
             // Given
             // When
-            final CustomBitSet actualKey = dukpt.computeKey(BDK, KSN, mask);
+            final CustomBitSet actualKey = dukptFactory.computeKey(BDK, KSN, mask);
 
             // Then
             Assertions.assertEquals(expectedKey, actualKey.toString());

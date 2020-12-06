@@ -6,9 +6,11 @@ import ansi.x9_24_2004.utils.CustomBitSet;
 /**
  * ANSI X9.19 Retail MAC (3DES) and IFSF Retail MAC
  *
- * Sources and explanations:
+ * Code adapted from:
  * - Retail MAC Calculation in Java (Bharathi Subramanian).
  *   https://bharathisubramanian.wordpress.com/2013/03/23/retail-mac-calculation-in-java/
+ *
+ * Algorithm overview and pseudo-code:
  * - Message Authentication Code (MAC) algorithm (Mohammad).
  *   https://medium.com/@mohammad2603/message-authentication-code-mac-algorithm-ea9edaf66b3c
  * - IFSF Recommended Security Standards v2.00.
