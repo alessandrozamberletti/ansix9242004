@@ -22,6 +22,10 @@ public interface Encryption {
         }
     }
 
+    default byte[] encrypt(CustomBitSet key, byte[] data) {
+        return encrypt(key, data, false);
+    }
+
     default byte[] decrypt(CustomBitSet key, byte[] data, boolean padding) {
         try {
             final SecretKey secretKey = getEncryptionKey(key);
@@ -34,6 +38,10 @@ public interface Encryption {
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    default byte[] decrypt(CustomBitSet key, byte[] data) {
+        return decrypt(key, data, false);
     }
 
     SecretKey getEncryptionKey(CustomBitSet key);
