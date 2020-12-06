@@ -7,7 +7,7 @@ the scope of this project.
   
 ## Algorithm explanations and pseudo-code
 
-- Java Triple DES DUKPT Library by Software Verde (authors: Andrew Groot and Josh Green).
+- Java Triple DES DUKPT Library by Software Verde (**Andrew Groot and Josh Green**).
   https://github.com/SoftwareVerde/java-dukpt
 - Message Authentication Code (MAC) algorithm (Mohammad).
   https://medium.com/@mohammad2603/message-authentication-code-mac-algorithm-ea9edaf66b3c
