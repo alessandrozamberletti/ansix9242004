@@ -4,7 +4,7 @@ import ansi.x9_24_2004.encryption.Des;
 import ansi.x9_24_2004.utils.CustomBitSet;
 
 /**
- * ANSI X9.19 Retail MAC (3DES) and IFSF Retail MAC
+ * ANSI X9.19 Retail MAC (DES) and IFSF Retail MAC
  *
  * Code adapted from:
  * - Retail MAC Calculation in Java (Bharathi Subramanian).
