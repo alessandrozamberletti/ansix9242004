@@ -16,7 +16,7 @@ public enum Mask {
     }
 
     public CustomBitSet value() {
-        return CustomBitSet.toBitSet(value);
+        return new CustomBitSet(value);
     }
 
     @Override

@@ -16,8 +16,8 @@ import java.util.stream.Stream;
 
 public class DukptTest {
 
-    private static final CustomBitSet BDK = CustomBitSet.toBitSet("BDBD1234BDBD567890ABBDBDCDEFBDBD");
-    private static final CustomBitSet KSN = CustomBitSet.toBitSet("FFFF9876543210E01E9D");
+    private static final CustomBitSet BDK = new CustomBitSet("BDBD1234BDBD567890ABBDBDCDEFBDBD");
+    private static final CustomBitSet KSN = new CustomBitSet("FFFF9876543210E01E9D");
 
     private ansi.x9_24_2004.dukpt.Dukpt dukpt;
 
@@ -47,7 +47,7 @@ public class DukptTest {
         @Test
         void shouldCreateExpectedDukpt() {
             // Given
-            final CustomBitSet ipek = CustomBitSet.toBitSet("1B90D9C9AEE356ADF9938F6084D16C44");
+            final CustomBitSet ipek = new CustomBitSet("1B90D9C9AEE356ADF9938F6084D16C44");
 
             // When
             final CustomBitSet transactionKey = dukpt.getTransactionKey(ipek, KSN);

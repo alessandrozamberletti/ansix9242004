@@ -33,7 +33,7 @@ public class DesTest {
         void shouldEncryptData(final String key, final String data, final boolean padding, final String expectedEncryptedData) {
             // Given
             // When
-            final byte[] actualEncryptedData = des.encrypt(CustomBitSet.toBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
+            final byte[] actualEncryptedData = des.encrypt(new CustomBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
 
             // Then
             Assertions.assertEquals(expectedEncryptedData, DatatypeConverter.printHexBinary(actualEncryptedData));
@@ -59,7 +59,7 @@ public class DesTest {
             // Given
             // When
             final byte[] actualEncryptedData =
-                    des.decrypt(CustomBitSet.toBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
+                    des.decrypt(new CustomBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
 
             // Then
             Assertions.assertEquals(expectedEncryptedData, DatatypeConverter.printHexBinary(actualEncryptedData));
@@ -102,7 +102,7 @@ public class DesTest {
         @Test
         void shouldCreateEncryptionKey() {
             // Given
-            final CustomBitSet key = CustomBitSet.toBitSet("0258F3E7770A5F61");
+            final CustomBitSet key = new CustomBitSet("0258F3E7770A5F61");
 
             // When
             final SecretKey secretKey = des.getEncryptionKey(key);

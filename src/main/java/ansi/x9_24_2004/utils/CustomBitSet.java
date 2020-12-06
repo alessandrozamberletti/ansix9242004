@@ -34,6 +34,13 @@ public class CustomBitSet extends BitSet {
         setBytes(bytes);
     }
 
+    public CustomBitSet(final String value) {
+        super(8 * DatatypeConverter.parseHexBinary(value).length);
+        final byte[] valueBytes = DatatypeConverter.parseHexBinary(value);
+        this.size = 8 * valueBytes.length;
+        setBytes(valueBytes);
+    }
+
     @Override
     public CustomBitSet get(int low, int high) {
         return fromBitSet(super.get(low, high));
@@ -67,10 +74,6 @@ public class CustomBitSet extends BitSet {
                 }
             }
         }
-    }
-
-    public static CustomBitSet toBitSet(final String value) {
-        return new CustomBitSet(DatatypeConverter.parseHexBinary(value));
     }
 
     private static byte toByte(final CustomBitSet customBitSet) {

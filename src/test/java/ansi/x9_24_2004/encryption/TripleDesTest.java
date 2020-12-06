@@ -33,7 +33,7 @@ public class TripleDesTest {
         void shouldEncryptData(final String key, final String data, final boolean padding, final String expectedEncryptedData) {
             // Given
             // When
-            final byte[] actualEncryptedData = tripleDes.encrypt(CustomBitSet.toBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
+            final byte[] actualEncryptedData = tripleDes.encrypt(new CustomBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
 
             // Then
             Assertions.assertEquals(expectedEncryptedData, DatatypeConverter.printHexBinary(actualEncryptedData));
@@ -67,7 +67,7 @@ public class TripleDesTest {
         void shouldDecryptData(final String key, final String data, final boolean padding, final String expectedEncryptedData) {
             // Given
             // When
-            final byte[] actualEncryptedData = tripleDes.decrypt(CustomBitSet.toBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
+            final byte[] actualEncryptedData = tripleDes.decrypt(new CustomBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
 
             // Then
             Assertions.assertEquals(expectedEncryptedData, DatatypeConverter.printHexBinary(actualEncryptedData));
@@ -110,7 +110,7 @@ public class TripleDesTest {
         @Test
         void shouldCreateEncryptionKey() {
             // Given
-            final CustomBitSet key = CustomBitSet.toBitSet("0258F3E7770A5F61");
+            final CustomBitSet key = new CustomBitSet("0258F3E7770A5F61");
 
             // When
             final SecretKey secretKey = tripleDes.getEncryptionKey(key);
