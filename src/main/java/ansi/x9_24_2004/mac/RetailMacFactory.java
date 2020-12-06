@@ -41,7 +41,7 @@ public class RetailMacFactory {
         return retailMac;
     }
 
-    private byte[] xor(byte[] first, byte[] second) {
+    byte[] xor(byte[] first, byte[] second) {
         byte[] result = new byte[first.length];
         for (int i = 0; i < result.length; i++) {
             result[i] = (byte) (first[i] ^ second[i]);
