@@ -13,6 +13,13 @@
     <description>IFSF DUKPT and ANSI X9.19 Retail MAC</description>
     <url>https://github.com/alessandrozamberletti/ansix9242004</url>
 
+    <developers>
+        <developer>
+            <name>Alessandro Zamberletti</name>
+            <organizationUrl>https://github.com/alessandrozamberletti/</organizationUrl>
+        </developer>
+    </developers>
+
     <licenses>
         <license>
             <name>MIT License</name>
@@ -21,13 +28,18 @@
         </license>
     </licenses>
 
+    <scm>
+        <connection>scm:git:git://github.com/alessandrozamberletti/ansix9242004.git</connection>
+        <developerConnection>scm:git:ssh://github.com:alessandrozamberletti/ansix9242004.git</developerConnection>
+        <url>https://github.com/alessandrozamberletti/ansix9242004/tree/main</url>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
             <version>2.3.0</version>
         </dependency>
-
         <!-- test dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -69,6 +81,22 @@
                         <id>attach-sources</id>
                         <goals>
                             <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.1.1</version>
+                <configuration>
+                    <source>8</source>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
                         </goals>
                     </execution>
                 </executions>
