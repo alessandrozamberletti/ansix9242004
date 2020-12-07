@@ -9,6 +9,10 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
+    <name>ansix9242004</name>
+    <description>IFSF DUKPT and ANSI X9.19 Retail MAC</description>
+    <url>https://github.com/alessandrozamberletti/ansix9242004</url>
+
     <licenses>
         <license>
             <name>MIT License</name>
@@ -16,6 +20,7 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
     <dependencies>
         <dependency>
             <groupId>javax.xml.bind</groupId>

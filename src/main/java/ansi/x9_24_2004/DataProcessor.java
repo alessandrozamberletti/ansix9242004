@@ -26,7 +26,7 @@ public class DataProcessor {
 
     String encryptRequestData(final String ksn, final String data) {
         final CustomBitSet requestDataKey = dukptFactory.computeKey(bdk, new CustomBitSet(ksn), Mask.REQUEST_DATA_MASK);
-        final byte[] encryptedRequestData = tripleDes.encrypt(requestDataKey, DatatypeConverter.parseHexBinary(data), false);
+        final byte[] encryptedRequestData = tripleDes.encrypt(requestDataKey, DatatypeConverter.parseHexBinary(data));
 
         return DatatypeConverter.printHexBinary(encryptedRequestData);
     }
