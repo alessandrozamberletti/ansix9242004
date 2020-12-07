@@ -53,6 +53,14 @@ public class DataProcessorTest {
                             "FFFF9876543210E01E9D",
                             // Encrypted data
                             ""
+                    ),
+                    Arguments.of(
+                            // Plain data
+                            "020010353232363630393930303032363239300E000432303034230025353232363630393930303032363239303D3230303432303130313836373031313030303030000000000000",
+                            // KSN
+                            "FFFF9876543210E01E9D",
+                            // Encrypted data
+                            "08CF84A121C36ABD4C2404E00A4A20B56DAA50B208B1247B4174A6FE0594567BAED7DE256089F2E838BDF45AB0053D259DA7B6FAF8E4C729718F3400256A4B02312E5C87242B4AB1"
                     )
             );
         }
