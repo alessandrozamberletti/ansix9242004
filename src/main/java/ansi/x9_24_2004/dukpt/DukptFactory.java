@@ -35,7 +35,7 @@ public class DukptFactory {
 
     public CustomBitSet computeKey(final CustomBitSet bdk, final CustomBitSet ksn, final Mask mask) {
         final CustomBitSet ipek = getIpek(bdk, ksn);
-        final CustomBitSet transactionKey = getTransactionKey(ipek, ksn);
+        final CustomBitSet transactionKey = deriveTransactionKey(ipek, ksn);
 
         transactionKey.xor(mask.value());
 
@@ -56,7 +56,7 @@ public class DukptFactory {
     }
 
     // See: https://github.com/SoftwareVerde/java-dukpt
-    CustomBitSet getTransactionKey(final CustomBitSet ipek, final CustomBitSet ksn) {
+    CustomBitSet deriveTransactionKey(final CustomBitSet ipek, final CustomBitSet ksn) {
         final CustomBitSet counter = ksn.get(0, ksn.size());
         CustomBitSet transactionKey = (CustomBitSet) ipek.clone();
 
@@ -64,7 +64,7 @@ public class DukptFactory {
         for (int i = 59; i < ksn.size(); i++) {
             if (ksn.get(i)) {
                 counter.set(i);
-                transactionKey = nonReversibleKeyGenerationProcess(transactionKey, counter.get(16, 80));
+                transactionKey = generateTransactionKey(transactionKey, counter.get(16, 80));
             }
         }
 
@@ -72,8 +72,8 @@ public class DukptFactory {
     }
 
     // See: https://github.com/SoftwareVerde/java-dukpt
-    CustomBitSet nonReversibleKeyGenerationProcess(final CustomBitSet pKey, final CustomBitSet data) {
-        CustomBitSet keyReg = pKey.get(0, pKey.size());
+    CustomBitSet generateTransactionKey(final CustomBitSet transactionKey, final CustomBitSet data) {
+        CustomBitSet keyReg = transactionKey.get(0, transactionKey.size());
         CustomBitSet reg1 = data.get(0, data.size());
         // step 1: Crypto Register-1 XORed with the right half of the Key Register goes to Crypto Register-2.
         CustomBitSet reg2 = reg1.get(0, 64); // reg2 is being used like a temp here

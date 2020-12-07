@@ -34,11 +34,9 @@ public class TripleDes implements Encryption {
             k2 = key.get(64, 128);
             k3 = key.get(128, 192);
         }
-        byte[] kb1 = k1.toByteArray();
-        byte[] kb2 = k2.toByteArray();
-        byte[] kb3 = k3.toByteArray();
-        byte[] key16 = ByteArrayUtils.concat(kb1, kb2);
-        byte[] key24 = ByteArrayUtils.concat(key16, kb3);
+
+        final byte[] key16 = ByteArrayUtils.concat(k1.toByteArray(), k2.toByteArray());
+        final byte[] key24 = ByteArrayUtils.concat(key16, k3.toByteArray());
 
         try {
             final DESedeKeySpec deSedeKeySpec = new DESedeKeySpec(key24);

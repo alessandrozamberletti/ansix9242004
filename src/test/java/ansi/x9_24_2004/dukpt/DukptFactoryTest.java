@@ -42,7 +42,7 @@ public class DukptFactoryTest {
     }
 
     @Nested
-    class WhenGetTransactionKeyMethodIsCalled {
+    class WhenDeriveTransactionKeyMethodIsCalled {
 
         @Test
         void shouldCreateExpectedDukpt() {
@@ -50,7 +50,7 @@ public class DukptFactoryTest {
             final CustomBitSet ipek = new CustomBitSet("1B90D9C9AEE356ADF9938F6084D16C44");
 
             // When
-            final CustomBitSet transactionKey = dukptFactory.getTransactionKey(ipek, KSN);
+            final CustomBitSet transactionKey = dukptFactory.deriveTransactionKey(ipek, KSN);
 
             // Then
             Assertions.assertEquals("0258F3E777F55F61241AE65234583B30", transactionKey.toString());
