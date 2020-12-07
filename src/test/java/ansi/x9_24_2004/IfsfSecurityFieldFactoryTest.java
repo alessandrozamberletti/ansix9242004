@@ -11,13 +11,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
 
 @SuppressWarnings({"java:S1192"})
-public class DataProcessorTest {
+public class IfsfSecurityFieldFactoryTest {
 
-    private DataProcessor dataProcessor;
+    private IfsfSecurityFieldFactory ifsfSecurityFieldFactory;
 
     @BeforeEach
     void init() {
-        this.dataProcessor = new DataProcessor("BDBD1234BDBD567890ABBDBDCDEFBDBD");
+        this.ifsfSecurityFieldFactory = new IfsfSecurityFieldFactory("BDBD1234BDBD567890ABBDBDCDEFBDBD");
     }
 
     @Nested
@@ -31,7 +31,7 @@ public class DataProcessorTest {
                                       final String expectedEncryptedData) {
             // Given
             // When
-            final String encryptedRequestData = dataProcessor.encryptRequestData(ksn, plainData);
+            final String encryptedRequestData = ifsfSecurityFieldFactory.encryptRequestData(ksn, plainData);
 
             // Then
             Assertions.assertEquals(expectedEncryptedData, encryptedRequestData);
@@ -76,7 +76,7 @@ public class DataProcessorTest {
         void shouldCalculateRequestMac(final String messageHash, final String ksn, final String expectedMac) {
             // Given
             // When
-            final String requestMac = dataProcessor.calculateRequestMac(ksn, messageHash);
+            final String requestMac = ifsfSecurityFieldFactory.calculateRequestMac(ksn, messageHash);
 
             // Then
             Assertions.assertEquals(expectedMac, requestMac);

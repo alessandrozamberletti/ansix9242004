@@ -9,14 +9,14 @@ import ansi.x9_24_2004.utils.CustomBitSet;
 
 import javax.xml.bind.DatatypeConverter;
 
-public class DataProcessor {
+public class IfsfSecurityFieldFactory {
 
     private final CustomBitSet bdk;
     private final TripleDes tripleDes;
     private final DukptFactory dukptFactory;
     private final RetailMacFactory retailMacFactory;
 
-    DataProcessor(final String bdk) {
+    public IfsfSecurityFieldFactory(final String bdk) {
         this.bdk = new CustomBitSet(bdk);
 
         this.tripleDes = new TripleDes();
@@ -24,14 +24,14 @@ public class DataProcessor {
         this.dukptFactory = new DukptFactory(new Des(), tripleDes);
     }
 
-    String encryptRequestData(final String ksn, final String data) {
+    public String encryptRequestData(final String ksn, final String data) {
         final CustomBitSet requestDataKey = dukptFactory.computeKey(bdk, new CustomBitSet(ksn), Mask.REQUEST_DATA_MASK);
         final byte[] encryptedRequestData = tripleDes.encrypt(requestDataKey, DatatypeConverter.parseHexBinary(data));
 
         return DatatypeConverter.printHexBinary(encryptedRequestData);
     }
 
-    String calculateRequestMac(final String ksn, final String messageHash) {
+    public String calculateRequestMac(final String ksn, final String messageHash) {
         final CustomBitSet requestMacKey = dukptFactory.computeKey(bdk, new CustomBitSet(ksn), Mask.REQUEST_MAC_MASK);
         final byte[] requestMac = retailMacFactory.create(requestMacKey, DatatypeConverter.parseHexBinary(messageHash));
 
