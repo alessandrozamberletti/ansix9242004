@@ -69,6 +69,46 @@ public class IfsfSecurityFieldFactoryTest {
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class WhenDecryptRequestDataMethodIsCalled {
+
+        @ParameterizedTest
+        @MethodSource("getDataKsnAndExpectedDecryptedData")
+        void shouldDecryptRequestData(final String plainData,
+                                      final String ksn,
+                                      final String expectedEncryptedData) {
+            // Given
+            // When
+            final String encryptedRequestData = ifsfSecurityFieldFactory.decryptRequestData(ksn, plainData);
+
+            // Then
+            Assertions.assertEquals(expectedEncryptedData, encryptedRequestData);
+        }
+
+        Stream<Arguments> getDataKsnAndExpectedDecryptedData() {
+            return Stream.of(
+                    Arguments.of(
+                            // Plain data
+                            "E5168D2DC89002E5F96C7A243057401BA4464FFE5315563BEC3B7A613D4B7526",
+                            // KSN
+                            "FFFF9876543210E02279",
+                            // Encrypted data
+                            "020013363739393939303130303030303030303031390E000431343132000000"
+                    ),
+                    Arguments.of(
+                            // Plain data
+                            "9BBB88CE00BD935B2E786C9A7CA13D629BBCE3EB98ABAE51BFECE759A48EBFAF",
+                            // KSN
+                            "FFFF9876543210E02280",
+                            // Encrypted data
+                            "020013363739393939303130303030303030303031390E000431343132000000"
+                    )
+            );
+        }
+
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class WhenCalculateRequestMacMethodIsCalled {
 
         @ParameterizedTest(name = "Should compute request MAC: \"{2}\" for data: \"{0}\" and ksn: \"{1}\".")

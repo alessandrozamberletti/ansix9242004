@@ -31,6 +31,13 @@ public class IfsfSecurityFieldFactory {
         return DatatypeConverter.printHexBinary(encryptedRequestData);
     }
 
+    public String decryptRequestData(final String ksn, final String data) {
+        final CustomBitSet requestDataKey = dukptFactory.computeKey(bdk, new CustomBitSet(ksn), Mask.REQUEST_DATA_MASK);
+        final byte[] encryptedRequestData = tripleDes.decrypt(requestDataKey, DatatypeConverter.parseHexBinary(data));
+
+        return DatatypeConverter.printHexBinary(encryptedRequestData);
+    }
+
     public String calculateRequestMac(final String ksn, final String messageHash) {
         final CustomBitSet requestMacKey = dukptFactory.computeKey(bdk, new CustomBitSet(ksn), Mask.REQUEST_MAC_MASK);
         final byte[] requestMac = retailMacFactory.create(requestMacKey, DatatypeConverter.parseHexBinary(messageHash));
