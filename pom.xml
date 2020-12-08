@@ -6,7 +6,7 @@
 
     <groupId>com.github.alessandrozamberletti</groupId>
     <artifactId>ansix9242004</artifactId>
-    <version>1.1</version>
+    <version>1.0.6</version>
     <packaging>jar</packaging>
 
     <name>ansix9242004</name>
@@ -137,7 +137,7 @@
                 <configuration>
                     <serverId>ossrh</serverId>
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
                 </configuration>
             </plugin>
         </plugins>

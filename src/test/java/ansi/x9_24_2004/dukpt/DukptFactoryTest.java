@@ -64,10 +64,10 @@ public class DukptFactoryTest {
 
         @ParameterizedTest(name = "Should create key {1} for mask {0}.")
         @MethodSource("getMaskAndExpectedKey")
-        void shouldComputeExpectedKeyVariant(final ansi.x9_24_2004.dukpt.Mask mask, final String expectedKey) {
+        void shouldComputeExpectedKeyVariant(final IfsfKeyMask ifsfKeyMask, final String expectedKey) {
             // Given
             // When
-            final CustomBitSet actualKey = dukptFactory.computeKey(BDK, KSN, mask);
+            final CustomBitSet actualKey = dukptFactory.computeKey(BDK, KSN, ifsfKeyMask);
 
             // Then
             Assertions.assertEquals(expectedKey, actualKey.toString());
@@ -75,11 +75,26 @@ public class DukptFactoryTest {
 
         Stream<Arguments> getMaskAndExpectedKey() {
             return Stream.of(
-                    Arguments.of(ansi.x9_24_2004.dukpt.Mask.REQUEST_DATA_MASK, "0258F3E7770A5F61241AE65234A73B30"),
-                    Arguments.of(ansi.x9_24_2004.dukpt.Mask.REQUEST_MAC_MASK, "0258F3E777F5A061241AE6523458C430"),
-                    Arguments.of(ansi.x9_24_2004.dukpt.Mask.PIN_MASK, "0258F3E777F55F9E241AE65234583BCF")
+                    Arguments.of(IfsfKeyMask.REQUEST_DATA_MASK, "0258F3E7770A5F61241AE65234A73B30"),
+                    Arguments.of(IfsfKeyMask.REQUEST_MAC_MASK, "0258F3E777F5A061241AE6523458C430"),
+                    Arguments.of(IfsfKeyMask.REQUEST_PIN_MASK, "0258F3E777F55F9E241AE65234583BCF")
             );
         }
+    }
+
+    @Nested
+    class WhenComputeAnsiX924version2009DataKeyMethodIsCalled {
+
+        @Test
+        void shouldCreateExpected2009DataKey() {
+            // Given
+            // When
+            final CustomBitSet ansiX924version2009DataKey = dukptFactory.computeAnsiX924version2009DataKey(BDK, KSN);
+
+            // Then
+            Assertions.assertEquals("37A2F17ACF991C65DE530197AA1ACC2B", ansiX924version2009DataKey.toString());
+        }
+
     }
 
 }

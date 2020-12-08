@@ -3,6 +3,7 @@ package ansi.x9_24_2004;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -63,6 +64,24 @@ public class IfsfSecurityFieldFactoryTest {
                             "08CF84A121C36ABD4C2404E00A4A20B56DAA50B208B1247B4174A6FE0594567BAED7DE256089F2E838BDF45AB0053D259DA7B6FAF8E4C729718F3400256A4B02312E5C87242B4AB1"
                     )
             );
+        }
+
+    }
+
+    @Nested
+    class WhenEncryptRequestDataAnsiX924Version2009MethodIsCalled {
+
+        @Test
+        void shouldEncryptRequestData() {
+            // Given
+            final String data = "020010353431333333393030303030313531330E000431343132000000000000";
+            final String ksn = "FFFF9876543210E01E9D";
+
+            // When
+            final String encryptedRequestData = ifsfSecurityFieldFactory.encryptRequestDataAnsiX924Version2009(ksn, data);
+
+            // Then
+            Assertions.assertEquals("D9D60AB25BF3CADB98BB302BDFF46E18936B6C6BD03F1FFE7161113E5D8DEAC8", encryptedRequestData);
         }
 
     }
@@ -139,6 +158,41 @@ public class IfsfSecurityFieldFactoryTest {
                             "FFFF9876543210E00000",
                             // MAC
                             "ED390835504E04B7"
+                    )
+            );
+        }
+
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class WhenPinMethodIsCalled {
+
+        @ParameterizedTest
+        @MethodSource("getIso0PinBlockPanKsnAndClearPin")
+        void shouldDecryptRequestData(final String plainData,
+                                      final String pan,
+                                      final String ksn,
+                                      final String expectedEncryptedData) {
+            // Given
+            // When
+            final String encryptedRequestData = ifsfSecurityFieldFactory.readPin(ksn, plainData, pan);
+
+            // Then
+            Assertions.assertEquals(expectedEncryptedData, encryptedRequestData);
+        }
+
+        Stream<Arguments> getIso0PinBlockPanKsnAndClearPin() {
+            return Stream.of(
+                    Arguments.of(
+                            // Iso0 PIN block
+                            "55025D81E85C8BF9",
+                            // PAN
+                            "5413339000001513",
+                            // KSN
+                            "FFFF9876543210E01E9D",
+                            // Clear PIN
+                            "123456"
                     )
             );
         }

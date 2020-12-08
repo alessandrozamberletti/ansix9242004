@@ -2,8 +2,8 @@ package ansi.x9_24_2004.dukpt;
 
 import ansi.x9_24_2004.encryption.Des;
 import ansi.x9_24_2004.encryption.TripleDes;
-import ansi.x9_24_2004.utils.CustomBitSet;
 import ansi.x9_24_2004.utils.ByteArrayUtils;
+import ansi.x9_24_2004.utils.CustomBitSet;
 
 /**
  * ANSI X9.24 version 2009 DUKPT key derivation.
@@ -33,13 +33,24 @@ public class DukptFactory {
         this.tripleDes = tripleDes;
     }
 
-    public CustomBitSet computeKey(final CustomBitSet bdk, final CustomBitSet ksn, final Mask mask) {
+    public CustomBitSet computeKey(final CustomBitSet bdk, final CustomBitSet ksn, final IfsfKeyMask ifsfKeyMask) {
         final CustomBitSet ipek = getIpek(bdk, ksn);
         final CustomBitSet transactionKey = deriveTransactionKey(ipek, ksn);
 
-        transactionKey.xor(mask.value());
+        transactionKey.xor(ifsfKeyMask.value());
 
         return transactionKey;
+    }
+
+    // See: https://github.com/SoftwareVerde/java-dukpt
+    public CustomBitSet computeAnsiX924version2009DataKey(final CustomBitSet bdk,
+                                                          final CustomBitSet ksn) {
+        final CustomBitSet derivedKey = computeKey(bdk, ksn, IfsfKeyMask.REQUEST_DATA_MASK);
+
+        byte[] firstComponent = tripleDes.encrypt(derivedKey, derivedKey.get(0, 64).toByteArray());
+        byte[] secondComponent = tripleDes.encrypt(derivedKey, derivedKey.get(64, 128).toByteArray());
+
+        return new CustomBitSet(ByteArrayUtils.concat(firstComponent, secondComponent));
     }
 
     CustomBitSet getIpek(final CustomBitSet key, final CustomBitSet ksn) {
@@ -49,7 +60,7 @@ public class DukptFactory {
         data.clear(59, 80);
 
         ipek[0] = tripleDes.encrypt(keyRegister, data.get(0, 64).toByteArray());
-        keyRegister.xor(ansi.x9_24_2004.dukpt.Mask.KEY_REGISTER_BITMASK.value());
+        keyRegister.xor(IfsfKeyMask.KEY_REGISTER_BITMASK.value());
         ipek[1] = tripleDes.encrypt(keyRegister, data.get(0, 64).toByteArray());
 
         return new CustomBitSet(ByteArrayUtils.concat(ipek[0], ipek[1]));
@@ -85,7 +96,7 @@ public class DukptFactory {
         // done messing with reg2
 
         // step 4: XOR the Key Register with hexadecimal C0C0 C0C0 0000 0000 C0C0 C0C0 0000 0000
-        keyReg.xor(Mask.KEY_REGISTER_BITMASK.value());
+        keyReg.xor(IfsfKeyMask.KEY_REGISTER_BITMASK.value());
         // step 5: Crypto Register-1 XORed with the right half of the Key Register goes to Crypto Register-1
         reg1.xor(keyReg.get(64, 128));
         // step 6: Crypto Register-1 DEA-encrypted using, as the key, the left half of the Key Register goes to Crypto Register-1
