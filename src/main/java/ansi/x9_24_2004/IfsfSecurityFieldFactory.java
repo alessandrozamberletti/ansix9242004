@@ -27,21 +27,21 @@ public class IfsfSecurityFieldFactory {
         this.dukptFactory = new DukptFactory(new Des(), tripleDes);
     }
 
-    public String encryptRequestData(final String ksn, final String data) {
+    public String encryptRequestData2004(final String ksn, final String data) {
         final CustomBitSet requestDataKey = dukptFactory.computeKey(bdk, new CustomBitSet(ksn), IfsfKeyMask.REQUEST_DATA_MASK);
         final byte[] encryptedRequestData = tripleDes.encrypt(requestDataKey, DatatypeConverter.parseHexBinary(data));
 
         return DatatypeConverter.printHexBinary(encryptedRequestData);
     }
 
-    public String encryptRequestDataAnsiX924Version2009(final String ksn, final String data) {
+    public String encryptRequestData2009(final String ksn, final String data) {
         final CustomBitSet x924version2009DataKey = dukptFactory.computeAnsiX924version2009DataKey(bdk, new CustomBitSet(ksn));
         final byte[] encryptedRequestData = tripleDes.encrypt(x924version2009DataKey, DatatypeConverter.parseHexBinary(data));
 
         return DatatypeConverter.printHexBinary(encryptedRequestData);
     }
 
-    public String decryptRequestData(final String ksn, final String data) {
+    public String decryptRequestData2004(final String ksn, final String data) {
         final CustomBitSet requestDataKey = dukptFactory.computeKey(bdk, new CustomBitSet(ksn), IfsfKeyMask.REQUEST_DATA_MASK);
         final byte[] encryptedRequestData = tripleDes.decrypt(requestDataKey, DatatypeConverter.parseHexBinary(data));
 

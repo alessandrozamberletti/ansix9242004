@@ -6,7 +6,6 @@ import ansi.x9_24_2004.utils.CustomBitSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -14,10 +13,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
+@SuppressWarnings({"java:S1192"})
 public class DukptFactoryTest {
-
-    private static final CustomBitSet BDK = new CustomBitSet("BDBD1234BDBD567890ABBDBDCDEFBDBD");
-    private static final CustomBitSet KSN = new CustomBitSet("FFFF9876543210E01E9D");
 
     private DukptFactory dukptFactory;
 
@@ -27,33 +24,54 @@ public class DukptFactoryTest {
     }
 
     @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class WhenGetIpekMethodIsCalled {
 
-        @Test
-        void shouldCreateExpectedIpek() {
+        @ParameterizedTest
+        @MethodSource("getBdkKsnAndExpectedIpek")
+        void shouldCreateExpectedIpek(final String bdk,
+                                      final String ksn,
+                                      final String expectedIpek) {
             // Given
             // When
-            final CustomBitSet ipek = dukptFactory.getIpek(BDK, KSN);
+            final CustomBitSet ipek = dukptFactory.getIpek(new CustomBitSet(bdk), new CustomBitSet(ksn));
 
             // Then
-            Assertions.assertEquals("1B90D9C9AEE356ADF9938F6084D16C44", ipek.toString());
+            Assertions.assertEquals(expectedIpek, ipek.toString());
+        }
+
+        Stream<Arguments> getBdkKsnAndExpectedIpek() {
+            return Stream.of(
+                    Arguments.of("BDBD1234BDBD567890ABBDBDCDEFBDBD", "FFFF9876543210E01E9D", "1B90D9C9AEE356ADF9938F6084D16C44"),
+                    Arguments.of("BDBD1234BDBD567890ABBDBDCDEFBDBD", "FFFF9876543210E00000", "1B90D9C9AEE356ADF9938F6084D16C44"),
+                    Arguments.of("BDBD1234BDBD567890ABBDBDCDEFBDBD", "FFFF9876543210E01E99", "1B90D9C9AEE356ADF9938F6084D16C44")
+            );
         }
 
     }
 
     @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class WhenDeriveTransactionKeyMethodIsCalled {
 
-        @Test
-        void shouldCreateExpectedDukpt() {
+        @ParameterizedTest
+        @MethodSource("getIpekKsnAndExpectedSessionKey")
+        void shouldCreateExpectedSessionKey(final String ipek,
+                                            final String ksn,
+                                            final String expectedSessionKey) {
             // Given
-            final CustomBitSet ipek = new CustomBitSet("1B90D9C9AEE356ADF9938F6084D16C44");
-
             // When
-            final CustomBitSet transactionKey = dukptFactory.deriveTransactionKey(ipek, KSN);
+            final CustomBitSet transactionKey = dukptFactory.deriveSessionKey(new CustomBitSet(ipek), new CustomBitSet(ksn));
 
             // Then
-            Assertions.assertEquals("0258F3E777F55F61241AE65234583B30", transactionKey.toString());
+            Assertions.assertEquals(expectedSessionKey, transactionKey.toString());
+        }
+
+        Stream<Arguments> getIpekKsnAndExpectedSessionKey() {
+            return Stream.of(
+                    Arguments.of("1B90D9C9AEE356ADF9938F6084D16C44", "FFFF9876543210E01E9D", "0258F3E777F55F61241AE65234583B30"),
+                    Arguments.of("1B90D9C9AEE356ADF9938F6084D16C44", "FFFF9876543210E01E99", "931A8CF00C1829DE28E5AA70F3417D68")
+            );
         }
 
     }
@@ -62,12 +80,15 @@ public class DukptFactoryTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class WhenComputeKeyVariantMethodIsCalled {
 
-        @ParameterizedTest(name = "Should create key {1} for mask {0}.")
+        @ParameterizedTest(name = "Should create key {3} for mask {2}.")
         @MethodSource("getMaskAndExpectedKey")
-        void shouldComputeExpectedKeyVariant(final IfsfKeyMask ifsfKeyMask, final String expectedKey) {
+        void shouldComputeExpectedKeyVariant(final String bdk,
+                                             final String ksn,
+                                             final IfsfKeyMask ifsfKeyMask,
+                                             final String expectedKey) {
             // Given
             // When
-            final CustomBitSet actualKey = dukptFactory.computeKey(BDK, KSN, ifsfKeyMask);
+            final CustomBitSet actualKey = dukptFactory.computeKey(new CustomBitSet(bdk), new CustomBitSet(ksn), ifsfKeyMask);
 
             // Then
             Assertions.assertEquals(expectedKey, actualKey.toString());
@@ -75,24 +96,38 @@ public class DukptFactoryTest {
 
         Stream<Arguments> getMaskAndExpectedKey() {
             return Stream.of(
-                    Arguments.of(IfsfKeyMask.REQUEST_DATA_MASK, "0258F3E7770A5F61241AE65234A73B30"),
-                    Arguments.of(IfsfKeyMask.REQUEST_MAC_MASK, "0258F3E777F5A061241AE6523458C430"),
-                    Arguments.of(IfsfKeyMask.REQUEST_PIN_MASK, "0258F3E777F55F9E241AE65234583BCF")
+                    Arguments.of("BDBD1234BDBD567890ABBDBDCDEFBDBD", "FFFF9876543210E01E9D", IfsfKeyMask.REQUEST_DATA_MASK, "0258F3E7770A5F61241AE65234A73B30"),
+                    Arguments.of("BDBD1234BDBD567890ABBDBDCDEFBDBD", "FFFF9876543210E01E9D", IfsfKeyMask.REQUEST_MAC_MASK, "0258F3E777F5A061241AE6523458C430"),
+                    Arguments.of("BDBD1234BDBD567890ABBDBDCDEFBDBD", "FFFF9876543210E01E9D", IfsfKeyMask.REQUEST_PIN_MASK, "0258F3E777F55F9E241AE65234583BCF"),
+                    Arguments.of("BDBD1234BDBD567890ABBDBDCDEFBDBD", "FFFF9876543210E01E99", IfsfKeyMask.REQUEST_DATA_MASK, "931A8CF00CE729DE28E5AA70F3BE7D68"),
+                    Arguments.of("BDBD1234BDBD567890ABBDBDCDEFBDBD", "FFFF9876543210E01E99", IfsfKeyMask.REQUEST_MAC_MASK, "931A8CF00C18D6DE28E5AA70F3418268"),
+                    Arguments.of("BDBD1234BDBD567890ABBDBDCDEFBDBD", "FFFF9876543210E01E99", IfsfKeyMask.REQUEST_PIN_MASK, "931A8CF00C18292128E5AA70F3417D97")
             );
         }
     }
 
     @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class WhenComputeAnsiX924version2009DataKeyMethodIsCalled {
 
-        @Test
-        void shouldCreateExpected2009DataKey() {
+        @ParameterizedTest
+        @MethodSource("getBdkKsnAndExpected2009DataKey")
+        void shouldCreateExpected2009DataKey(final String bdk,
+                                             final String ksn,
+                                             final String expectedKey) {
             // Given
             // When
-            final CustomBitSet ansiX924version2009DataKey = dukptFactory.computeAnsiX924version2009DataKey(BDK, KSN);
+            final CustomBitSet ansiX924version2009DataKey = dukptFactory.computeAnsiX924version2009DataKey(new CustomBitSet(bdk), new CustomBitSet(ksn));
 
             // Then
-            Assertions.assertEquals("37A2F17ACF991C65DE530197AA1ACC2B", ansiX924version2009DataKey.toString());
+            Assertions.assertEquals(expectedKey, ansiX924version2009DataKey.toString());
+        }
+
+        Stream<Arguments> getBdkKsnAndExpected2009DataKey() {
+            return Stream.of(
+                    Arguments.of("BDBD1234BDBD567890ABBDBDCDEFBDBD", "FFFF9876543210E01E9D", "37A2F17ACF991C65DE530197AA1ACC2B"),
+                    Arguments.of("BDBD1234BDBD567890ABBDBDCDEFBDBD", "FFFF9876543210E01E99", "A0B9D255BABF9DDBF01CDD32769CCA2B")
+            );
         }
 
     }

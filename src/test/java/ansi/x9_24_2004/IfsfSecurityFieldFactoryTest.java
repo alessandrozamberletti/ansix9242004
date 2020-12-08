@@ -3,7 +3,6 @@ package ansi.x9_24_2004;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -23,7 +22,7 @@ public class IfsfSecurityFieldFactoryTest {
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    class WhenEncryptRequestDataMethodIsCalled {
+    class WhenEncryptRequestData2004MethodIsCalled {
 
         @ParameterizedTest(name = "Should compute encrypted data: \"{2}\" for plain data: \"{0}\" and ksn: \"{1}\".")
         @MethodSource("getDataKsnAndExpectedEncryptedData")
@@ -32,7 +31,7 @@ public class IfsfSecurityFieldFactoryTest {
                                       final String expectedEncryptedData) {
             // Given
             // When
-            final String encryptedRequestData = ifsfSecurityFieldFactory.encryptRequestData(ksn, plainData);
+            final String encryptedRequestData = ifsfSecurityFieldFactory.encryptRequestData2004(ksn, plainData);
 
             // Then
             Assertions.assertEquals(expectedEncryptedData, encryptedRequestData);
@@ -69,26 +68,48 @@ public class IfsfSecurityFieldFactoryTest {
     }
 
     @Nested
-    class WhenEncryptRequestDataAnsiX924Version2009MethodIsCalled {
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class WhenEncryptRequestData2009MethodIsCalled {
 
-        @Test
-        void shouldEncryptRequestData() {
+        @ParameterizedTest
+        @MethodSource("getDataKsnAndExpectedEncryptedData")
+        void shouldEncryptRequestData(final String plainData,
+                                      final String ksn,
+                                      final String expectedEncryptedData) {
             // Given
-            final String data = "020010353431333333393030303030313531330E000431343132000000000000";
-            final String ksn = "FFFF9876543210E01E9D";
-
             // When
-            final String encryptedRequestData = ifsfSecurityFieldFactory.encryptRequestDataAnsiX924Version2009(ksn, data);
+            final String encryptedRequestData = ifsfSecurityFieldFactory.encryptRequestData2009(ksn, plainData);
 
             // Then
-            Assertions.assertEquals("D9D60AB25BF3CADB98BB302BDFF46E18936B6C6BD03F1FFE7161113E5D8DEAC8", encryptedRequestData);
+            Assertions.assertEquals(expectedEncryptedData, encryptedRequestData);
+        }
+
+        Stream<Arguments> getDataKsnAndExpectedEncryptedData() {
+            return Stream.of(
+                    Arguments.of(
+                            // Plain data
+                            "020010353431333333393030303030313531330E000431343132000000000000",
+                            // KSN
+                            "FFFF9876543210E01E9D",
+                            // Encrypted data
+                            "D9D60AB25BF3CADB98BB302BDFF46E18936B6C6BD03F1FFE7161113E5D8DEAC8"
+                    ),
+                    Arguments.of(
+                            // Plain data
+                            "020010353431333333393030303030313531330E00063037313233312300243534313333333930303030303135313344343931323630313030303030303030303030300000000000",
+                            // KSN
+                            "FFFF9876543210E01E99",
+                            // Encrypted data
+                            "C7471B773CC940C386D16D68995B125597C38B977F9AD11D769F59E7B868E538AE7F22B1E6A8E3C9584C0021D51A0ECB8C3807B46200EE6EC0F73587B458EE56490A2DB4FDB92A4A"
+                    )
+            );
         }
 
     }
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    class WhenDecryptRequestDataMethodIsCalled {
+    class WhenDecryptRequest2004DataMethodIsCalled {
 
         @ParameterizedTest
         @MethodSource("getDataKsnAndExpectedDecryptedData")
@@ -97,7 +118,7 @@ public class IfsfSecurityFieldFactoryTest {
                                       final String expectedEncryptedData) {
             // Given
             // When
-            final String encryptedRequestData = ifsfSecurityFieldFactory.decryptRequestData(ksn, plainData);
+            final String encryptedRequestData = ifsfSecurityFieldFactory.decryptRequestData2004(ksn, plainData);
 
             // Then
             Assertions.assertEquals(expectedEncryptedData, encryptedRequestData);
@@ -158,6 +179,14 @@ public class IfsfSecurityFieldFactoryTest {
                             "FFFF9876543210E00000",
                             // MAC
                             "ED390835504E04B7"
+                    ),
+                    Arguments.of(
+                            // Data
+                            "24556429C96772A9D98AF4BC2BB4D8F20B79A75CCB5B5B44B8395FBC76C8C7BA",
+                            // KSN
+                            "FFFF9876543210E01E99",
+                            // MAC
+                            "25A3D3D9C07AC3A6"
                     )
             );
         }

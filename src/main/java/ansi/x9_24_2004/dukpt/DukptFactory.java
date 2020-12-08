@@ -35,7 +35,7 @@ public class DukptFactory {
 
     public CustomBitSet computeKey(final CustomBitSet bdk, final CustomBitSet ksn, final IfsfKeyMask ifsfKeyMask) {
         final CustomBitSet ipek = getIpek(bdk, ksn);
-        final CustomBitSet transactionKey = deriveTransactionKey(ipek, ksn);
+        final CustomBitSet transactionKey = deriveSessionKey(ipek, ksn);
 
         transactionKey.xor(ifsfKeyMask.value());
 
@@ -67,7 +67,7 @@ public class DukptFactory {
     }
 
     // See: https://github.com/SoftwareVerde/java-dukpt
-    CustomBitSet deriveTransactionKey(final CustomBitSet ipek, final CustomBitSet ksn) {
+    CustomBitSet deriveSessionKey(final CustomBitSet ipek, final CustomBitSet ksn) {
         final CustomBitSet counter = ksn.get(0, ksn.size());
         CustomBitSet transactionKey = (CustomBitSet) ipek.clone();
 
