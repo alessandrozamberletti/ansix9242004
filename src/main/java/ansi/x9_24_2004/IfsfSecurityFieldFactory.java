@@ -55,6 +55,20 @@ public class IfsfSecurityFieldFactory {
         return DatatypeConverter.printHexBinary(requestMac);
     }
 
+    public String encryptIso0PinBlock(final String ksn, final String clearIso0PinBlock) {
+        final CustomBitSet pinKey = dukptFactory.computeKey(bdk, new CustomBitSet(ksn), IfsfKeyMask.REQUEST_PIN_MASK);
+        final byte[] encryptedIso0Block =  tripleDes.encrypt(pinKey, DatatypeConverter.parseHexBinary(clearIso0PinBlock));
+
+        return DatatypeConverter.printHexBinary(encryptedIso0Block);
+    }
+
+    public String decryptIso0PinBlock(final String ksn, final String encryptedPinBlock) {
+        final CustomBitSet pinKey = dukptFactory.computeKey(bdk, new CustomBitSet(ksn), IfsfKeyMask.REQUEST_PIN_MASK);
+        final byte[] clearIso0Block =  tripleDes.decrypt(pinKey, DatatypeConverter.parseHexBinary(encryptedPinBlock));
+
+        return DatatypeConverter.printHexBinary(clearIso0Block);
+    }
+
     public String readPin(final String ksn, final String pinBlock, final String pan) {
         final CustomBitSet pinKey = dukptFactory.computeKey(bdk, new CustomBitSet(ksn), IfsfKeyMask.REQUEST_PIN_MASK);
         final byte[] iso0block = tripleDes.decrypt(pinKey, DatatypeConverter.parseHexBinary(pinBlock));
