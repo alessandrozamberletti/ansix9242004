@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
 
     <name>ansix9242004</name>
-    <description>IFSF DUKPT and ANSI X9.19 Retail MAC</description>
+    <description>IFSF security fields calculator</description>
     <url>https://github.com/alessandrozamberletti/ansix9242004</url>
 
     <developers>

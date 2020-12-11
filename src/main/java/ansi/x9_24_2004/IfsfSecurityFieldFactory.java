@@ -48,12 +48,14 @@ public class IfsfSecurityFieldFactory {
         return DatatypeConverter.printHexBinary(requestData);
     }
 
+    // Decrypt using fixed key
     public String decryptFixed(final String key, final String encryptedData) {
         final byte[] requestData = tripleDes.decrypt(new CustomBitSet(key), DatatypeConverter.parseHexBinary(encryptedData));
 
         return DatatypeConverter.printHexBinary(requestData);
     }
 
+    // Compute retail MAC
     public String calculateRequestMac(final String ksn, final String messageHash) {
         final CustomBitSet requestMacKey = dukptFactory.computeKey(bdk, new CustomBitSet(ksn), IfsfKeyMask.REQUEST_MAC_MASK);
         final byte[] requestMac = retailMacFactory.create(requestMacKey, DatatypeConverter.parseHexBinary(messageHash));
@@ -61,16 +63,18 @@ public class IfsfSecurityFieldFactory {
         return DatatypeConverter.printHexBinary(requestMac);
     }
 
-    public String encryptIso0FormatPinBlock(final String ksn, final String clearIso0FormatPinBlock) {
+    // Encrypt plain ISO-0 PIN block
+    public String encryptIso0PinBlock(final String ksn, final String iso0PinBlock) {
         final CustomBitSet pinKey = dukptFactory.computeKey(bdk, new CustomBitSet(ksn), IfsfKeyMask.REQUEST_PIN_MASK);
-        final byte[] encryptedIso0Block =  tripleDes.encrypt(pinKey, DatatypeConverter.parseHexBinary(clearIso0FormatPinBlock));
+        final byte[] encryptedIso0Block =  tripleDes.encrypt(pinKey, DatatypeConverter.parseHexBinary(iso0PinBlock));
 
         return DatatypeConverter.printHexBinary(encryptedIso0Block);
     }
 
-    public String decryptIso0FormatPinBlock(final String ksn, final String encryptedIso0FormatPinBlock) {
+    // Decrypt encrypted ISO-0 PIN block
+    public String decryptIso0PinBlock(final String ksn, final String encryptedIso0PinBlock) {
         final CustomBitSet pinKey = dukptFactory.computeKey(bdk, new CustomBitSet(ksn), IfsfKeyMask.REQUEST_PIN_MASK);
-        final byte[] clearIso0Block =  tripleDes.decrypt(pinKey, DatatypeConverter.parseHexBinary(encryptedIso0FormatPinBlock));
+        final byte[] clearIso0Block =  tripleDes.decrypt(pinKey, DatatypeConverter.parseHexBinary(encryptedIso0PinBlock));
 
         return DatatypeConverter.printHexBinary(clearIso0Block);
     }
