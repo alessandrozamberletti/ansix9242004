@@ -3,6 +3,7 @@ package ansi.x9_24_2004;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -218,6 +219,24 @@ public class IfsfSecurityFieldFactoryTest {
                             "0612076FFFFFFEAE" // Clear ISO-0 PIN
                     )
             );
+        }
+
+    }
+
+    @Nested
+    class WhenDecryptFixedMethodIsCalled {
+
+        @Test
+        void shouldDecryptUsingFixedKey() {
+            // Given
+            final String key = "43CD51408CB629DC195B52A292D538B3";
+            final String encryptedData = "A1485CDD1C68FA02";
+
+            // When
+            final String actualClearData = ifsfSecurityFieldFactory.decryptFixed(key, encryptedData);
+
+            // Then
+            Assertions.assertEquals("04439CFFFFFF8FFE", actualClearData);
         }
 
     }

@@ -44,11 +44,17 @@ public class IfsfSecurityFieldFactory {
     }
 
     // Sensitive data decryption using ANSI
-    public String decryptRequestData2004(final String ksn, final String data) {
+    public String decryptRequestData2004(final String ksn, final String encryptedData) {
         final CustomBitSet requestDataKey = dukptFactory.computeKey(bdk, new CustomBitSet(ksn), IfsfKeyMask.REQUEST_DATA_MASK);
-        final byte[] encryptedRequestData = tripleDes.decrypt(requestDataKey, DatatypeConverter.parseHexBinary(data));
+        final byte[] requestData = tripleDes.decrypt(requestDataKey, DatatypeConverter.parseHexBinary(encryptedData));
 
-        return DatatypeConverter.printHexBinary(encryptedRequestData);
+        return DatatypeConverter.printHexBinary(requestData);
+    }
+
+    public String decryptFixed(final String key, final String encryptedData) {
+        final byte[] requestData = tripleDes.decrypt(new CustomBitSet(key), DatatypeConverter.parseHexBinary(encryptedData));
+
+        return DatatypeConverter.printHexBinary(requestData);
     }
 
     public String calculateRequestMac(final String ksn, final String messageHash) {
