@@ -8,7 +8,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import javax.xml.bind.DatatypeConverter;
 import java.util.stream.Stream;
 
 public class PinProcessorTest {
@@ -22,14 +21,14 @@ public class PinProcessorTest {
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    class WhenDecodeIso0PinBlockMethodIsCalled {
+    class WhenFromIso0PinMethodIsCalled {
 
-        @ParameterizedTest
+        @ParameterizedTest(name = "Should return PIN: {2}.")
         @MethodSource("getIso0PinBlockPanAndExpectedClearPin")
         void shouldReturnPin(final String iso0Pin, final String pan, final String expectedPin) {
             // Given
             // When
-            final String pin = pinProcessor.decodeIso0PinBlock(DatatypeConverter.parseHexBinary(iso0Pin), pan);
+            final String pin = pinProcessor.fromIso0Pin(iso0Pin, pan);
 
             // Then
             Assertions.assertEquals(expectedPin, pin);
@@ -38,13 +37,38 @@ public class PinProcessorTest {
         Stream<Arguments> getIso0PinBlockPanAndExpectedClearPin() {
             return Stream.of(
                     Arguments.of(
-                            // Clear Iso0 PinBlock
-                            "0612076FFFFFFEAE",
-                            // Pan
-                            "5413339000001513",
-                            // Clear PIN
-                            "123456"
+                            "0612076FFFFFFEAE", // Clear Iso0 PinBlock
+                            "5413339000001513", // Pan
+                            "123456" // Clear PIN
+                    ),
+                    Arguments.of(
+                            "0412AC89ABCDEF67", // Clear Iso0 PinBlock
+                            "43219876543210987", // Pan
+                            "1234" // Clear PIN
                     )
+            );
+        }
+
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class WhenToIso0FormatPinBlockIsCalled {
+
+        @ParameterizedTest(name = "Should return ISO-0 PIN: {2}.")
+        @MethodSource("getPinPanAndExpectedIso0FormatPinBlock")
+        void shouldReturnIs0Pin(final String pin, final String pan, final String expectedIso0FormatPinBlock) {
+            // Given
+            // When
+            final String actualIso0FormatPinBlock = pinProcessor.toIso0Pin(pin, pan);
+
+            // Then
+            Assertions.assertEquals(expectedIso0FormatPinBlock, actualIso0FormatPinBlock);
+        }
+
+        Stream<Arguments> getPinPanAndExpectedIso0FormatPinBlock() {
+            return Stream.of(
+                    Arguments.of("1234", "43219876543210987", "0412AC89ABCDEF67")
             );
         }
 
@@ -54,12 +78,12 @@ public class PinProcessorTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class WhenGetAccountNumberBlockMethodIsCalled {
 
-        @ParameterizedTest
+        @ParameterizedTest(name = "Should return Account Number block: {1}.")
         @MethodSource("getPanAndExpectedAccountNumberBlock")
         void shouldReturnAccountNumber(final String pan, final String expectedAccountNumberBlock) {
             // Given
             // When
-            final String accountNumberBlock = PinProcessor.getAccountNumberBlock(pan);
+            final String accountNumberBlock = pinProcessor.getAccountNumberBlock(pan);
 
             // Then
             Assertions.assertEquals(expectedAccountNumberBlock, accountNumberBlock);
@@ -67,16 +91,16 @@ public class PinProcessorTest {
 
         Stream<Arguments> getPanAndExpectedAccountNumberBlock() {
             return Stream.of(
-              Arguments.of("376100000000004", "0000610000000000"),
-              Arguments.of("341111597241002", "0000111159724100"),
-              Arguments.of("36555500001111", "0000655550000111"),
-              Arguments.of("6011000991300009", "0000100099130000"),
-              Arguments.of("3561000000000005", "0000100000000000"),
-              Arguments.of("3566000020000410", "0000600002000041"),
-              Arguments.of("6761000000000006", "0000100000000000"),
-              Arguments.of("6333000023456788", "0000300002345678"),
-              Arguments.of("5123450000000008", "0000345000000000"),
-              Arguments.of("5413339000001513", "0000333900000151")
+                    Arguments.of("376100000000004", "0000610000000000"),
+                    Arguments.of("341111597241002", "0000111159724100"),
+                    Arguments.of("36555500001111", "0000655550000111"),
+                    Arguments.of("6011000991300009", "0000100099130000"),
+                    Arguments.of("3561000000000005", "0000100000000000"),
+                    Arguments.of("3566000020000410", "0000600002000041"),
+                    Arguments.of("6761000000000006", "0000100000000000"),
+                    Arguments.of("6333000023456788", "0000300002345678"),
+                    Arguments.of("5123450000000008", "0000345000000000"),
+                    Arguments.of("5413339000001513", "0000333900000151")
             );
         }
 

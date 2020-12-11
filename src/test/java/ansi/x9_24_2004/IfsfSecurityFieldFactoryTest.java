@@ -195,33 +195,27 @@ public class IfsfSecurityFieldFactoryTest {
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    class WhenPinMethodIsCalled {
+    class WhenDecryptIso0FormatPinBlockMethodIsCalled {
 
         @ParameterizedTest
-        @MethodSource("getIso0PinBlockPanKsnAndClearPin")
-        void shouldDecryptRequestData(final String plainData,
-                                      final String pan,
+        @MethodSource("getIso0PinBlockPanKsnAndClearIso0Pin")
+        void shouldDecryptRequestData(final String encryptedIso0Pin,
                                       final String ksn,
-                                      final String expectedEncryptedData) {
+                                      final String expectedClearIso0Pin) {
             // Given
             // When
-            final String encryptedRequestData = ifsfSecurityFieldFactory.readPin(ksn, plainData, pan);
+            final String actualClearIso0Pin = ifsfSecurityFieldFactory.decryptIso0FormatPinBlock(ksn, encryptedIso0Pin);
 
             // Then
-            Assertions.assertEquals(expectedEncryptedData, encryptedRequestData);
+            Assertions.assertEquals(expectedClearIso0Pin, actualClearIso0Pin);
         }
 
-        Stream<Arguments> getIso0PinBlockPanKsnAndClearPin() {
+        Stream<Arguments> getIso0PinBlockPanKsnAndClearIso0Pin() {
             return Stream.of(
                     Arguments.of(
-                            // Iso0 PIN block
-                            "55025D81E85C8BF9",
-                            // PAN
-                            "5413339000001513",
-                            // KSN
-                            "FFFF9876543210E01E9D",
-                            // Clear PIN
-                            "123456"
+                            "55025D81E85C8BF9", // Encrypted ISO-0 PIN
+                            "FFFF9876543210E01E9D", // KSN
+                            "0612076FFFFFFEAE" // Clear ISO-0 PIN
                     )
             );
         }

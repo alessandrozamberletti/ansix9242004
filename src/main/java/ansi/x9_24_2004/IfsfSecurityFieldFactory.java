@@ -27,6 +27,7 @@ public class IfsfSecurityFieldFactory {
         this.dukptFactory = new DukptFactory(new Des(), tripleDes);
     }
 
+    // Sensitive data encryption using ANSI X9.24 2004 data key
     public String encryptRequestData2004(final String ksn, final String data) {
         final CustomBitSet requestDataKey = dukptFactory.computeKey(bdk, new CustomBitSet(ksn), IfsfKeyMask.REQUEST_DATA_MASK);
         final byte[] encryptedRequestData = tripleDes.encrypt(requestDataKey, DatatypeConverter.parseHexBinary(data));
@@ -34,6 +35,7 @@ public class IfsfSecurityFieldFactory {
         return DatatypeConverter.printHexBinary(encryptedRequestData);
     }
 
+    // Sensitive data encryption using ANSI X9.24 2009 data key
     public String encryptRequestData2009(final String ksn, final String data) {
         final CustomBitSet x924version2009DataKey = dukptFactory.computeAnsiX924version2009DataKey(bdk, new CustomBitSet(ksn));
         final byte[] encryptedRequestData = tripleDes.encrypt(x924version2009DataKey, DatatypeConverter.parseHexBinary(data));
@@ -41,6 +43,7 @@ public class IfsfSecurityFieldFactory {
         return DatatypeConverter.printHexBinary(encryptedRequestData);
     }
 
+    // Sensitive data decryption using ANSI
     public String decryptRequestData2004(final String ksn, final String data) {
         final CustomBitSet requestDataKey = dukptFactory.computeKey(bdk, new CustomBitSet(ksn), IfsfKeyMask.REQUEST_DATA_MASK);
         final byte[] encryptedRequestData = tripleDes.decrypt(requestDataKey, DatatypeConverter.parseHexBinary(data));
@@ -55,25 +58,26 @@ public class IfsfSecurityFieldFactory {
         return DatatypeConverter.printHexBinary(requestMac);
     }
 
-    public String encryptIso0PinBlock(final String ksn, final String clearIso0PinBlock) {
+    public String encryptIso0FormatPinBlock(final String ksn, final String clearIso0FormatPinBlock) {
         final CustomBitSet pinKey = dukptFactory.computeKey(bdk, new CustomBitSet(ksn), IfsfKeyMask.REQUEST_PIN_MASK);
-        final byte[] encryptedIso0Block =  tripleDes.encrypt(pinKey, DatatypeConverter.parseHexBinary(clearIso0PinBlock));
+        final byte[] encryptedIso0Block =  tripleDes.encrypt(pinKey, DatatypeConverter.parseHexBinary(clearIso0FormatPinBlock));
 
         return DatatypeConverter.printHexBinary(encryptedIso0Block);
     }
 
-    public String decryptIso0PinBlock(final String ksn, final String encryptedPinBlock) {
+    public String decryptIso0FormatPinBlock(final String ksn, final String encryptedIso0FormatPinBlock) {
         final CustomBitSet pinKey = dukptFactory.computeKey(bdk, new CustomBitSet(ksn), IfsfKeyMask.REQUEST_PIN_MASK);
-        final byte[] clearIso0Block =  tripleDes.decrypt(pinKey, DatatypeConverter.parseHexBinary(encryptedPinBlock));
+        final byte[] clearIso0Block =  tripleDes.decrypt(pinKey, DatatypeConverter.parseHexBinary(encryptedIso0FormatPinBlock));
 
         return DatatypeConverter.printHexBinary(clearIso0Block);
     }
 
-    public String readPin(final String ksn, final String pinBlock, final String pan) {
-        final CustomBitSet pinKey = dukptFactory.computeKey(bdk, new CustomBitSet(ksn), IfsfKeyMask.REQUEST_PIN_MASK);
-        final byte[] iso0block = tripleDes.decrypt(pinKey, DatatypeConverter.parseHexBinary(pinBlock));
+    public String toIso0Format(final String pin, final String pan) {
+        return pinProcessor.toIso0Pin(pin, pan);
+    }
 
-        return pinProcessor.decodeIso0PinBlock(iso0block, pan);
+    public String fromIso0Format(final String clearIso0FormatPinBlock, final String pan) {
+        return pinProcessor.fromIso0Pin(clearIso0FormatPinBlock, pan);
     }
 
 }
