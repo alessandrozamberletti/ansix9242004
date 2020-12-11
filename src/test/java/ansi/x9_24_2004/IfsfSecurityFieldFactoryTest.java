@@ -102,6 +102,14 @@ public class IfsfSecurityFieldFactoryTest {
                             "FFFF9876543210E01E99",
                             // Encrypted data
                             "C7471B773CC940C386D16D68995B125597C38B977F9AD11D769F59E7B868E538AE7F22B1E6A8E3C9584C0021D51A0ECB8C3807B46200EE6EC0F73587B458EE56490A2DB4FDB92A4A"
+                    ),
+                    Arguments.of(
+                            // Plain data
+                            "020010353431333333393030303030313531330E00063037313233312300243534313333333930303030303135313344343931323630313030303030303030303030300000000000",
+                            // KSN
+                            "FFFF9876543210E022B0",
+                            // Encrypted data
+                            "7D90934CDFF4B0CF383F54FA2FF5A220CDFB4B097E4A565AB2699CB718F85104EFA78169AB6D5951BE3FDF6387A992FFAD9A703137CA6076BA0E0A143684B998DB4F4A409F2CA615"
                     )
             );
         }
@@ -196,6 +204,14 @@ public class IfsfSecurityFieldFactoryTest {
                             "FFFF9876543210E01E99",
                             // MAC
                             "25A3D3D9C07AC3A6"
+                    ),
+                    Arguments.of(
+                            // Data
+                            "B12557DC341A0EB357EE5F24499D0745E41065E30486C38E65E9F2881ADA5EB8",
+                            // KSN
+                            "FFFF9876543210E022B0",
+                            // MAC
+                            "FCCCA5E097A3A67F"
                     )
             );
         }
@@ -228,6 +244,11 @@ public class IfsfSecurityFieldFactoryTest {
                             "0612076FFFFFFEAE", // Clear ISO-0 PIN
                             "FFFF9876543210E01E9F", // KSN
                             "BC0E47A5906B585D" // Encrypted ISO-0 PIN
+                    ),
+                    Arguments.of(
+                            "0612076FFFFFFEAE", // Clear ISO-0 PIN
+                            "FFFF9876543210E022B0", // KSN
+                            "19FCB1CFEC414F4F" // Encrypted ISO-0 PIN
                     )
             );
         }
@@ -261,6 +282,11 @@ public class IfsfSecurityFieldFactoryTest {
                     Arguments.of(
                             "BC0E47A5906B585D", // Encrypted ISO-0 PIN
                             "FFFF9876543210E01E9F", // KSN
+                            "0612076FFFFFFEAE" // Clear ISO-0 PIN
+                    ),
+                    Arguments.of(
+                            "19FCB1CFEC414F4F", // Encrypted ISO-0 PIN
+                            "FFFF9876543210E022B0", // KSN
                             "0612076FFFFFFEAE" // Clear ISO-0 PIN
                     )
             );
