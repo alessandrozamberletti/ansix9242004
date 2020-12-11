@@ -5,7 +5,6 @@ import ansi.x9_24_2004.dukpt.IfsfKeyMask;
 import ansi.x9_24_2004.encryption.Des;
 import ansi.x9_24_2004.encryption.TripleDes;
 import ansi.x9_24_2004.mac.RetailMacFactory;
-import ansi.x9_24_2004.pin.PinProcessor;
 import ansi.x9_24_2004.utils.CustomBitSet;
 
 import javax.xml.bind.DatatypeConverter;
@@ -16,14 +15,12 @@ public class IfsfSecurityFieldFactory {
     private final TripleDes tripleDes;
     private final DukptFactory dukptFactory;
     private final RetailMacFactory retailMacFactory;
-    private final PinProcessor pinProcessor;
 
     public IfsfSecurityFieldFactory(final String bdk) {
         this.bdk = new CustomBitSet(bdk);
 
         this.tripleDes = new TripleDes();
         this.retailMacFactory = new RetailMacFactory();
-        this.pinProcessor = new PinProcessor();
         this.dukptFactory = new DukptFactory(new Des(), tripleDes);
     }
 
@@ -76,14 +73,6 @@ public class IfsfSecurityFieldFactory {
         final byte[] clearIso0Block =  tripleDes.decrypt(pinKey, DatatypeConverter.parseHexBinary(encryptedIso0FormatPinBlock));
 
         return DatatypeConverter.printHexBinary(clearIso0Block);
-    }
-
-    public String toIso0Format(final String pin, final String pan) {
-        return pinProcessor.toIso0Pin(pin, pan);
-    }
-
-    public String fromIso0Format(final String clearIso0FormatPinBlock, final String pan) {
-        return pinProcessor.fromIso0Pin(clearIso0FormatPinBlock, pan);
     }
 
 }

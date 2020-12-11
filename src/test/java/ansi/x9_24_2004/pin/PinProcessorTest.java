@@ -10,6 +10,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
+@SuppressWarnings({"java:S1192"})
 public class PinProcessorTest {
 
     private PinProcessor pinProcessor;
@@ -73,7 +74,26 @@ public class PinProcessorTest {
 
         Stream<Arguments> getPinPanAndExpectedIso0FormatPinBlock() {
             return Stream.of(
-                    Arguments.of("1234", "43219876543210987", "0412AC89ABCDEF67")
+                    Arguments.of(
+                            "1234", // Clear PIN
+                            "43219876543210987", // Pan
+                            "0412AC89ABCDEF67" // Clear Iso0 PinBlock
+                    ),
+                    Arguments.of(
+                            "6543", // Clear PIN
+                            "6333000023456788", // Pan
+                            "046573FFFDCBA987" // Clear Iso0 PinBlock
+                    ),
+                    Arguments.of(
+                            "123456", // Clear PIN
+                            "341111597241002", // Pan
+                            "06122547A68DBEFF" // Clear Iso0 PinBlock
+                    ),
+                    Arguments.of(
+                            "87654321", // Clear PIN
+                            "3566000020000410", // Pan
+                            "0887054323FFFFBE" // Clear Iso0 PinBlock
+                    )
             );
         }
 
