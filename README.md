@@ -9,7 +9,7 @@ Using this library, the following fields can be easily calculated and parsed:
 - Encrypted sensitive data **DE-127**;
 - Message authentication code **DE-64**, **DE-128**.
 
-To ease handling of field **DE-52**, utility methods to build and parse ISO 9564-1 Format 0 PIN blocks are provided.
+To ease handling of field **DE-52**, utility methods to build and parse ISO 9564-1 Format 0 PIN blocks are also provided.
 
 Formatting sensitive data in TLV format, hashing of the message for which ISO-9797-1 MAC has to be computed, and padding 
 (using ether method 1 or method 2) are not in the scope of this library.
