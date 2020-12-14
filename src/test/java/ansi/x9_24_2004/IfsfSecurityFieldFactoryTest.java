@@ -1,5 +1,6 @@
 package ansi.x9_24_2004;
 
+import ansi.x9_24_2004.dukpt.IfsfKeyMask;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.TestInstance;
@@ -102,6 +103,45 @@ public class IfsfSecurityFieldFactoryTest {
                             "020010353431333333393030303030313531330E00063037313233312300243534313333333930303030303135313344343931323630313030303030303030303030308000000000", // Plain data (padded method 2)
                             "FFFF9876543210E022B0", // KSN
                             "713D5DC33D3D6E0730B05899E8EE062F04101F7EE55A5B294F46D1C7D098B43860E41DDF4DF2E5D6C489D418D54A07B1D9C2E9254F60E52EF3AE4EC45B643EA32DD7532975312F32" // Encrypted data
+                    ),
+                    Arguments.of(
+                            "0123456789ABCDEFFEDCBA9876543210", // BDK
+                            "020010353431333333393030303030313531330E000431343132000000000000", // Plain data
+                            "FFFF9876543210E022B0", // KSN
+                            "713D5DC33D3D6E0730B05899E8EE062F9B8B477EEBB1DBB2BD5E5075E88292AE" // Encrypted data
+                    )
+            );
+        }
+
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class WhenDecryptRequestData2009MethodIsCalled {
+
+        @ParameterizedTest(name = "Should decrypt data (2009) for KSN: \"{2}\".")
+        @MethodSource("getDataKsnAndExpectedDecryptedData")
+        void shouldDecryptRequestData(final String bdk,
+                                      final String encryptedData,
+                                      final String ksn,
+                                      final String expectedPlainData) {
+            // Given
+            final IfsfSecurityFieldFactory ifsfSecurityFieldFactory = new IfsfSecurityFieldFactory(bdk);
+
+            // When
+            final String encryptedRequestData = ifsfSecurityFieldFactory.decryptRequestData2009(ksn, encryptedData);
+
+            // Then
+            Assertions.assertEquals(expectedPlainData, encryptedRequestData);
+        }
+
+        Stream<Arguments> getDataKsnAndExpectedDecryptedData() {
+            return Stream.of(
+                    Arguments.of(
+                            "0123456789ABCDEFFEDCBA9876543210", // BDK
+                            "713D5DC33D3D6E0730B05899E8EE062F9B8B477EEBB1DBB2BD5E5075E88292AEF36098232EB27D6B", // Encrypted data
+                            "FFFF9876543210E022B0", // KSN
+                            "020010353431333333393030303030313531330E0004313431320000000000008000000000000000" // Plain data
                     )
             );
         }
@@ -115,17 +155,17 @@ public class IfsfSecurityFieldFactoryTest {
         @ParameterizedTest(name = "Should decrypt data (2004) for KSN: \"{2}\".")
         @MethodSource("getDataKsnAndExpectedDecryptedData")
         void shouldDecryptRequestData(final String bdk,
-                                      final String plainData,
+                                      final String encryptedData,
                                       final String ksn,
-                                      final String expectedEncryptedData) {
+                                      final String expectedPlainData) {
             // Given
             final IfsfSecurityFieldFactory ifsfSecurityFieldFactory = new IfsfSecurityFieldFactory(bdk);
 
             // When
-            final String encryptedRequestData = ifsfSecurityFieldFactory.decryptRequestData2004(ksn, plainData);
+            final String encryptedRequestData = ifsfSecurityFieldFactory.decryptRequestData2004(ksn, encryptedData);
 
             // Then
-            Assertions.assertEquals(expectedEncryptedData, encryptedRequestData);
+            Assertions.assertEquals(expectedPlainData, encryptedRequestData);
         }
 
         Stream<Arguments> getDataKsnAndExpectedDecryptedData() {
@@ -155,7 +195,7 @@ public class IfsfSecurityFieldFactoryTest {
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    class WhenCalculateRequestMacMethodIsCalled {
+    class WhenCalculateMacMethodIsCalled {
 
         @ParameterizedTest(name = "Should compute MAC for KSN: \"{2}\".")
         @MethodSource("getMessageHashKsnAndExpectedMac")
@@ -167,7 +207,7 @@ public class IfsfSecurityFieldFactoryTest {
             final IfsfSecurityFieldFactory ifsfSecurityFieldFactory = new IfsfSecurityFieldFactory(bdk);
 
             // When
-            final String requestMac = ifsfSecurityFieldFactory.calculateRequestMac(ksn, messageHash);
+            final String requestMac = ifsfSecurityFieldFactory.calculateMac(ksn, messageHash);
 
             // Then
             Assertions.assertEquals(expectedMac, requestMac);
@@ -204,6 +244,42 @@ public class IfsfSecurityFieldFactoryTest {
                             "B12557DC341A0EB357EE5F24499D0745E41065E30486C38E65E9F2881ADA5EB8", // Data
                             "FFFF9876543210E022B0", // KSN
                             "5CD1E77B373F7DD4" // MAC
+                            // "892F9BCFCE7F437F" // MAC
+                    )
+            );
+        }
+
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class WhenCalculateMacUsingMaskMethodIsCalled {
+
+        @ParameterizedTest(name = "Should compute MAC for KSN: \"{2}\".")
+        @MethodSource("getMessageHashKsnAndExpectedMac")
+        void shouldCalculateMacUsingMask(final String bdk,
+                                         final String messageHash,
+                                         final String ksn,
+                                         final IfsfKeyMask ifsfKeyMask,
+                                         final String expectedMac) {
+            // Given
+            final IfsfSecurityFieldFactory ifsfSecurityFieldFactory = new IfsfSecurityFieldFactory(bdk);
+
+            // When
+            final String requestMac = ifsfSecurityFieldFactory.calculateMac(ksn, messageHash, ifsfKeyMask);
+
+            // Then
+            Assertions.assertEquals(expectedMac, requestMac);
+        }
+
+        Stream<Arguments> getMessageHashKsnAndExpectedMac() {
+            return Stream.of(
+                    Arguments.of(
+                            "0123456789ABCDEFFEDCBA9876543210", // BDK
+                            "B12557DC341A0EB357EE5F24499D0745E41065E30486C38E65E9F2881ADA5EB8", // Data
+                            "FFFF9876543210E022B0", // KSN
+                            IfsfKeyMask.RESPONSE_MAC_MASK, // Mask
+                            "892F9BCFCE7F437F" // MAC
                     )
             );
         }

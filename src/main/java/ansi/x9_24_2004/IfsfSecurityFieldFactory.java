@@ -47,9 +47,17 @@ public class IfsfSecurityFieldFactory {
         return DatatypeConverter.printHexBinary(requestData);
     }
 
-    // Sensitive data decryption using ANSI
+    // Sensitive data decryption using ANSI X9.24 2004 data key
     public String decryptRequestData2004(final String ksn, final String encryptedData) {
         final CustomBitSet requestDataKey = dukptFactory.computeKey(bdk, new CustomBitSet(ksn), IfsfKeyMask.REQUEST_DATA_MASK);
+        final byte[] requestData = tripleDes.decrypt(requestDataKey, DatatypeConverter.parseHexBinary(encryptedData));
+
+        return DatatypeConverter.printHexBinary(requestData);
+    }
+
+    // Sensitive data decryption using ANSI X9.24 2009 data key
+    public String decryptRequestData2009(final String ksn, final String encryptedData) {
+        final CustomBitSet requestDataKey = dukptFactory.computeAnsiX924version2009DataKey(bdk, new CustomBitSet(ksn));
         final byte[] requestData = tripleDes.decrypt(requestDataKey, DatatypeConverter.parseHexBinary(encryptedData));
 
         return DatatypeConverter.printHexBinary(requestData);
@@ -63,11 +71,16 @@ public class IfsfSecurityFieldFactory {
     }
 
     // Compute retail MAC
-    public String calculateRequestMac(final String ksn, final String messageHash) {
-        final CustomBitSet requestMacKey = dukptFactory.computeKey(bdk, new CustomBitSet(ksn), IfsfKeyMask.REQUEST_MAC_MASK);
+    public String calculateMac(final String ksn, final String messageHash, final IfsfKeyMask ifsfKeyMask) {
+        final CustomBitSet requestMacKey = dukptFactory.computeKey(bdk, new CustomBitSet(ksn), ifsfKeyMask);
         final byte[] requestMac = retailMacFactory.create(requestMacKey, DatatypeConverter.parseHexBinary(messageHash));
 
         return DatatypeConverter.printHexBinary(requestMac);
+    }
+
+    // Compute retail MAC
+    public String calculateMac(final String ksn, final String messageHash) {
+        return calculateMac(ksn, messageHash, IfsfKeyMask.REQUEST_MAC_MASK);
     }
 
     // Encrypt plain ISO-0 PIN block
