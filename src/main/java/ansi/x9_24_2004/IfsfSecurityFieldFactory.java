@@ -40,6 +40,13 @@ public class IfsfSecurityFieldFactory {
         return DatatypeConverter.printHexBinary(encryptedRequestData);
     }
 
+    // Encrypt using fixed key
+    public String encryptFixed(final String key, final String data) {
+        final byte[] requestData = tripleDes.encrypt(new CustomBitSet(key), DatatypeConverter.parseHexBinary(data));
+
+        return DatatypeConverter.printHexBinary(requestData);
+    }
+
     // Sensitive data decryption using ANSI
     public String decryptRequestData2004(final String ksn, final String encryptedData) {
         final CustomBitSet requestDataKey = dukptFactory.computeKey(bdk, new CustomBitSet(ksn), IfsfKeyMask.REQUEST_DATA_MASK);

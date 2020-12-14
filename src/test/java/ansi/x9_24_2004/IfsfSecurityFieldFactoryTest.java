@@ -2,7 +2,6 @@ package ansi.x9_24_2004;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -256,6 +255,12 @@ public class IfsfSecurityFieldFactoryTest {
                             "06123556FFFFFFFE", // Clear ISO-0 PIN
                             "FFFF9876543210E02279", // KSN
                             "C66EE1542E0A5018" // Encrypted ISO-0 PIN
+                    ),
+                    Arguments.of(
+                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
+                            "0612525F6FFFD9D6", // Clear ISO-0 PIN
+                            "FFFF98765434E7E00001", // KSN
+                            "E7AEE225B1849123" // Encrypted ISO-0 PIN
                     )
             );
         }
@@ -307,6 +312,12 @@ public class IfsfSecurityFieldFactoryTest {
                             "C66EE1542E0A5018", // Encrypted ISO-0 PIN
                             "FFFF9876543210E02279", // KSN
                             "06123556FFFFFFFE" // Clear ISO-0 PIN
+                    ),
+                    Arguments.of(
+                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
+                            "8D186C31884B1120", // Encrypted ISO-0 PIN
+                            "FFFF98765434E8200001", // KSN
+                            "06123556FFFFFFFE" // Clear ISO-0 PIN
                     )
             );
         }
@@ -314,20 +325,68 @@ public class IfsfSecurityFieldFactoryTest {
     }
 
     @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class WhenDecryptFixedMethodIsCalled {
 
-        @Test
-        void shouldDecryptUsingFixedKey() {
+        @ParameterizedTest(name = "Should decrypt using fixed key for KEY: \"{0}\".")
+        @MethodSource("getFixedKeyEncryptedDataAndExpectedPlainData")
+        void shouldDecryptUsingFixedKey(final String key,
+                                        final String encryptedData,
+                                        final String expectedPlainData) {
             // Given
-            final String key = "43CD51408CB629DC195B52A292D538B3";
-            final String encryptedData = "A1485CDD1C68FA02";
             final IfsfSecurityFieldFactory ifsfSecurityFieldFactory = new IfsfSecurityFieldFactory("ABCDEFABCDEFABCDEFABCDEFABCDEFAB");
 
             // When
             final String actualClearData = ifsfSecurityFieldFactory.decryptFixed(key, encryptedData);
 
             // Then
-            Assertions.assertEquals("04439CFFFFFF8FFE", actualClearData);
+            Assertions.assertEquals(expectedPlainData, actualClearData);
+        }
+
+        Stream<Arguments> getFixedKeyEncryptedDataAndExpectedPlainData() {
+            return Stream.of(
+                    Arguments.of(
+                            "43CD51408CB629DC195B52A292D538B3", // Fixed key
+                            "A1485CDD1C68FA02", // Encrypted fixed PIN block
+                            "04439CFFFFFF8FFE" // Plain PIN block
+                    ),
+                    Arguments.of(
+                            "43CD51408CB629DC195B52A292D538B3", // Fixed key
+                            "F88FCA91735E882A", // Encrypted fixed PIN block
+                            "0612525F6FFFD9D6" // Plain PIN block
+                    )
+            );
+        }
+
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class WhenEncryptFixedMethodIsCalled {
+
+        @ParameterizedTest(name = "Should encrypt using fixed key for KEY: \"{0}\".")
+        @MethodSource("getFixedKeyEncryptedDataAndExpectedPlainData")
+        void shouldEncryptUsingFixedKey(final String key,
+                                        final String data,
+                                        final String expectedEncryptedData) {
+            // Given
+            final IfsfSecurityFieldFactory ifsfSecurityFieldFactory = new IfsfSecurityFieldFactory("ABCDEFABCDEFABCDEFABCDEFABCDEFAB");
+
+            // When
+            final String actualClearData = ifsfSecurityFieldFactory.encryptFixed(key, data);
+
+            // Then
+            Assertions.assertEquals(expectedEncryptedData, actualClearData);
+        }
+
+        Stream<Arguments> getFixedKeyEncryptedDataAndExpectedPlainData() {
+            return Stream.of(
+                    Arguments.of(
+                            "43CD51408CB629DC195B52A292D538B3", // Fixed key
+                            "06123556FFFFFFFE", // Clear ISO-0 PIN block
+                            "18139637BE9AFB2B" // Encrypted PIN block
+                    )
+            );
         }
 
     }
