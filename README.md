@@ -1,17 +1,17 @@
 # IFSF Security Fields Processor
 
-Compute security fields for IFSF standard (ISO 8583) financial transaction messages under ANSI X9.24 version 2004 
-and ANSI X9.24 2009 encryption schemes.  
+Compute security fields for IFSF Host-to-Host Interface financial transaction messages under ANSI X9.24 version 2004 and ANSI X9.24 2009 encryption schemes. 
+IFSF Host-to-Host standard in an adaption of ISO 8583, mainly devised for fuel payment transactions but also used in several other applications. 
 
 The following fields can be calculated/parsed:
-- Personal Identification Number (DE-52);
-- Encrypted sensitive data (DE-127);
-- Message authentication code (DE-64, DE-128).
+- Personal Identification Number **DE-52**;
+- Encrypted sensitive data **DE-127**;
+- Message authentication code **DE-64**, **DE-128**.
 
-To ease handling of field DE-52, utility methods to build and parse ISO 9564-1 Format 0 PIN blocks are provided.
+To ease handling of field **DE-52**, utility methods to build and parse ISO 9564-1 Format 0 PIN blocks are provided.
 
-Formatting sensitive data in TLV format, hashing of the message for which MAC has to be computed, and padding 
-(using ether ISO-9797-1 method 1 or ISO-9797-1 method 2) are not in the scope of this library.
+Formatting sensitive data in TLV format, hashing of the message for which ISO-9797-1 MAC has to be computed, and padding 
+(using ether method 1 or method 2) are not in the scope of this library.
 
 The library should only be used for testing purposes as it does not provide any sort of security.
   
