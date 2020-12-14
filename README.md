@@ -8,12 +8,12 @@ The following fields can be calculated/parsed:
 - Encrypted sensitive data (DE-127);
 - Message authentication code (DE-64, DE-128).
 
-To simplify handling of field DE-52, this library also provides utility method to build and parse ISO 9564-1 Format 0 PIN blocks.
+To ease handling of field DE-52, utility methods to build and parse ISO 9564-1 Format 0 PIN blocks are provided.
 
 Formatting sensitive data in TLV format, hashing of the message for which MAC has to be computed, and padding 
 (using ether ISO-9797-1 method 1 or ISO-9797-1 method 2) are not in the scope of this library.
 
-The library should be used exclusively for testing purposes.
+The library should only be used for testing purposes as it does not provide any sort of security.
   
 ## Algorithm explanations and pseudo-code
 
