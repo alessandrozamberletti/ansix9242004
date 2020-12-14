@@ -1,9 +1,19 @@
-# IFSF DUKPT and ANSI X9.19 Retail MAC
+# IFSF Security Fields Processor
 
-Utility project to compute encrypted sensitive data (DE-127) and IFSF Retail MAC (DE-128) for IFSF ISO 8583 financial messages.
+Compute security fields for IFSF standard (ISO 8583) financial transaction messages under ANSI X9.24 version 2004 
+and ANSI X9.24 2009 encryption schemes.  
 
-Formatting sensitive data in TLV format and hashing of the message for which MAC has to be computed are not in 
-the scope of this project.
+The following fields can be calculated/parsed:
+- Personal Identification Number (DE-52);
+- Encrypted sensitive data (DE-127);
+- Message authentication code (DE-64, DE-128).
+
+To simplify handling of field DE-52, this library also provides utility method to build and parse ISO 9564-1 Format 0 PIN blocks.
+
+Formatting sensitive data in TLV format, hashing of the message for which MAC has to be computed, and padding 
+(using ether ISO-9797-1 method 1 or ISO-9797-1 method 2) are not in the scope of this library.
+
+The library should be used exclusively for testing purposes.
   
 ## Algorithm explanations and pseudo-code
 
