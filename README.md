@@ -2,9 +2,9 @@
 
 Compute security fields for IFSF Host-to-Host Interface financial transaction messages under ANSI X9.24 version 2004 and ANSI X9.24 2009 encryption schemes.  
 
-IFSF Host-to-Host standard in an adaption of ISO 8583, mainly devised for fuel payment transactions, but also used in several other applications. 
+IFSF Host-to-Host standard in an adaption of ISO 8583 mainly devised for fuel payment transactions, but also used in several other applications. 
 
-Using this library, the following fields can be easily calculated/parsed:
+Using this library, the following fields can be easily calculated and parsed:
 - Personal Identification Number **DE-52**;
 - Encrypted sensitive data **DE-127**;
 - Message authentication code **DE-64**, **DE-128**.
