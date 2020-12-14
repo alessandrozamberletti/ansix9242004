@@ -1,5 +1,8 @@
 package ansi.x9_24_2004;
 
+import ansi.x9_24_2004.encryption.TripleDes;
+import ansi.x9_24_2004.pin.PinProcessor;
+import ansi.x9_24_2004.utils.CustomBitSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -9,6 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import javax.xml.bind.DatatypeConverter;
 import java.util.stream.Stream;
 
 @SuppressWarnings({"java:S1192"})
@@ -249,6 +253,11 @@ public class IfsfSecurityFieldFactoryTest {
                             "0612076FFFFFFEAE", // Clear ISO-0 PIN
                             "FFFF9876543210E022B0", // KSN
                             "19FCB1CFEC414F4F" // Encrypted ISO-0 PIN
+                    ),
+                    Arguments.of(
+                            "06123556FFFFFFFE", // Clear ISO-0 PIN
+                            "FFFF9876543210E02279", // KSN
+                            "C66EE1542E0A5018" // Encrypted ISO-0 PIN
                     )
             );
         }
@@ -288,6 +297,11 @@ public class IfsfSecurityFieldFactoryTest {
                             "19FCB1CFEC414F4F", // Encrypted ISO-0 PIN
                             "FFFF9876543210E022B0", // KSN
                             "0612076FFFFFFEAE" // Clear ISO-0 PIN
+                    ),
+                    Arguments.of(
+                            "C66EE1542E0A5018", // Encrypted ISO-0 PIN
+                            "FFFF9876543210E02279", // KSN
+                            "06123556FFFFFFFE" // Clear ISO-0 PIN
                     )
             );
         }
@@ -308,6 +322,15 @@ public class IfsfSecurityFieldFactoryTest {
 
             // Then
             Assertions.assertEquals("04439CFFFFFF8FFE", actualClearData);
+        }
+
+        @Test
+        void xx() {
+            PinProcessor pinProcessor = new PinProcessor();
+            String iso0Pin = pinProcessor.toIso0Pin("123456", "6799990100000000019");
+            byte[] encrypted = new TripleDes().encrypt(new CustomBitSet("43CD51408CB629DC195B52A292D538B3"), DatatypeConverter.parseHexBinary(iso0Pin));
+System.out.println(iso0Pin);
+            System.out.println(DatatypeConverter.printHexBinary(encrypted));
         }
 
     }

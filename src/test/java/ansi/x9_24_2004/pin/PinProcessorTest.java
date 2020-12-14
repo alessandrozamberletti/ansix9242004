@@ -56,6 +56,11 @@ public class PinProcessorTest {
                             "0612076FFFFFFEAE", // Clear Iso0 PinBlock
                             "5413339000001513", // Pan
                             "123456" // Clear PIN
+                    ),
+                    Arguments.of(
+                            "06123556FFFFFFFE", // Clear Iso0 PinBlock
+                            "6799990100000000019", // Pan
+                            "123456" // Clear PIN
                     )
             );
         }
