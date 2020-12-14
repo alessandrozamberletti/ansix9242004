@@ -324,15 +324,6 @@ public class IfsfSecurityFieldFactoryTest {
             Assertions.assertEquals("04439CFFFFFF8FFE", actualClearData);
         }
 
-        @Test
-        void xx() {
-            PinProcessor pinProcessor = new PinProcessor();
-            String iso0Pin = pinProcessor.toIso0Pin("123456", "6799990100000000019");
-            byte[] encrypted = new TripleDes().encrypt(new CustomBitSet("43CD51408CB629DC195B52A292D538B3"), DatatypeConverter.parseHexBinary(iso0Pin));
-System.out.println(iso0Pin);
-            System.out.println(DatatypeConverter.printHexBinary(encrypted));
-        }
-
     }
 
 }
