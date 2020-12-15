@@ -6,7 +6,7 @@
 
     <groupId>com.github.alessandrozamberletti</groupId>
     <artifactId>ansix9242004</artifactId>
-    <version>1.6-SNAPSHOT</version>
+    <version>1.8-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>ansix9242004</name>
