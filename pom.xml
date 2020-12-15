@@ -28,7 +28,7 @@
 
     <scm>
         <connection>scm:git:git://github.com/alessandrozamberletti/ansix9242004.git</connection>
-        <developerConnection>scm:git:ssh://github.com:alessandrozamberletti/ansix9242004.git</developerConnection>
+        <developerConnection>scm:git:ssh://github.com/alessandrozamberletti/ansix9242004.git</developerConnection>
         <url>https://github.com/alessandrozamberletti/ansix9242004/tree/main</url>
       <tag>ansix9242004-1.8</tag>
   </scm>
