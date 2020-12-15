@@ -6,11 +6,11 @@
 
     <groupId>com.github.alessandrozamberletti</groupId>
     <artifactId>ansix9242004</artifactId>
-    <version>1.4</version>
+    <version>1.6</version>
     <packaging>jar</packaging>
 
     <name>ansix9242004</name>
-    <description>IFSF security fields calculator</description>
+    <description>Compute security fields for IFSF H2H financial transaction messages</description>
     <url>https://github.com/alessandrozamberletti/ansix9242004</url>
 
     <developers>
