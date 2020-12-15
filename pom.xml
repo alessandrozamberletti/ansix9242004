@@ -4,7 +4,7 @@
 
     <groupId>com.github.alessandrozamberletti</groupId>
     <artifactId>ansix9242004</artifactId>
-    <version>1.8</version>
+    <version>1.9-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>ansix9242004</name>
@@ -30,7 +30,7 @@
         <connection>scm:git:ssh://git@github.com/alessandrozamberletti/ansix9242004.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/alessandrozamberletti/ansix9242004.git</developerConnection>
         <url>https://github.com/alessandrozamberletti/ansix9242004/tree/main</url>
-      <tag>ansix9242004-1.8</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <distributionManagement>
