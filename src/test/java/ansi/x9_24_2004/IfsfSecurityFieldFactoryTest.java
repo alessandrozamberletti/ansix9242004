@@ -142,6 +142,30 @@ public class IfsfSecurityFieldFactoryTest {
                             "713D5DC33D3D6E0730B05899E8EE062F9B8B477EEBB1DBB2BD5E5075E88292AEF36098232EB27D6B", // Encrypted data
                             "FFFF9876543210E022B0", // KSN
                             "020010353431333333393030303030313531330E0004313431320000000000008000000000000000" // Plain data
+                    ),
+                    Arguments.of(
+                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
+                            "7A6E66AB9F2571FDC75113992060B6DB44FB55A4A4513AE5DA3BF4CA50D959518A76395366B92BC399F370CA0FE76D6658C97C734C2439ABBD8280E2C234A57D662BAA856CB3A403", // Encrypted data
+                            "FFFF9876543210E022BE", // KSN
+                            "020010353431333333393030303030313531330E00063037313233312300243534313333333930303030303135313344343931323630313030303030303030303030300000000000" // Plain data
+                    ),
+                    Arguments.of(
+                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
+                            "88FA8654DB7A3153E3036BE7DC92424E9C3325479209A3EDB9A1793493F091C9", // Encrypted data
+                            "FFFF9876543210E022C0", // KSN
+                            "020010353431333333393030303030313531330E000630373132333100000000" // Plain data
+                    ),
+                    Arguments.of(
+                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
+                            "ED387B80539FBA285BD90EEA7681D1B7D5F0E1FFF62F8F2F27D1720303EAF26F", // Encrypted data
+                            "FFFF9876543210E022BC", // KSN
+                            "020010353431333333393030303030313531330E000431343132000000000000" // Plain data
+                    ),
+                    Arguments.of(
+                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
+                            "D214003575F6C7F72413B057126814CBA5A0393127D4895D48AEC9FA71ECFFF5", // Encrypted data
+                            "FFFF9876543210E022BB", // KSN
+                            "020010353431333333393030303030313531330E000431343132000000000000" // Plain data
                     )
             );
         }
@@ -187,6 +211,18 @@ public class IfsfSecurityFieldFactoryTest {
                             "081C58A0AE337A92733EE8F44408AED15113E714DE814D8C7E6B76A8910344EAA1614B71A62BB8DBFCC773A394756C0BD836C43D6058272C569FE17CE51F35C58180C3266CD30805", // Encrypted data
                             "FFFF9876543210E01E9F", // KSN
                             "020010353431333333393030303030313531330E00063037313233312300243534313333333930303030303135313344343931323630313030303030303030303030300000000000" // Plain data
+                    ),
+                    Arguments.of(
+                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
+                            "6720D7711D4C2448303602A400B93540FBCC7907A6704035BC67CC097B2B83817F03972AE619BBC1", // Encrypted data
+                            "FFFF98765434ECC00001", // KSN
+                            "230025353230393033313030303030313834313D3234303231303130303030303030303030303030" // Plain data
+                    ),
+                    Arguments.of(
+                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
+                            "1965ACA377CD7E68D17CE89025F17BE02A363C06095891123A7E64FC57931C9AD8AB140E0B2ECBB4", // Encrypted data
+                            "FFFF98765434EDA00001", // KSN
+                            "230025353535393033313030303030313834313D3233303331303130303030303030303030303030" // Plain data
                     )
             );
         }
@@ -461,6 +497,39 @@ public class IfsfSecurityFieldFactoryTest {
                             "43CD51408CB629DC195B52A292D538B3", // Fixed key
                             "06123556FFFFFFFE", // Clear ISO-0 PIN block
                             "18139637BE9AFB2B" // Encrypted PIN block
+                    )
+            );
+        }
+
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class WhenCalculateResponseMac2009MethodIsCalled {
+
+        @ParameterizedTest(name = "Should compute response MAC for KSN: \"{2}\".")
+        @MethodSource("getMessageHashKsnAndExpectedMac")
+        void shouldCalculateResponseMac2009(final String bdk,
+                                            final String messageHash,
+                                            final String ksn,
+                                            final String expectedMac) {
+            // Given
+            final IfsfSecurityFieldFactory ifsfSecurityFieldFactory = new IfsfSecurityFieldFactory(bdk);
+
+            // When
+            final String requestMac = ifsfSecurityFieldFactory.calculateResponseMac2009(ksn, messageHash);
+
+            // Then
+            Assertions.assertEquals(expectedMac, requestMac);
+        }
+
+        Stream<Arguments> getMessageHashKsnAndExpectedMac() {
+            return Stream.of(
+                    Arguments.of(
+                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
+                            "DE2FA92EEE8E3E581702D73DD98391962D051F3C91661E4D09D63DEE38A74995", // Data
+                            "FFFF9876543210E022BB", // KSN
+                            "DE9990C6B05DD94D" // MAC
                     )
             );
         }

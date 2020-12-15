@@ -79,8 +79,16 @@ public class IfsfSecurityFieldFactory {
     }
 
     // Compute retail MAC
+    // ANSI X9.24 2004: method can be used to calculate request and response MACs (mask is bi-directional)
+    // ANSI X9.24 2009: method can be used to calculate only request MAC
     public String calculateMac(final String ksn, final String messageHash) {
         return calculateMac(ksn, messageHash, IfsfKeyMask.REQUEST_MAC_MASK);
+    }
+
+    // Compute response retail MAC
+    // Should only be used for ANSI X9.24 version 2009
+    public String calculateResponseMac2009(final String ksn, final String messageHash) {
+        return calculateMac(ksn, messageHash, IfsfKeyMask.RESPONSE_MAC_MASK);
     }
 
     // Encrypt plain ISO-0 PIN block
