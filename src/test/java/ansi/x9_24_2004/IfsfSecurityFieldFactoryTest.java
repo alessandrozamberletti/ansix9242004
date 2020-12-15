@@ -109,6 +109,75 @@ public class IfsfSecurityFieldFactoryTest {
                             "020010353431333333393030303030313531330E000431343132000000000000", // Plain data
                             "FFFF9876543210E022B0", // KSN
                             "713D5DC33D3D6E0730B05899E8EE062F9B8B477EEBB1DBB2BD5E5075E88292AE" // Encrypted data
+                    ),
+                    Arguments.of(
+                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
+                            "020010353431333333393030303030313531330E000431343132000000000000", // Plain data
+                            "FFFF9876543210E022BB", // KSN
+                            "D214003575F6C7F72413B057126814CBA5A0393127D4895D48AEC9FA71ECFFF5" // Encrypted data
+                    ),
+                    Arguments.of(
+                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
+                            "020010353431333333393030303030313531330E000431343132000000000000", // Plain data
+                            "FFFF9876543210E022BC", // KSN
+                            "ED387B80539FBA285BD90EEA7681D1B7D5F0E1FFF62F8F2F27D1720303EAF26F" // Encrypted data
+                    )
+            );
+        }
+
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class WhenDecryptRequestData2004MethodIsCalled {
+
+        @ParameterizedTest(name = "Should decrypt data (2004) for KSN: \"{2}\".")
+        @MethodSource("getDataKsnAndExpectedDecryptedData")
+        void shouldDecryptRequestData(final String bdk,
+                                      final String encryptedData,
+                                      final String ksn,
+                                      final String expectedPlainData) {
+            // Given
+            final IfsfSecurityFieldFactory ifsfSecurityFieldFactory = new IfsfSecurityFieldFactory(bdk);
+
+            // When
+            final String encryptedRequestData = ifsfSecurityFieldFactory.decryptRequestData2004(ksn, encryptedData);
+
+            // Then
+            Assertions.assertEquals(expectedPlainData, encryptedRequestData);
+        }
+
+        Stream<Arguments> getDataKsnAndExpectedDecryptedData() {
+            return Stream.of(
+                    Arguments.of(
+                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
+                            "E5168D2DC89002E5F96C7A243057401BA4464FFE5315563BEC3B7A613D4B7526", // Encrypted data
+                            "FFFF9876543210E02279", // KSN
+                            "020013363739393939303130303030303030303031390E000431343132000000" // Plain data
+                    ),
+                    Arguments.of(
+                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
+                            "9BBB88CE00BD935B2E786C9A7CA13D629BBCE3EB98ABAE51BFECE759A48EBFAF", // Encrypted data
+                            "FFFF9876543210E02280", // KSN
+                            "020013363739393939303130303030303030303031390E000431343132000000" // Plain data
+                    ),
+                    Arguments.of(
+                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
+                            "081C58A0AE337A92733EE8F44408AED15113E714DE814D8C7E6B76A8910344EAA1614B71A62BB8DBFCC773A394756C0BD836C43D6058272C569FE17CE51F35C58180C3266CD30805", // Encrypted data
+                            "FFFF9876543210E01E9F", // KSN
+                            "020010353431333333393030303030313531330E00063037313233312300243534313333333930303030303135313344343931323630313030303030303030303030300000000000" // Plain data
+                    ),
+                    Arguments.of(
+                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
+                            "6720D7711D4C2448303602A400B93540FBCC7907A6704035BC67CC097B2B83817F03972AE619BBC1", // Encrypted data
+                            "FFFF98765434ECC00001", // KSN
+                            "230025353230393033313030303030313834313D3234303231303130303030303030303030303030" // Plain data
+                    ),
+                    Arguments.of(
+                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
+                            "1965ACA377CD7E68D17CE89025F17BE02A363C06095891123A7E64FC57931C9AD8AB140E0B2ECBB4", // Encrypted data
+                            "FFFF98765434EDA00001", // KSN
+                            "230025353535393033313030303030313834313D3233303331303130303030303030303030303030" // Plain data
                     )
             );
         }
@@ -174,63 +243,6 @@ public class IfsfSecurityFieldFactoryTest {
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    class WhenDecryptRequest2004DataMethodIsCalled {
-
-        @ParameterizedTest(name = "Should decrypt data (2004) for KSN: \"{2}\".")
-        @MethodSource("getDataKsnAndExpectedDecryptedData")
-        void shouldDecryptRequestData(final String bdk,
-                                      final String encryptedData,
-                                      final String ksn,
-                                      final String expectedPlainData) {
-            // Given
-            final IfsfSecurityFieldFactory ifsfSecurityFieldFactory = new IfsfSecurityFieldFactory(bdk);
-
-            // When
-            final String encryptedRequestData = ifsfSecurityFieldFactory.decryptRequestData2004(ksn, encryptedData);
-
-            // Then
-            Assertions.assertEquals(expectedPlainData, encryptedRequestData);
-        }
-
-        Stream<Arguments> getDataKsnAndExpectedDecryptedData() {
-            return Stream.of(
-                    Arguments.of(
-                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
-                            "E5168D2DC89002E5F96C7A243057401BA4464FFE5315563BEC3B7A613D4B7526", // Encrypted data
-                            "FFFF9876543210E02279", // KSN
-                            "020013363739393939303130303030303030303031390E000431343132000000" // Plain data
-                    ),
-                    Arguments.of(
-                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
-                            "9BBB88CE00BD935B2E786C9A7CA13D629BBCE3EB98ABAE51BFECE759A48EBFAF", // Encrypted data
-                            "FFFF9876543210E02280", // KSN
-                            "020013363739393939303130303030303030303031390E000431343132000000" // Plain data
-                    ),
-                    Arguments.of(
-                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
-                            "081C58A0AE337A92733EE8F44408AED15113E714DE814D8C7E6B76A8910344EAA1614B71A62BB8DBFCC773A394756C0BD836C43D6058272C569FE17CE51F35C58180C3266CD30805", // Encrypted data
-                            "FFFF9876543210E01E9F", // KSN
-                            "020010353431333333393030303030313531330E00063037313233312300243534313333333930303030303135313344343931323630313030303030303030303030300000000000" // Plain data
-                    ),
-                    Arguments.of(
-                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
-                            "6720D7711D4C2448303602A400B93540FBCC7907A6704035BC67CC097B2B83817F03972AE619BBC1", // Encrypted data
-                            "FFFF98765434ECC00001", // KSN
-                            "230025353230393033313030303030313834313D3234303231303130303030303030303030303030" // Plain data
-                    ),
-                    Arguments.of(
-                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
-                            "1965ACA377CD7E68D17CE89025F17BE02A363C06095891123A7E64FC57931C9AD8AB140E0B2ECBB4", // Encrypted data
-                            "FFFF98765434EDA00001", // KSN
-                            "230025353535393033313030303030313834313D3233303331303130303030303030303030303030" // Plain data
-                    )
-            );
-        }
-
-    }
-
-    @Nested
-    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class WhenCalculateMacMethodIsCalled {
 
         @ParameterizedTest(name = "Should compute MAC for KSN: \"{2}\".")
@@ -280,7 +292,18 @@ public class IfsfSecurityFieldFactoryTest {
                             "B12557DC341A0EB357EE5F24499D0745E41065E30486C38E65E9F2881ADA5EB8", // Data
                             "FFFF9876543210E022B0", // KSN
                             "5CD1E77B373F7DD4" // MAC
-                            // "892F9BCFCE7F437F" // MAC
+                    ),
+                    Arguments.of(
+                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
+                            "A186AE5EBA21D27C49814F3605542D62C989FABBAF3BEED2361DF0BCBA749646", // Data
+                            "FFFF9876543210E022BB", // KSN
+                            "4D7E83E9B7AB6F11" // MAC
+                    ),
+                    Arguments.of(
+                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
+                            "5A2C71AEFA0BA6E475D072E6C61CB8DA3188D05E4B9DE20F212BA566039D995D", // Data
+                            "FFFF9876543210E022BC", // KSN
+                            "99C063BFA89E7972" // MAC
                     )
             );
         }
