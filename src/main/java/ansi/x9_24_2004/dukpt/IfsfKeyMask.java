@@ -6,7 +6,7 @@ public enum IfsfKeyMask {
 
     KEY_REGISTER_BITMASK("C0C0C0C000000000C0C0C0C000000000"),
 
-    // Mask 1: PIN block encryption 00 00 00 00 00 00 00 FF || 00 00 00 00 00 00 00 FF
+    // Mask 1: PIN block encryption
     REQUEST_PIN_MASK("00000000000000FF00000000000000FF"),
     // Mask 2: MAC calculation (bi-directional)
     REQUEST_MAC_MASK("000000000000FF00000000000000FF00"),

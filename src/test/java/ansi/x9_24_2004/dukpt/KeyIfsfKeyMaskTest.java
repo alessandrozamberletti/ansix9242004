@@ -15,9 +15,10 @@ public class KeyIfsfKeyMaskTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class WhenValueMethodIsCalled {
 
-        @ParameterizedTest
+        @ParameterizedTest(name = "Should return mask: \"{1}\".")
         @MethodSource("getMaskAndExpectedValue")
-        void shouldHaveExpectedValue(final IfsfKeyMask ifsfKeyMask, final String expectedValue) {
+        void shouldHaveExpectedValue(final IfsfKeyMask ifsfKeyMask,
+                                     final String expectedValue) {
             // Given
             // When
             // Then
@@ -27,9 +28,10 @@ public class KeyIfsfKeyMaskTest {
         Stream<Arguments> getMaskAndExpectedValue() {
             return Stream.of(
                     Arguments.of(IfsfKeyMask.KEY_REGISTER_BITMASK, "C0C0C0C000000000C0C0C0C000000000"),
-                    Arguments.of(IfsfKeyMask.REQUEST_DATA_MASK, "0000000000FF00000000000000FF0000"),
+                    Arguments.of(IfsfKeyMask.REQUEST_PIN_MASK, "00000000000000FF00000000000000FF"),
                     Arguments.of(IfsfKeyMask.REQUEST_MAC_MASK, "000000000000FF00000000000000FF00"),
-                    Arguments.of(IfsfKeyMask.REQUEST_PIN_MASK, "00000000000000FF00000000000000FF")
+                    Arguments.of(IfsfKeyMask.RESPONSE_MAC_MASK, "00000000FF00000000000000FF000000"),
+                    Arguments.of(IfsfKeyMask.REQUEST_DATA_MASK, "0000000000FF00000000000000FF0000")
             );
         }
 
