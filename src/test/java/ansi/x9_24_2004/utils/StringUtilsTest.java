@@ -16,9 +16,12 @@ public class StringUtilsTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class WhenRightPadMethodIsCalled {
 
-        @ParameterizedTest
+        @ParameterizedTest(name = "Should right-pad and return: \"{3}\".")
         @MethodSource("getElementTargetLengthFillerAndExpectedResult")
-        void shouldRightPad(final String element, final int targetLength, final char filler, final String expectedResult) {
+        void shouldRightPad(final String element,
+                            final int targetLength,
+                            final char filler,
+                            final String expectedResult) {
             // Given
             // When
             final String actualResult = StringUtils.rightPad(element, targetLength, filler);
@@ -42,9 +45,12 @@ public class StringUtilsTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class WhenLeftPadMethodIsCalled {
 
-        @ParameterizedTest
+        @ParameterizedTest(name = "Should left-pad and return: \"{3}\".")
         @MethodSource("getElementTargetLengthFillerAndExpectedResult")
-        void shouldLeftPad(final String element, final int targetLength, final char filler, final String expectedResult) {
+        void shouldLeftPad(final String element,
+                           final int targetLength,
+                           final char filler,
+                           final String expectedResult) {
             // Given
             // When
             final String actualResult = StringUtils.leftPad(element, targetLength, filler);

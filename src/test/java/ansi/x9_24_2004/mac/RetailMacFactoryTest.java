@@ -25,7 +25,7 @@ public class RetailMacFactoryTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class WhenXorMethodIsCalled {
 
-        @ParameterizedTest(name = "Should XOR \"{0}\" and \"{1}\" and return \"{2}\".")
+        @ParameterizedTest(name = "Should XOR \"{0}\" and \"{1}\" and return: \"{2}\".")
         @MethodSource("getValuesAndExpectedXorResult")
         void shouldXorValues(final String first,
                              final String second,

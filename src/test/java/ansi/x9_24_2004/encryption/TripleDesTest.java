@@ -17,26 +17,27 @@ import java.util.stream.Stream;
 @SuppressWarnings({"java:S1192", "java:S1112"})
 public class TripleDesTest {
 
-    private ansi.x9_24_2004.encryption.TripleDes tripleDes;
+    private TripleDes tripleDes;
 
     @BeforeEach
     void init() {
-        this.tripleDes = new ansi.x9_24_2004.encryption.TripleDes();
+        this.tripleDes = new TripleDes();
     }
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class WhenEncryptMethodIsCalled {
 
-        @ParameterizedTest
+        @ParameterizedTest(name = "Should return encrypted data: \"{3}\".")
         @MethodSource("getKeyDataPaddingAndExpectedEncryptedData")
-        void shouldEncryptData(final CustomBitSet key,
+        void shouldEncryptData(final String key,
                                final String data,
                                final boolean padding,
                                final String expectedEncryptedData) {
             // Given
             // When
-            final byte[] actualEncryptedData = tripleDes.encrypt(key, DatatypeConverter.parseHexBinary(data), padding);
+            final byte[] actualEncryptedData =
+                    tripleDes.encrypt(new CustomBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
 
             // Then
             Assertions.assertEquals(expectedEncryptedData, DatatypeConverter.printHexBinary(actualEncryptedData));
@@ -45,17 +46,62 @@ public class TripleDesTest {
         Stream<Arguments> getKeyDataPaddingAndExpectedEncryptedData() {
             return Stream.of(
                     // 8 bytes key
-                    Arguments.of(new CustomBitSet("0258F3E7770A5F61"), "0000000000000000", false, "3F1E698119F57324"),
-                    Arguments.of(new CustomBitSet("0258F3E7770A5F61"), "0000000000000000", true, "3F1E698119F57324322C70A55FADB9EE"),
-                    Arguments.of(new CustomBitSet("0258F3E7770A5F61"), "", true, "9F24202C537707FD"),
+                    Arguments.of(
+                            "0258F3E7770A5F61", // Key
+                            "0000000000000000", // Data
+                            false, // Padding
+                            "3F1E698119F57324" // Encrypted data
+                    ),
+                    Arguments.of(
+                            "0258F3E7770A5F61", // Key
+                            "0000000000000000", // Data
+                            true, // Padding
+                            "3F1E698119F57324322C70A55FADB9EE" // Encrypted data
+                    ),
+                    Arguments.of(
+                            "0258F3E7770A5F61", // Key
+                            "", // Data
+                            true, // Padding
+                            "9F24202C537707FD" // Encrypted data
+                    ),
                     // 16 bytes key
-                    Arguments.of(new CustomBitSet("0258F3E7770A5F610258F3E7770A5F61"), "0000000000000000", false, "3F1E698119F57324"),
-                    Arguments.of(new CustomBitSet("0258F3E7770A5F610258F3E7770A5F61"), "0000000000000000", true, "3F1E698119F57324322C70A55FADB9EE"),
-                    Arguments.of(new CustomBitSet("0258F3E7770A5F610258F3E7770A5F61"), "", true, "9F24202C537707FD"),
+                    Arguments.of(
+                            "0258F3E7770A5F610258F3E7770A5F61", // Key
+                            "0000000000000000", // Data
+                            false, // Padding
+                            "3F1E698119F57324" // Encrypted data
+                    ),
+                    Arguments.of(
+                            "0258F3E7770A5F610258F3E7770A5F61", // Key
+                            "0000000000000000", // Data
+                            true, // Padding
+                            "3F1E698119F57324322C70A55FADB9EE" // Encrypted data
+                    ),
+                    Arguments.of(
+                            "0258F3E7770A5F610258F3E7770A5F61", // Key
+                            "", // Data
+                            true, // Padding
+                            "9F24202C537707FD" // Encrypted data
+                    ),
                     // 24 bytes key
-                    Arguments.of(new CustomBitSet("0258F3E7770A5F610258F3E7770A5F610258F3E7770A5F61"), "0000000000000000", false, "3F1E698119F57324"),
-                    Arguments.of(new CustomBitSet("0258F3E7770A5F610258F3E7770A5F610258F3E7770A5F61"), "0000000000000000", true, "3F1E698119F57324322C70A55FADB9EE"),
-                    Arguments.of(new CustomBitSet("0258F3E7770A5F610258F3E7770A5F610258F3E7770A5F61"), "", true, "9F24202C537707FD")
+                    Arguments.of(
+                            "0258F3E7770A5F610258F3E7770A5F610258F3E7770A5F61", // Key
+                            "0000000000000000", // Data
+                            false, // Padding
+                            "3F1E698119F57324" // Encrypted data
+                    ),
+                    Arguments.of(
+                            "0258F3E7770A5F610258F3E7770A5F610258F3E7770A5F61", // Key
+                            "0000000000000000", // Data
+                            true, // Padding
+                            "3F1E698119F57324322C70A55FADB9EE" // Encrypted data
+                    ),
+                    Arguments.of(
+                            "0258F3E7770A5F610258F3E7770A5F610258F3E7770A5F61", // Key
+                            "", // Data
+                            true, // Padding
+                            "9F24202C537707FD" // Encrypted data
+                    )
             );
         }
 
@@ -65,12 +111,16 @@ public class TripleDesTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class WhenDecryptMethodIsCalled {
 
-        @ParameterizedTest
+        @ParameterizedTest(name = "Should return decrypted data: \"{3}\".")
         @MethodSource("getKeyDataPaddingAndExpectedEncryptedData")
-        void shouldDecryptData(final CustomBitSet key, final String data, final boolean padding, final String expectedEncryptedData) {
+        void shouldDecryptData(final String key,
+                               final String data,
+                               final boolean padding,
+                               final String expectedEncryptedData) {
             // Given
             // When
-            final byte[] actualEncryptedData = tripleDes.decrypt(key, DatatypeConverter.parseHexBinary(data), padding);
+            final byte[] actualEncryptedData =
+                    tripleDes.decrypt(new CustomBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
 
             // Then
             Assertions.assertEquals(expectedEncryptedData, DatatypeConverter.printHexBinary(actualEncryptedData));
@@ -78,9 +128,24 @@ public class TripleDesTest {
 
         Stream<Arguments> getKeyDataPaddingAndExpectedEncryptedData() {
             return Stream.of(
-                    Arguments.of(new CustomBitSet("0258F3E7770A5F61"), "3F1E698119F57324", false, "0000000000000000"),
-                    Arguments.of(new CustomBitSet("0258F3E7770A5F61"), "3F1E698119F57324322C70A55FADB9EE", false, "00000000000000000808080808080808"),
-                    Arguments.of(new CustomBitSet("0258F3E7770A5F61"), "9F24202C537707FD", false, "0808080808080808")
+                    Arguments.of(
+                            "0258F3E7770A5F61", // Key
+                            "3F1E698119F57324", // Encrypted data
+                            false, // Padding
+                            "0000000000000000" // Plain data
+                    ),
+                    Arguments.of(
+                            "0258F3E7770A5F61", // Key
+                            "3F1E698119F57324322C70A55FADB9EE", // Encrypted data
+                            false, // Padding
+                            "00000000000000000808080808080808" // Plain data
+                    ),
+                    Arguments.of(
+                            "0258F3E7770A5F61", // Key
+                            "9F24202C537707FD", // Encrypted data
+                            false, // Padding
+                            "0808080808080808" // Plain data
+                    )
             );
         }
 
