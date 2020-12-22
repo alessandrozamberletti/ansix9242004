@@ -186,6 +186,24 @@ public class TripleDesTest {
             );
         }
 
+        @Test
+        void shouldThrowOnWrongKey() {
+            // Given
+            final CustomBitSet wrongKey = new CustomBitSet("FF");
+
+            // When
+            final IllegalStateException illegalStateException = Assertions.assertThrows(
+                    IllegalStateException.class,
+                    () -> tripleDes.getEncryptionKey(wrongKey)
+            );
+
+            // Then
+            Assertions.assertEquals(
+                    "Wrong 3-DES key: 'FF'",
+                    illegalStateException.getMessage()
+            );
+        }
+
     }
 
 }

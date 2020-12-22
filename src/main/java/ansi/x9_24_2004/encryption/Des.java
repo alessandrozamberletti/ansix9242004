@@ -14,7 +14,7 @@ public class Des implements Encryption {
             final DESKeySpec desKeySpec = new DESKeySpec(key.toByteArray());
             return SecretKeyFactory.getInstance("DES").generateSecret(desKeySpec);
         } catch (Exception e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException("Wrong DES key: '" + key + "'", e);
         }
     }
 

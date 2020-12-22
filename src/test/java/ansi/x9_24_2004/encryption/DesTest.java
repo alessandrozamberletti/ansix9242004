@@ -147,6 +147,24 @@ public class DesTest {
             );
         }
 
+        @Test
+        void shouldThrowOnWrongKey() {
+            // Given
+            final CustomBitSet wrongKey = new CustomBitSet("FF");
+
+            // When
+            final IllegalStateException illegalStateException = Assertions.assertThrows(
+                    IllegalStateException.class,
+                    () -> des.getEncryptionKey(wrongKey)
+            );
+
+            // Then
+            Assertions.assertEquals(
+                    "Wrong DES key: 'FF'",
+                    illegalStateException.getMessage()
+            );
+        }
+
     }
 
 }
