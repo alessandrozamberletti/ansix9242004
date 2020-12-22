@@ -4,7 +4,6 @@ import ansi.x9_24_2004.encryption.Des;
 import ansi.x9_24_2004.encryption.TripleDes;
 import ansi.x9_24_2004.utils.CustomBitSet;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,12 +15,7 @@ import java.util.stream.Stream;
 @SuppressWarnings({"java:S1192"})
 public class DukptFactoryTest {
 
-    private DukptFactory dukptFactory;
-
-    @BeforeEach
-    void init() {
-        this.dukptFactory = new DukptFactory(new Des(), new TripleDes());
-    }
+    private final DukptFactory dukptFactory = new DukptFactory(new Des(), new TripleDes());
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)

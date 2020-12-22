@@ -2,7 +2,6 @@ package ansi.x9_24_2004.encryption;
 
 import ansi.x9_24_2004.utils.CustomBitSet;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -17,12 +16,7 @@ import java.util.stream.Stream;
 @SuppressWarnings({"java:S1192", "java:S1112"})
 public class TripleDesTest {
 
-    private TripleDes tripleDes;
-
-    @BeforeEach
-    void init() {
-        this.tripleDes = new TripleDes();
-    }
+    private final TripleDes tripleDes = new TripleDes();
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)

@@ -1,7 +1,6 @@
 package ansi.x9_24_2004.pin;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,12 +12,7 @@ import java.util.stream.Stream;
 @SuppressWarnings({"java:S1192"})
 public class PinProcessorTest {
 
-    private PinProcessor pinProcessor;
-
-    @BeforeEach
-    void init() {
-        this.pinProcessor = new PinProcessor();
-    }
+    private final PinProcessor pinProcessor = new PinProcessor();
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)

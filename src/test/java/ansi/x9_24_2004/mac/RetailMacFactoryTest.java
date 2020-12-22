@@ -2,7 +2,6 @@ package ansi.x9_24_2004.mac;
 
 import ansi.x9_24_2004.utils.CustomBitSet;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,12 +13,7 @@ import java.util.stream.Stream;
 
 public class RetailMacFactoryTest {
 
-    private RetailMacFactory retailMacFactory;
-
-    @BeforeEach
-    void init() {
-        this.retailMacFactory = new RetailMacFactory();
-    }
+    private final RetailMacFactory retailMacFactory = new RetailMacFactory();
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
