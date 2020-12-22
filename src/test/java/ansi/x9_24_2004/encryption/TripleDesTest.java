@@ -99,6 +99,26 @@ public class TripleDesTest {
             );
         }
 
+        @Test
+        void shouldThrowOnWrongKey() {
+            // Given
+            final CustomBitSet wrongKey = new CustomBitSet("FF");
+            final byte[] data = "".getBytes();
+
+            // When
+            final IllegalStateException illegalStateException =
+                    Assertions.assertThrows(
+                            IllegalStateException.class,
+                            () -> tripleDes.encrypt(wrongKey, data)
+                    );
+
+            // Then
+            Assertions.assertEquals(
+                    "Wrong 3-DES key: 'FF'",
+                    illegalStateException.getMessage()
+            );
+        }
+
     }
 
     @Nested
@@ -140,6 +160,26 @@ public class TripleDesTest {
                             false, // Padding
                             "0808080808080808" // Plain data
                     )
+            );
+        }
+
+        @Test
+        void shouldThrowOnWrongKey() {
+            // Given
+            final CustomBitSet wrongKey = new CustomBitSet("FF");
+            final byte[] data = "".getBytes();
+
+            // When
+            final IllegalStateException illegalStateException =
+                    Assertions.assertThrows(
+                            IllegalStateException.class,
+                            () -> tripleDes.decrypt(wrongKey, data)
+                    );
+
+            // Then
+            Assertions.assertEquals(
+                    "Wrong 3-DES key: 'FF'",
+                    illegalStateException.getMessage()
             );
         }
 

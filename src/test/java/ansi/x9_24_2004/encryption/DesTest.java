@@ -60,6 +60,26 @@ public class DesTest {
             );
         }
 
+        @Test
+        void shouldThrowOnWrongKey() {
+            // Given
+            final CustomBitSet wrongKey = new CustomBitSet("FF");
+            final byte[] data = "".getBytes();
+
+            // When
+            final IllegalStateException illegalStateException =
+                    Assertions.assertThrows(
+                            IllegalStateException.class,
+                            () -> des.encrypt(wrongKey, data)
+                    );
+
+            // Then
+            Assertions.assertEquals(
+                    "Wrong DES key: 'FF'",
+                    illegalStateException.getMessage()
+            );
+        }
+
     }
 
     @Nested
@@ -101,6 +121,26 @@ public class DesTest {
                             false, // Padding
                             "0808080808080808" // Plain data
                     )
+            );
+        }
+
+        @Test
+        void shouldThrowOnWrongKey() {
+            // Given
+            final CustomBitSet wrongKey = new CustomBitSet("FF");
+            final byte[] data = "".getBytes();
+
+            // When
+            final IllegalStateException illegalStateException =
+                    Assertions.assertThrows(
+                            IllegalStateException.class,
+                            () -> des.decrypt(wrongKey, data)
+                    );
+
+            // Then
+            Assertions.assertEquals(
+                    "Wrong DES key: 'FF'",
+                    illegalStateException.getMessage()
             );
         }
 

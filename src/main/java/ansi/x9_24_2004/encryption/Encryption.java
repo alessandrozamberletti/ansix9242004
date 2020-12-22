@@ -8,7 +8,9 @@ import javax.crypto.spec.IvParameterSpec;
 
 public interface Encryption {
 
-    default byte[] encrypt(CustomBitSet key, byte[] data, boolean padding) {
+    default byte[] encrypt(final CustomBitSet key,
+                           final byte[] data,
+                           final boolean padding) {
         try {
             final SecretKey secretKey = getEncryptionKey(key);
             final IvParameterSpec iv = new IvParameterSpec(new byte[8]);
@@ -18,15 +20,18 @@ public interface Encryption {
 
             return cipher.doFinal(data);
         } catch (Exception e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException(e.getMessage());
         }
     }
 
-    default byte[] encrypt(CustomBitSet key, byte[] data) {
+    default byte[] encrypt(final CustomBitSet key,
+                           final byte[] data) {
         return encrypt(key, data, false);
     }
 
-    default byte[] decrypt(CustomBitSet key, byte[] data, boolean padding) {
+    default byte[] decrypt(final CustomBitSet key,
+                           final byte[] data,
+                           final boolean padding) {
         try {
             final SecretKey secretKey = getEncryptionKey(key);
             final IvParameterSpec iv = new IvParameterSpec(new byte[8]);
@@ -36,25 +41,26 @@ public interface Encryption {
 
             return cipher.doFinal(data);
         } catch (Exception e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException(e.getMessage());
         }
     }
 
-    default byte[] decrypt(CustomBitSet key, byte[] data) {
+    default byte[] decrypt(final CustomBitSet key,
+                           final byte[] data) {
         return decrypt(key, data, false);
     }
 
-    SecretKey getEncryptionKey(CustomBitSet key);
+    SecretKey getEncryptionKey(final CustomBitSet key);
 
     String padding();
 
     String noPadding();
 
-    default Cipher getCipher(boolean padding) {
+    default Cipher getCipher(final boolean padding) {
         try {
             return Cipher.getInstance(padding ? padding() : noPadding());
         } catch (Exception e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException(e.getMessage());
         }
     }
 
