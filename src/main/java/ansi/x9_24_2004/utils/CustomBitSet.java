@@ -43,7 +43,7 @@ public class CustomBitSet extends BitSet {
 
     @Override
     public byte[] toByteArray() {
-        final int byteSize = this.size() / 8 + ((this.size() % 8 == 0) ? 0 : 1);
+        final int byteSize = (this.size + 7) / 8;
         final byte[] value = new byte[byteSize];
         for (int i = 0; i < byteSize; i++) {
             value[i] = toByte(this.get(i * 8, Math.min(this.size, (i + 1) * 8)));
