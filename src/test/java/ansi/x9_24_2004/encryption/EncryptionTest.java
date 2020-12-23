@@ -1,6 +1,6 @@
 package ansi.x9_24_2004.encryption;
 
-import ansi.x9_24_2004.utils.CustomBitSet;
+import ansi.x9_24_2004.utils.BitArray;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.TestInstance;
@@ -15,7 +15,7 @@ public class EncryptionTest {
 
     private final Encryption encryption = new Encryption() {
         @Override
-        public SecretKey getEncryptionKey(CustomBitSet key) {
+        public SecretKey getEncryptionKey(BitArray key) {
             return null;
         }
 

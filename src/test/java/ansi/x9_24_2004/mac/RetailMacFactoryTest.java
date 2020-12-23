@@ -1,6 +1,6 @@
 package ansi.x9_24_2004.mac;
 
-import ansi.x9_24_2004.utils.CustomBitSet;
+import ansi.x9_24_2004.utils.BitArray;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.TestInstance;
@@ -49,7 +49,7 @@ public class RetailMacFactoryTest {
 
         @ParameterizedTest(name = "Should compute MAC: \"{2}\".")
         @MethodSource("getKeyDataAndExpectedMac")
-        void shouldComputeRetailMac(final CustomBitSet key,
+        void shouldComputeRetailMac(final BitArray key,
                                     final String data,
                                     final String expectedMac) {
             // Given
@@ -64,7 +64,7 @@ public class RetailMacFactoryTest {
             return Stream.of(
                     Arguments.of(
                             // Key
-                            new CustomBitSet("0258F3E777F5A061241AE6523458C430"),
+                            new BitArray("0258F3E777F5A061241AE6523458C430"),
                             // Data
                             "2C37F1179040F7E7D7BFF535DEEA4B19A50FD9C4E72AE3BEA134034B733C128F",
                             // MAC
@@ -72,7 +72,7 @@ public class RetailMacFactoryTest {
                     ),
                     Arguments.of(
                             // Key
-                            new CustomBitSet("1B90D9C9AEE3A9ADF9938F6084D19344"),
+                            new BitArray("1B90D9C9AEE3A9ADF9938F6084D19344"),
                             // Data
                             "24EE4A2AB303D2D5CA4BEFE3DC74DE42E05D30716DFD099D45033F5897E4AF52",
                             // MAC

@@ -1,6 +1,6 @@
 package ansi.x9_24_2004.dukpt;
 
-import ansi.x9_24_2004.utils.CustomBitSet;
+import ansi.x9_24_2004.utils.BitArray;
 
 public enum IfsfKeyMask {
 
@@ -21,8 +21,8 @@ public enum IfsfKeyMask {
         this.value = value;
     }
 
-    public CustomBitSet value() {
-        return new CustomBitSet(value);
+    public BitArray value() {
+        return new BitArray(value);
     }
 
     @Override

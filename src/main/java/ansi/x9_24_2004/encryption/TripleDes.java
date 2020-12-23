@@ -1,6 +1,6 @@
 package ansi.x9_24_2004.encryption;
 
-import ansi.x9_24_2004.utils.CustomBitSet;
+import ansi.x9_24_2004.utils.BitArray;
 import ansi.x9_24_2004.utils.ByteArrayUtils;
 
 import javax.crypto.SecretKey;
@@ -10,10 +10,10 @@ import javax.crypto.spec.DESedeKeySpec;
 public class TripleDes implements Encryption {
 
     @Override
-    public SecretKey getEncryptionKey(final CustomBitSet key) {
-        CustomBitSet k1;
-        CustomBitSet k2;
-        CustomBitSet k3;
+    public SecretKey getEncryptionKey(final BitArray key) {
+        BitArray k1;
+        BitArray k2;
+        BitArray k3;
         try {
             if (key.size() == 64) {
                 // single length

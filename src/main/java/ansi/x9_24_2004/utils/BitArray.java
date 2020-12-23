@@ -9,30 +9,38 @@ import java.util.BitSet;
  * Source: https://github.com/SoftwareVerde/java-dukpt (MIT license).
  */
 @SuppressWarnings({"java:S2160"}) // Implement equals, not needed.
-public class CustomBitSet extends BitSet {
+public class BitArray extends BitSet {
 
     private int size;
 
-    public CustomBitSet(int nbits) {
-        super(nbits);
-        size = nbits;
+    private BitArray(int size) {
+        super(size);
+        this.size = size;
     }
 
-    public CustomBitSet(final byte[] bytes) {
+    public BitArray(final byte[] bytes) {
         super(8 * bytes.length);
-        this.size = 8 * bytes.length;
         setBytes(bytes);
     }
 
-    public CustomBitSet(final String value) {
+    public BitArray(final String value) {
         super(8 * DatatypeConverter.parseHexBinary(value).length);
-        final byte[] valueBytes = DatatypeConverter.parseHexBinary(value);
-        this.size = 8 * valueBytes.length;
-        setBytes(valueBytes);
+        setBytes(DatatypeConverter.parseHexBinary(value));
+    }
+
+    private void setBytes(final byte[] bytes) {
+        this.size = 8 * bytes.length;
+        for (int i = 0; i < bytes.length; i++) {
+            for (int j = 0; j < 8; j++) {
+                if ((bytes[i] & 0xff & (1L << j)) > 0) {
+                    this.set(8 * i + (7 - j));
+                }
+            }
+        }
     }
 
     @Override
-    public CustomBitSet get(int low, int high) {
+    public BitArray get(int low, int high) {
         return fromBitSet(super.get(low, high));
     }
 
@@ -56,34 +64,24 @@ public class CustomBitSet extends BitSet {
         return DatatypeConverter.printHexBinary(this.toByteArray());
     }
 
-    private void setBytes(final byte[] bytes) {
-        for (int i = 0; i < bytes.length; i++) {
-            for (int j = 0; j < 8; j++) {
-                if ((bytes[i] & 0xff & (1L << j)) > 0) {
-                    this.set(8 * i + (7 - j));
-                }
-            }
-        }
-    }
-
-    private static byte toByte(final CustomBitSet customBitSet) {
+    private static byte toByte(final BitArray bitArray) {
         byte value = 0;
-        for (int i = 0; i < customBitSet.size(); i++) {
-            if (customBitSet.get(i)) {
+        for (int i = 0; i < bitArray.size(); i++) {
+            if (bitArray.get(i)) {
                 value = (byte) (value & 0xff | (1L << 7 - i));
             }
         }
         return value;
     }
 
-    private static CustomBitSet fromBitSet(final BitSet bitSet) {
-        final CustomBitSet customBitSet = new CustomBitSet(bitSet.size());
+    private static BitArray fromBitSet(final BitSet bitSet) {
+        final BitArray bitArray = new BitArray(bitSet.size());
         for (int i = 0; i < bitSet.length(); i++) {
             if (bitSet.get(i)) {
-                customBitSet.set(i);
+                bitArray.set(i);
             }
         }
-        return customBitSet;
+        return bitArray;
     }
 
 }

@@ -1,6 +1,6 @@
 package ansi.x9_24_2004.pin;
 
-import ansi.x9_24_2004.utils.CustomBitSet;
+import ansi.x9_24_2004.utils.BitArray;
 import ansi.x9_24_2004.utils.StringUtils;
 
 public class PinProcessor {
@@ -20,15 +20,15 @@ public class PinProcessor {
         final String accountNumberBlock = getAccountNumberBlock(pan);
 
         // 3 - XOR both values
-        final CustomBitSet customBitSet = new CustomBitSet(iso0FormatPinBlock);
-        customBitSet.xor(new CustomBitSet(accountNumberBlock));
+        final BitArray bitArray = new BitArray(iso0FormatPinBlock);
+        bitArray.xor(new BitArray(accountNumberBlock));
 
-        return customBitSet.toString();
+        return bitArray.toString();
     }
 
     public String fromIso0Pin(final String iso0Pin, String pan) {
-        final CustomBitSet iso0FormatPin = new CustomBitSet(iso0Pin);
-        final CustomBitSet accountNumber = new CustomBitSet(getAccountNumberBlock(pan));
+        final BitArray iso0FormatPin = new BitArray(iso0Pin);
+        final BitArray accountNumber = new BitArray(getAccountNumberBlock(pan));
 
         iso0FormatPin.xor(accountNumber);
 

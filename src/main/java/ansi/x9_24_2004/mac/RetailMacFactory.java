@@ -1,7 +1,7 @@
 package ansi.x9_24_2004.mac;
 
 import ansi.x9_24_2004.encryption.Des;
-import ansi.x9_24_2004.utils.CustomBitSet;
+import ansi.x9_24_2004.utils.BitArray;
 
 /**
  * ANSI X9.19 Retail MAC (DES) and IFSF Retail MAC
@@ -23,9 +23,9 @@ public class RetailMacFactory {
         this.des = new Des();
     }
 
-    public byte[] create(final CustomBitSet key, final byte[] data) {
-        final CustomBitSet key1a = key.get(0, 64);
-        final CustomBitSet key1b = key.get(64, 128);
+    public byte[] create(final BitArray key, final byte[] data) {
+        final BitArray key1a = key.get(0, 64);
+        final BitArray key1b = key.get(64, 128);
 
         byte[] tmp = new byte[8];
         System.arraycopy(data, 0, tmp, 0, 8);

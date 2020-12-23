@@ -2,7 +2,7 @@ package ansi.x9_24_2004.dukpt;
 
 import ansi.x9_24_2004.encryption.Des;
 import ansi.x9_24_2004.encryption.TripleDes;
-import ansi.x9_24_2004.utils.CustomBitSet;
+import ansi.x9_24_2004.utils.BitArray;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.TestInstance;
@@ -28,7 +28,7 @@ public class DukptFactoryTest {
                                       final String expectedIpek) {
             // Given
             // When
-            final CustomBitSet ipek = dukptFactory.getIpek(new CustomBitSet(bdk), new CustomBitSet(ksn));
+            final BitArray ipek = dukptFactory.getIpek(new BitArray(bdk), new BitArray(ksn));
 
             // Then
             Assertions.assertEquals(expectedIpek, ipek.toString());
@@ -77,8 +77,8 @@ public class DukptFactoryTest {
                                             final String expectedSessionKey) {
             // Given
             // When
-            final CustomBitSet transactionKey =
-                    dukptFactory.deriveSessionKey(new CustomBitSet(ipek), new CustomBitSet(ksn));
+            final BitArray transactionKey =
+                    dukptFactory.deriveSessionKey(new BitArray(ipek), new BitArray(ksn));
 
             // Then
             Assertions.assertEquals(expectedSessionKey, transactionKey.toString());
@@ -123,8 +123,8 @@ public class DukptFactoryTest {
                                              final String expectedKey) {
             // Given
             // When
-            final CustomBitSet actualKey =
-                    dukptFactory.computeKey(new CustomBitSet(bdk), new CustomBitSet(ksn), ifsfKeyMask);
+            final BitArray actualKey =
+                    dukptFactory.computeKey(new BitArray(bdk), new BitArray(ksn), ifsfKeyMask);
 
             // Then
             Assertions.assertEquals(expectedKey, actualKey.toString());
@@ -237,8 +237,8 @@ public class DukptFactoryTest {
                                              final String expectedKey) {
             // Given
             // When
-            final CustomBitSet ansiX924version2009DataKey =
-                    dukptFactory.computeAnsiX924version2009DataKey(new CustomBitSet(bdk), new CustomBitSet(ksn));
+            final BitArray ansiX924version2009DataKey =
+                    dukptFactory.computeAnsiX924version2009DataKey(new BitArray(bdk), new BitArray(ksn));
 
             // Then
             Assertions.assertEquals(expectedKey, ansiX924version2009DataKey.toString());

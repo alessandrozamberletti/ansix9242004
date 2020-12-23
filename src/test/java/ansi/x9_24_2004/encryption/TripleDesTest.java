@@ -1,6 +1,6 @@
 package ansi.x9_24_2004.encryption;
 
-import ansi.x9_24_2004.utils.CustomBitSet;
+import ansi.x9_24_2004.utils.BitArray;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ public class TripleDesTest {
             // Given
             // When
             final byte[] actualEncryptedData =
-                    tripleDes.encrypt(new CustomBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
+                    tripleDes.encrypt(new BitArray(key), DatatypeConverter.parseHexBinary(data), padding);
 
             // Then
             Assertions.assertEquals(expectedEncryptedData, DatatypeConverter.printHexBinary(actualEncryptedData));
@@ -102,7 +102,7 @@ public class TripleDesTest {
         @Test
         void shouldThrowOnWrongKey() {
             // Given
-            final CustomBitSet wrongKey = new CustomBitSet("FF");
+            final BitArray wrongKey = new BitArray("FF");
             final byte[] data = "".getBytes();
 
             // When
@@ -134,7 +134,7 @@ public class TripleDesTest {
             // Given
             // When
             final byte[] actualEncryptedData =
-                    tripleDes.decrypt(new CustomBitSet(key), DatatypeConverter.parseHexBinary(data), padding);
+                    tripleDes.decrypt(new BitArray(key), DatatypeConverter.parseHexBinary(data), padding);
 
             // Then
             Assertions.assertEquals(expectedEncryptedData, DatatypeConverter.printHexBinary(actualEncryptedData));
@@ -166,7 +166,7 @@ public class TripleDesTest {
         @Test
         void shouldThrowOnWrongKey() {
             // Given
-            final CustomBitSet wrongKey = new CustomBitSet("FF");
+            final BitArray wrongKey = new BitArray("FF");
             final byte[] data = "".getBytes();
 
             // When
@@ -212,7 +212,7 @@ public class TripleDesTest {
         @Test
         void shouldCreateEncryptionKey() {
             // Given
-            final CustomBitSet key = new CustomBitSet("0258F3E7770A5F61");
+            final BitArray key = new BitArray("0258F3E7770A5F61");
 
             // When
             final SecretKey secretKey = tripleDes.getEncryptionKey(key);
@@ -229,7 +229,7 @@ public class TripleDesTest {
         @Test
         void shouldThrowOnWrongKey() {
             // Given
-            final CustomBitSet wrongKey = new CustomBitSet("FF");
+            final BitArray wrongKey = new BitArray("FF");
 
             // When
             final IllegalStateException illegalStateException = Assertions.assertThrows(
