@@ -347,10 +347,10 @@ public class IfsfSecurityFieldFactoryTest {
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    class WhenEncryptIso0PinBlockMethodIsCalled {
+    class WhenEncryptPinBlockMethodIsCalled {
 
-        @ParameterizedTest(name = "Should encrypt ISO-0 pin block for KSN: \"{2}\".")
-        @MethodSource("getIso0PinBlockKsnAndExpectedEncryptedIso0PinBlock")
+        @ParameterizedTest(name = "Should encrypt PIN block for KSN: \"{2}\".")
+        @MethodSource("getBdkClearPinBlockKsnAndEncryptedPinBlock")
         void shouldEncryptIso0PinBlock(final String bdk,
                                        final String iso0PinBlock,
                                        final String ksn,
@@ -359,13 +359,13 @@ public class IfsfSecurityFieldFactoryTest {
             final IfsfSecurityFieldFactory ifsfSecurityFieldFactory = new IfsfSecurityFieldFactory(bdk);
 
             // When
-            final String actualEncryptedIso0PinBlock = ifsfSecurityFieldFactory.encryptIso0PinBlock(ksn, iso0PinBlock);
+            final String actualEncryptedIso0PinBlock = ifsfSecurityFieldFactory.encryptPinBlock(ksn, iso0PinBlock);
 
             // Then
             Assertions.assertEquals(expectedEncryptedIso0PinBlock, actualEncryptedIso0PinBlock);
         }
 
-        Stream<Arguments> getIso0PinBlockKsnAndExpectedEncryptedIso0PinBlock() {
+        Stream<Arguments> getBdkClearPinBlockKsnAndEncryptedPinBlock() {
             return Stream.of(
                     Arguments.of(
                             "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
@@ -396,6 +396,18 @@ public class IfsfSecurityFieldFactoryTest {
                             "0612525F6FFFD9D6", // Clear ISO-0 PIN
                             "FFFF98765434E7E00001", // KSN
                             "E7AEE225B1849123" // Encrypted ISO-0 PIN
+                    ),
+                    Arguments.of(
+                            "0123456789ABCDEFFEDCBA9876543210", // BDK
+                            "06123556FFFFFFFE", // Clear ISO-0 PIN
+                            "FFFF9876543210E00001", // KSN
+                            "5C68E38A4C1DC4B5" // Encrypted ISO-0 PIN
+                    ),
+                    Arguments.of(
+                            "165785BF78A1A675DBBF1C025A04125E", // BDK
+                            "06123556FFFFFFFE", // Clear ISO-0 PIN
+                            "FFFF7A9D3F3210E00001", // KSN
+                            "C3E632E8A1543AD7" // Encrypted ISO-0 PIN
                     )
             );
         }
@@ -404,25 +416,25 @@ public class IfsfSecurityFieldFactoryTest {
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    class WhenDecryptIso0PinBlockMethodIsCalled {
+    class WhenDecryptPinBlockMethodIsCalled {
 
-        @ParameterizedTest(name = "Should decrypt ISO-0 pin block for KSN: \"{2}\".")
-        @MethodSource("getIso0PinBlockPanKsnAndClearIso0Pin")
-        void shouldDecryptRequestData(final String bdk,
-                                      final String encryptedIso0Pin,
-                                      final String ksn,
-                                      final String expectedClearIso0Pin) {
+        @ParameterizedTest(name = "Should decrypt PIN block for KSN: \"{2}\".")
+        @MethodSource("getBdkEncryptedPinBlockKsnAndClearPinBlock")
+        void shouldDecryptPinBlockData(final String bdk,
+                                       final String encryptedIso0Pin,
+                                       final String ksn,
+                                       final String expectedClearIso0Pin) {
             // Given
             final IfsfSecurityFieldFactory ifsfSecurityFieldFactory = new IfsfSecurityFieldFactory(bdk);
 
             // When
-            final String actualClearIso0Pin = ifsfSecurityFieldFactory.decryptIso0PinBlock(ksn, encryptedIso0Pin);
+            final String actualClearIso0Pin = ifsfSecurityFieldFactory.decryptPinBlock(ksn, encryptedIso0Pin);
 
             // Then
             Assertions.assertEquals(expectedClearIso0Pin, actualClearIso0Pin);
         }
 
-        Stream<Arguments> getIso0PinBlockPanKsnAndClearIso0Pin() {
+        Stream<Arguments> getBdkEncryptedPinBlockKsnAndClearPinBlock() {
             return Stream.of(
                     Arguments.of(
                             "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
@@ -453,6 +465,12 @@ public class IfsfSecurityFieldFactoryTest {
                             "8D186C31884B1120", // Encrypted ISO-0 PIN
                             "FFFF98765434E8200001", // KSN
                             "06123556FFFFFFFE" // Clear ISO-0 PIN
+                    ),
+                    Arguments.of(
+                            "FEDCBA98765432100123456789ABCDEF", // BDK
+                            "04A845119D336036", // Encrypted ISO-0 PIN
+                            "FEDCBA98769072400073", // KSN
+                            "0495E1CEFFFFFE7B" // Clear ISO-0 PIN
                     )
             );
         }

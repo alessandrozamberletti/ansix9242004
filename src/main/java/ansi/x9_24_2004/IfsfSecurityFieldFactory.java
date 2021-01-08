@@ -91,20 +91,20 @@ public class IfsfSecurityFieldFactory {
         return calculateMac(ksn, messageHash, IfsfKeyMask.RESPONSE_MAC_MASK);
     }
 
-    // Encrypt plain ISO-0 PIN block
-    public String encryptIso0PinBlock(final String ksn, final String iso0PinBlock) {
+    // Encrypt plain PIN block
+    public String encryptPinBlock(final String ksn, final String pinBlock) {
         final BitArray pinKey = dukptFactory.computeKey(bdk, new BitArray(ksn), IfsfKeyMask.REQUEST_PIN_MASK);
-        final byte[] encryptedIso0Block =  tripleDes.encrypt(pinKey, DatatypeConverter.parseHexBinary(iso0PinBlock));
+        final byte[] encryptedPinBlock =  tripleDes.encrypt(pinKey, DatatypeConverter.parseHexBinary(pinBlock));
 
-        return DatatypeConverter.printHexBinary(encryptedIso0Block);
+        return DatatypeConverter.printHexBinary(encryptedPinBlock);
     }
 
-    // Decrypt encrypted ISO-0 PIN block
-    public String decryptIso0PinBlock(final String ksn, final String encryptedIso0PinBlock) {
+    // Decrypt encrypted PIN block
+    public String decryptPinBlock(final String ksn, final String encryptedPinBlock) {
         final BitArray pinKey = dukptFactory.computeKey(bdk, new BitArray(ksn), IfsfKeyMask.REQUEST_PIN_MASK);
-        final byte[] clearIso0Block =  tripleDes.decrypt(pinKey, DatatypeConverter.parseHexBinary(encryptedIso0PinBlock));
+        final byte[] clearPinBlock =  tripleDes.decrypt(pinKey, DatatypeConverter.parseHexBinary(encryptedPinBlock));
 
-        return DatatypeConverter.printHexBinary(clearIso0Block);
+        return DatatypeConverter.printHexBinary(clearPinBlock);
     }
 
 }
