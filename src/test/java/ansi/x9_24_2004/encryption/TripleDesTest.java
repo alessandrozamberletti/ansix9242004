@@ -39,25 +39,6 @@ public class TripleDesTest {
 
         Stream<Arguments> getKeyDataPaddingAndExpectedEncryptedData() {
             return Stream.of(
-                    // 8 bytes key
-                    Arguments.of(
-                            "0258F3E7770A5F61", // Key
-                            "0000000000000000", // Data
-                            false, // Padding
-                            "3F1E698119F57324" // Encrypted data
-                    ),
-                    Arguments.of(
-                            "0258F3E7770A5F61", // Key
-                            "0000000000000000", // Data
-                            true, // Padding
-                            "3F1E698119F57324322C70A55FADB9EE" // Encrypted data
-                    ),
-                    Arguments.of(
-                            "0258F3E7770A5F61", // Key
-                            "", // Data
-                            true, // Padding
-                            "9F24202C537707FD" // Encrypted data
-                    ),
                     // 16 bytes key
                     Arguments.of(
                             "0258F3E7770A5F610258F3E7770A5F61", // Key
@@ -73,25 +54,6 @@ public class TripleDesTest {
                     ),
                     Arguments.of(
                             "0258F3E7770A5F610258F3E7770A5F61", // Key
-                            "", // Data
-                            true, // Padding
-                            "9F24202C537707FD" // Encrypted data
-                    ),
-                    // 24 bytes key
-                    Arguments.of(
-                            "0258F3E7770A5F610258F3E7770A5F610258F3E7770A5F61", // Key
-                            "0000000000000000", // Data
-                            false, // Padding
-                            "3F1E698119F57324" // Encrypted data
-                    ),
-                    Arguments.of(
-                            "0258F3E7770A5F610258F3E7770A5F610258F3E7770A5F61", // Key
-                            "0000000000000000", // Data
-                            true, // Padding
-                            "3F1E698119F57324322C70A55FADB9EE" // Encrypted data
-                    ),
-                    Arguments.of(
-                            "0258F3E7770A5F610258F3E7770A5F610258F3E7770A5F61", // Key
                             "", // Data
                             true, // Padding
                             "9F24202C537707FD" // Encrypted data
@@ -143,19 +105,19 @@ public class TripleDesTest {
         Stream<Arguments> getKeyDataPaddingAndExpectedEncryptedData() {
             return Stream.of(
                     Arguments.of(
-                            "0258F3E7770A5F61", // Key
+                            "0258F3E7770A5F610258F3E7770A5F61", // Key
                             "3F1E698119F57324", // Encrypted data
                             false, // Padding
                             "0000000000000000" // Plain data
                     ),
                     Arguments.of(
-                            "0258F3E7770A5F61", // Key
+                            "0258F3E7770A5F610258F3E7770A5F61", // Key
                             "3F1E698119F57324322C70A55FADB9EE", // Encrypted data
                             false, // Padding
                             "00000000000000000808080808080808" // Plain data
                     ),
                     Arguments.of(
-                            "0258F3E7770A5F61", // Key
+                            "0258F3E7770A5F610258F3E7770A5F61", // Key
                             "9F24202C537707FD", // Encrypted data
                             false, // Padding
                             "0808080808080808" // Plain data
@@ -212,7 +174,7 @@ public class TripleDesTest {
         @Test
         void shouldCreateEncryptionKey() {
             // Given
-            final BitArray key = new BitArray("0258F3E7770A5F61");
+            final BitArray key = new BitArray("0258F3E7770A5F610258F3E7770A5F61");
 
             // When
             final SecretKey secretKey = tripleDes.getEncryptionKey(key);

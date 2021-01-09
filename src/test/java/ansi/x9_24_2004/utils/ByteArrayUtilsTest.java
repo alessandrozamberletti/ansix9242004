@@ -41,16 +41,18 @@ public class ByteArrayUtilsTest {
         @Test
         void shouldThrowOnException() {
             // Given
+            final byte[] array = "second".getBytes();
+
             // When
             final IllegalStateException illegalStateException =
                     Assertions.assertThrows(
                             IllegalStateException.class,
-                            () -> ByteArrayUtils.concat(null, "second".getBytes())
+                            () -> ByteArrayUtils.concat(null, array)
                     );
 
             // Then
             Assertions.assertEquals(
-                    "Error while concatenating 'null' and '[115, 101, 99, 111, 110, 100]'",
+                    "Error while concatenating: 'null [115, 101, 99, 111, 110, 100]'",
                     illegalStateException.getMessage()
             );
         }

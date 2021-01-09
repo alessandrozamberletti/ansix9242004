@@ -11,31 +11,13 @@ public class TripleDes implements Encryption {
 
     @Override
     public SecretKey getEncryptionKey(final BitArray key) {
-        BitArray k1;
-        BitArray k2;
-        BitArray k3;
+            final BitArray keyLow = key.get(0, 64);
+            final BitArray keyHigh = key.get(64, 128);
+            final byte[] tripleDesKey =
+                    ByteArrayUtils.concat(keyLow.toByteArray(), keyHigh.toByteArray(), keyLow.toByteArray());
+
         try {
-            if (key.size() == 64) {
-                // single length
-                k1 = key.get(0, 64);
-                k2 = k1;
-                k3 = k1;
-            } else if (key.size() == 128) {
-                // double length
-                k1 = key.get(0, 64);
-                k2 = key.get(64, 128);
-                k3 = k1;
-            } else {
-                // triple length
-                k1 = key.get(0, 64);
-                k2 = key.get(64, 128);
-                k3 = key.get(128, 192);
-            }
-
-            final byte[] key16 = ByteArrayUtils.concat(k1.toByteArray(), k2.toByteArray());
-            final byte[] key24 = ByteArrayUtils.concat(key16, k3.toByteArray());
-
-            final DESedeKeySpec deSedeKeySpec = new DESedeKeySpec(key24);
+            final DESedeKeySpec deSedeKeySpec = new DESedeKeySpec(tripleDesKey);
             return SecretKeyFactory.getInstance("DESede").generateSecret(deSedeKeySpec);
         } catch (Exception e) {
             throw new IllegalStateException("Wrong 3-DES key: '" + key + "'", e);
