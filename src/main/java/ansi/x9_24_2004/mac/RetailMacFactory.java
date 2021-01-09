@@ -24,19 +24,19 @@ public class RetailMacFactory {
     }
 
     public byte[] create(final BitArray key, final byte[] data) {
-        final BitArray key1a = key.get(0, 64);
-        final BitArray key1b = key.get(64, 128);
+        final BitArray keyLow = key.get(0, 64);
+        final BitArray keyHigh = key.get(64, 128);
 
         byte[] tmp = new byte[8];
         System.arraycopy(data, 0, tmp, 0, 8);
 
-        byte[] retailMac = des.encrypt(key1a, tmp);
+        byte[] retailMac = des.encrypt(keyLow, tmp);
         for (int i = 8; i < data.length; i += 8) {
             System.arraycopy(data, i, tmp, 0, 8);
-            retailMac = des.encrypt(key1a, xor(retailMac, tmp));
+            retailMac = des.encrypt(keyLow, xor(retailMac, tmp));
         }
-        retailMac = des.decrypt(key1b, retailMac);
-        retailMac = des.encrypt(key1a, retailMac);
+        retailMac = des.decrypt(keyHigh, retailMac);
+        retailMac = des.encrypt(keyLow, retailMac);
 
         return retailMac;
     }
