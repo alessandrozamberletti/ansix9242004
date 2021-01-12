@@ -121,6 +121,18 @@ public class IfsfSecurityFieldFactoryTest {
                             "020010353431333333393030303030313531330E000431343132000000000000", // Plain data
                             "FFFF9876543210E022BC", // KSN
                             "ED387B80539FBA285BD90EEA7681D1B7D5F0E1FFF62F8F2F27D1720303EAF26F" // Encrypted data
+                    ),
+                    Arguments.of(
+                            "0123456789ABCDEFFEDCBA9876543210", // BDK
+                            "230025363739393939303130303030303030313D3132313435303230303030303030303031323330", // Plain data
+                            "FFFF98765439E9400001", // KSN
+                            "CDD852B8ED9C9A0CE2C342D99887AD9FDD01055BE2B945DD92140864DFC45CEACF1FBF02C87C0BE4" // Encrypted data
+                    ),
+                    Arguments.of(
+                            "0123456789ABCDEFFEDCBA9876543210", // BDK
+                            "230025363739393939303130303030303030313D3132313435303230303030303030303031323330", // Plain data
+                            "FFFF98765439F0C00001", // KSN
+                            "8C4524A19BA8D470F5832ABC8EE766980255F6249C4CF2DAF4020B4AE19F6E94A929F4ED95B5F0BF" // Encrypted data
                     )
             );
         }
@@ -304,6 +316,12 @@ public class IfsfSecurityFieldFactoryTest {
                             "5A2C71AEFA0BA6E475D072E6C61CB8DA3188D05E4B9DE20F212BA566039D995D", // Data
                             "FFFF9876543210E022BC", // KSN
                             "99C063BFA89E7972" // MAC
+                    ),
+                    Arguments.of(
+                            "0123456789ABCDEFFEDCBA9876543210", // BDK
+                            "29A981123D342C7599A265E57A64001B96E967F9B0BC4EAA80B9E146E7A70CEB", // Data
+                            "FFFF98765439F0C00001", // KSN
+                            "A372F088A5B48F6F" // MAC
                     )
             );
         }
@@ -470,6 +488,12 @@ public class IfsfSecurityFieldFactoryTest {
                             "FEDCBA98765432100123456789ABCDEF", // BDK
                             "04A845119D336036", // Encrypted ISO-0 PIN
                             "FEDCBA98769072400073", // KSN
+                            "0495E1CEFFFFFE7B" // Clear ISO-0 PIN
+                    ),
+                    Arguments.of(
+                            "0123456789ABCDEFFEDCBA9876543210", // BDK
+                            "CD932C7DAD2C33D7", // Encrypted ISO-0 PIN
+                            "FFFF98765439D9A00001", // KSN
                             "0495E1CEFFFFFE7B" // Clear ISO-0 PIN
                     )
             );
