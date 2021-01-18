@@ -62,6 +62,16 @@ public class PinProcessorTest {
                             "0495E1CEFFFFFE7B", // Clear ISO-0 PIN
                             "5559031000001841", // PAN
                             "9571" // Clear PIN
+                    ),
+                    Arguments.of(
+                            "0495E1CEFFFFFE7B", // Clear ISO-0 PIN
+                            "5559031000001841", // PAN
+                            "9571" // Clear PIN
+                    ),
+                    Arguments.of(
+                            "0454B8FFFFFDFFFC", // Clear ISO-0 PIN
+                            "6799998900000200036", // PAN
+                            "5431" // Clear PIN
                     )
             );
         }

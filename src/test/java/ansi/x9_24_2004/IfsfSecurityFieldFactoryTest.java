@@ -247,6 +247,12 @@ public class IfsfSecurityFieldFactoryTest {
                             "D214003575F6C7F72413B057126814CBA5A0393127D4895D48AEC9FA71ECFFF5", // Encrypted data
                             "FFFF9876543210E022BB", // KSN
                             "020010353431333333393030303030313531330E000431343132000000000000" // Plain data
+                    ),
+                    Arguments.of(
+                            "0123456789ABCDEFFEDCBA9876543210", // BDK
+                            "3EE5BCEECDC5E649D3AD6A2D46FC486CC23053FE0D75AF27ECE6CA19D48384CF0358ABC871265B70", // Encrypted data
+                            "FFFF9876543A00E00001", // KSN
+                            "230024363739393939383930303030303230303033363D3235313231323030373435353030363100" // Plain data
                     )
             );
         }
@@ -494,6 +500,12 @@ public class IfsfSecurityFieldFactoryTest {
                             "0123456789ABCDEFFEDCBA9876543210", // BDK
                             "CD932C7DAD2C33D7", // Encrypted ISO-0 PIN
                             "FFFF98765439D9A00001", // KSN
+                            "0495E1CEFFFFFE7B" // Clear ISO-0 PIN
+                    ),
+                    Arguments.of(
+                            "FEDCBA98765432100123456789ABCDEF", // BDK
+                            "704721069D3ABDA9", // Encrypted ISO-0 PIN
+                            "FEDCBA98769072400095", // KSN
                             "0495E1CEFFFFFE7B" // Clear ISO-0 PIN
                     )
             );
