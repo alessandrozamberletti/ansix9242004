@@ -4,7 +4,7 @@
 
 Compute security fields for IFSF Host-to-Host Interface financial transaction messages under ANSI X9.24 version 2004 and ANSI X9.24 2009 encryption schemes.  
 
-IFSF Host-to-Host standard in an adaption of ISO 8583 mainly devised for fuel payment transactions, but also used in several other applications.
+IFSF Host-to-Host standard in an adaption of ISO 8583 mainly devised for fuel payment transactions, but also used in several other financial applications.
 
 ## Maven
 
