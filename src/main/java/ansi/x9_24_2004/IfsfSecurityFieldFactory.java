@@ -41,7 +41,7 @@ public class IfsfSecurityFieldFactory {
     }
 
     // Sensitive data encryption using ANSI X9.24 2009 data key
-    public String encryptRequestData2009(final String ksn, final String data, String iv) {
+    public String encryptRequestData2009(final String ksn, final String data, final String iv) {
         final BitArray x924version2009DataKey = dukptFactory.computeAnsiX924version2009DataKey(bdk, new BitArray(ksn));
         final byte[] encryptedRequestData = tripleDes.encrypt(x924version2009DataKey, DatatypeConverter.parseHexBinary(data), false, DatatypeConverter.parseHexBinary(iv));
 
