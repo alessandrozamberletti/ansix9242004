@@ -136,6 +136,49 @@ public class IfsfSecurityFieldFactoryTest {
                     )
             );
         }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class WhenEncryptRequestData2009MethodIsCalledWithIV {
+
+        @ParameterizedTest(name = "Should encrypt data (2009) for KSN: \"{2}\".")
+        @MethodSource("getDataKsnAndExpectedEncryptedData")
+        void shouldEncryptRequestData(final String bdk,
+                                      final String plainData,
+                                      final String ksn,
+                                      final String expectedEncryptedData,
+                                      final String iv) {
+            // Given
+            final IfsfSecurityFieldFactory ifsfSecurityFieldFactory = new IfsfSecurityFieldFactory(bdk);
+
+            // When
+            final String encryptedRequestData = ifsfSecurityFieldFactory.encryptRequestData2009(ksn, plainData, iv);
+
+            // Then
+            Assertions.assertEquals(expectedEncryptedData, encryptedRequestData);
+        }
+
+        Stream<Arguments> getDataKsnAndExpectedEncryptedData() {
+            return Stream.of(
+                    Arguments.of(
+                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
+                            "020010353431333333393030303030313531330E000431343132000000000000", // Plain data
+                            "FFFF9876543210E01E9D", // KSN
+                            "D9D60AB25BF3CADB98BB302BDFF46E18936B6C6BD03F1FFE7161113E5D8DEAC8", // Encrypted data
+                            "0000000000000000" // InitialisationVector (IV)
+                    ),
+                    Arguments.of(
+                            "BDBD1234BDBD567890ABBDBDCDEFBDBD", // BDK
+                            "020010353431333333393030303030313531330E000431343132000000000000", // Plain data
+                            "FFFF9876543210E01E9D", // KSN
+                            "D6576D2527D15714BF2877B87CC56DB803FEE5BD110E25D8D8009712C83266E5", // Encrypted data
+                            "1234567890123456" // InitialisationVector (IV)
+                    )
+            );
+        }
+
+
 
     }
 

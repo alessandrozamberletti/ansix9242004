@@ -102,7 +102,7 @@ public class IfsfSecurityFieldFactory {
     // Encrypt plain PIN block
     public String encryptPinBlock(final String ksn, final String pinBlock) {
         final BitArray pinKey = dukptFactory.computeKey(bdk, new BitArray(ksn), IfsfKeyMask.REQUEST_PIN_MASK);
-        final byte[] encryptedPinBlock =  tripleDes.encrypt(pinKey, DatatypeConverter.parseHexBinary(pinBlock));
+        final byte[] encryptedPinBlock = tripleDes.encrypt(pinKey, DatatypeConverter.parseHexBinary(pinBlock));
 
         return DatatypeConverter.printHexBinary(encryptedPinBlock);
     }
@@ -110,7 +110,7 @@ public class IfsfSecurityFieldFactory {
     // Decrypt encrypted PIN block
     public String decryptPinBlock(final String ksn, final String encryptedPinBlock) {
         final BitArray pinKey = dukptFactory.computeKey(bdk, new BitArray(ksn), IfsfKeyMask.REQUEST_PIN_MASK);
-        final byte[] clearPinBlock =  tripleDes.decrypt(pinKey, DatatypeConverter.parseHexBinary(encryptedPinBlock));
+        final byte[] clearPinBlock = tripleDes.decrypt(pinKey, DatatypeConverter.parseHexBinary(encryptedPinBlock));
 
         return DatatypeConverter.printHexBinary(clearPinBlock);
     }

@@ -22,7 +22,7 @@ public interface Encryption {
             final SecretKey secretKey = getEncryptionKey(key);
             final Cipher cipher = getCipher(padding);
 
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey, iv);
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey, new IvParameterSpec(iv));
 
             return cipher.doFinal(data);
         } catch (Exception e) {
