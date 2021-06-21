@@ -4,7 +4,7 @@
 
     <groupId>com.github.alessandrozamberletti</groupId>
     <artifactId>ansix9242004</artifactId>
-    <version>1.9</version>
+    <version>1.91</version>
     <packaging>jar</packaging>
 
     <name>ansix9242004</name>
@@ -116,7 +116,7 @@
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.6</version>
                 <configuration>
-                    <keyname>48FC4469714778CA6534F5D9FFD6931C12063ABD</keyname>
+                    <keyname>3846ADCD29B75A15F1F9F69F5D22CA1294FBDC7D</keyname>
                 </configuration>
                 <executions>
                     <execution>
