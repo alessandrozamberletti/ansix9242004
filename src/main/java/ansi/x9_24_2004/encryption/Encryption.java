@@ -11,12 +11,18 @@ public interface Encryption {
     default byte[] encrypt(final BitArray key,
                            final byte[] data,
                            final boolean padding) {
+        return encrypt(key, data, padding, new byte[8]);
+    }
+
+    default byte[] encrypt(final BitArray key,
+                           final byte[] data,
+                           final boolean padding,
+                           final byte[] iv) {
         try {
             final SecretKey secretKey = getEncryptionKey(key);
-            final IvParameterSpec iv = new IvParameterSpec(new byte[8]);
             final Cipher cipher = getCipher(padding);
 
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey, iv);
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey, new IvParameterSpec(iv));
 
             return cipher.doFinal(data);
         } catch (Exception e) {

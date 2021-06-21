@@ -40,6 +40,14 @@ public class IfsfSecurityFieldFactory {
         return DatatypeConverter.printHexBinary(encryptedRequestData);
     }
 
+    // Sensitive data encryption using ANSI X9.24 2009 data key
+    public String encryptRequestData2009(final String ksn, final String data, String iv) {
+        final BitArray x924version2009DataKey = dukptFactory.computeAnsiX924version2009DataKey(bdk, new BitArray(ksn));
+        final byte[] encryptedRequestData = tripleDes.encrypt(x924version2009DataKey, DatatypeConverter.parseHexBinary(data), false, DatatypeConverter.parseHexBinary(iv));
+
+        return DatatypeConverter.printHexBinary(encryptedRequestData);
+    }
+
     // Encrypt using fixed key
     public String encryptFixed(final String key, final String data) {
         final byte[] requestData = tripleDes.encrypt(new BitArray(key), DatatypeConverter.parseHexBinary(data));
@@ -94,7 +102,7 @@ public class IfsfSecurityFieldFactory {
     // Encrypt plain PIN block
     public String encryptPinBlock(final String ksn, final String pinBlock) {
         final BitArray pinKey = dukptFactory.computeKey(bdk, new BitArray(ksn), IfsfKeyMask.REQUEST_PIN_MASK);
-        final byte[] encryptedPinBlock =  tripleDes.encrypt(pinKey, DatatypeConverter.parseHexBinary(pinBlock));
+        final byte[] encryptedPinBlock = tripleDes.encrypt(pinKey, DatatypeConverter.parseHexBinary(pinBlock));
 
         return DatatypeConverter.printHexBinary(encryptedPinBlock);
     }
@@ -102,7 +110,7 @@ public class IfsfSecurityFieldFactory {
     // Decrypt encrypted PIN block
     public String decryptPinBlock(final String ksn, final String encryptedPinBlock) {
         final BitArray pinKey = dukptFactory.computeKey(bdk, new BitArray(ksn), IfsfKeyMask.REQUEST_PIN_MASK);
-        final byte[] clearPinBlock =  tripleDes.decrypt(pinKey, DatatypeConverter.parseHexBinary(encryptedPinBlock));
+        final byte[] clearPinBlock = tripleDes.decrypt(pinKey, DatatypeConverter.parseHexBinary(encryptedPinBlock));
 
         return DatatypeConverter.printHexBinary(clearPinBlock);
     }

@@ -85,6 +85,75 @@ public class TripleDesTest {
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class WhenEncryptMethodIsCalledWithIV {
+
+        @ParameterizedTest(name = "Should return encrypted data: \"{3}\".")
+        @MethodSource("getKeyDataPaddingAndExpectedEncryptedData")
+        void shouldEncryptData(final String key,
+                               final String data,
+                               final boolean padding,
+                               final String expectedEncryptedData,
+                               final byte[] iv) {
+            // Given
+            // When
+            final byte[] actualEncryptedData =
+                    tripleDes.encrypt(new BitArray(key), DatatypeConverter.parseHexBinary(data), padding, iv);
+
+            // Then
+            Assertions.assertEquals(expectedEncryptedData, DatatypeConverter.printHexBinary(actualEncryptedData));
+        }
+
+        Stream<Arguments> getKeyDataPaddingAndExpectedEncryptedData() {
+            return Stream.of(
+                    // 16 bytes key
+                    Arguments.of(
+                            "0258F3E7770A5F610258F3E7770A5F61", // Key
+                            "0000000000000000", // Data
+                            false, // Padding
+                            "3F1E698119F57324", // Encrypted data
+                            new byte[8]
+                    ),
+                    Arguments.of(
+                            "0258F3E7770A5F610258F3E7770A5F61", // Key
+                            "0000000000000000", // Data
+                            false, // Padding
+                            "CBDDCE0844348885", // Encrypted data
+                            DatatypeConverter.parseHexBinary("1234567890123456")
+                    ),
+                    Arguments.of(
+                            "0258F3E7770A5F610258F3E7770A5F61", // Key
+                            "", // Data
+                            true, // Padding
+                            "9F24202C537707FD",
+                            new byte[8] // Encrypted data
+                    )
+            );
+        }
+
+        @Test
+        void shouldThrowOnWrongKey() {
+            // Given
+            final BitArray wrongKey = new BitArray("FF");
+            final byte[] data = "".getBytes();
+
+            // When
+            final IllegalStateException illegalStateException =
+                    Assertions.assertThrows(
+                            IllegalStateException.class,
+                            () -> tripleDes.encrypt(wrongKey, data, false, new byte[8])
+                    );
+
+            // Then
+            Assertions.assertEquals(
+                    "Wrong 3-DES key: 'FF'",
+                    illegalStateException.getMessage()
+            );
+        }
+
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class WhenDecryptMethodIsCalled {
 
         @ParameterizedTest(name = "Should return decrypted data: \"{3}\".")
