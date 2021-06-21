@@ -40,6 +40,14 @@ public class IfsfSecurityFieldFactory {
         return DatatypeConverter.printHexBinary(encryptedRequestData);
     }
 
+    // Sensitive data encryption using ANSI X9.24 2009 data key
+    public String encryptRequestData2009(final String ksn, final String data, String iv) {
+        final BitArray x924version2009DataKey = dukptFactory.computeAnsiX924version2009DataKey(bdk, new BitArray(ksn));
+        final byte[] encryptedRequestData = tripleDes.encrypt(x924version2009DataKey, DatatypeConverter.parseHexBinary(data), false, DatatypeConverter.parseHexBinary(iv));
+
+        return DatatypeConverter.printHexBinary(encryptedRequestData);
+    }
+
     // Encrypt using fixed key
     public String encryptFixed(final String key, final String data) {
         final byte[] requestData = tripleDes.encrypt(new BitArray(key), DatatypeConverter.parseHexBinary(data));
